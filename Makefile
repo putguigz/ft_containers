@@ -1,34 +1,25 @@
 NAME= containerz
 
-CC= clang++
+CXX= clang++
 
-CFLAGS= -Wall -Wextra -Werror -std=c++98
+CXXFLAGS= -Wall -Wextra -Werror -std=c++98
 
 INCLUDES= containers_hpp
 
-SRCS= $(shell find . -type f -name "*.cpp")
+SRCS= main.cpp
 
-OBJS= $(addprefix $(OBJS_DIR)/, $(notdir $(SRCS:.cpp=.o)))
+OBJS= $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
 
 OBJS_DIR= objs
 
 $(OBJS_DIR)/%.o: %.cpp
-	$(CC) $(CFLAGS) -I$(INCLUDES) -c -o $@ $^
-
-vpath %.cpp $(dir $(SRCS))
-
+	@mkdir -p $(OBJS_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -MMD -MP -c -o $@ $<
 
 all: $(NAME)
 
-echo: 
-	@echo $(SRCS)
-	@echo $(OBJS)
-
-$(NAME): init $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
-
-init:
-	@mkdir -p $(OBJS_DIR)
+$(NAME): $(OBJS)
+	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME) 
 
 clean:
 	@rm -rf $(OBJS_DIR)
