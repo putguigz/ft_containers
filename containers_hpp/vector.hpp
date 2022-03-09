@@ -67,6 +67,7 @@ class vector{
 
 		void			reserve(size_type n)
 		{
+			std::cout << "RESERVE" << std::endl;
 			if (n > max_size())
 				throw std::length_error("vector::reserve");
 			if (n <= _capacity)
@@ -76,20 +77,43 @@ class vector{
 		};
 	
 		void resize (size_type n, value_type val = value_type()){
+			std::cout << "RESIZE" << std::endl;
+			if (n > _capacity)
+				_realloc(n);
 			if ( n < _size)
 			{
-				for (n = n - 1; n != _size; n++)
-					_allocker.destroy(&_vector[n]);
+				for (size_type i = n; i != _size; i++)
+					_allocker.destroy(&_vector[i]);
+				_size = n;
 			}
 			else if (n > _size)
 			{
-				if (n > _capacity)
-					_realloc(n);
-				for (_size = _size - 1; _size != _capacity; _size++)
+				for (; _size != n; _size++)
 					_allocker.construct(&_vector[_size], val);
 			}
 			else 
 				return ;
+		};
+
+		void clear( void )
+		{
+			for (size_type i = 0; i != _size; i++)
+				_allocker.destroy(&_vector[i]);
+			_size = 0;
+		};
+
+		void swap (vector& x)
+		{
+			pointer		tmp_vector = _vector;
+			size_type	tmp_size = _size;
+			size_type	tmp_cap = _capacity;
+
+			_vector = x._vector;
+			_size = x._size;
+			_capacity = x._capacity;
+			x._vector = tmp_vector;
+			x._size = tmp_size;
+			x._capacity = tmp_cap;
 		};
 
 	private:
@@ -98,6 +122,8 @@ class vector{
 			for (size_type i = 0; i != _size; i++)
 				_allocker.destroy(&_vector[i]);
 			_allocker.deallocate(_vector, _capacity);
+			_capacity = 0;
+			_size = 0;
 		};
 
 		void _realloc(size_type new_capacity)
@@ -124,11 +150,28 @@ class vector{
 	public:
 		reference		operator[] ( size_type n ) { return _vector[n]; };
 		const_reference	operator[] ( size_type n ) const { return _vector[n]; };
+		reference 		front( void ) { return _vector[0]; };
+		const_reference	front( void ) const { return _vector[0]; };
+		reference 		back( void ) { return _vector[_size - 1]; };
+		const_reference back( void ) const { return _vector[_size - 1]; };
+		reference 		at (size_type n){
+			if (n < 0 && n >= _size)
+				throw std::out_of_range("ft::vector::at");
+			else
+				return (_vector[n]);
+		};
+		const_reference at (size_type n) const{
+			if (n < 0 && n >= _size)
+				throw std::out_of_range("ft::vector::at");
+			else
+				return (_vector[n]);
+		};
 		size_type		capacity( void ) const { return _capacity; };
 		size_type		size( void ) const { return _size; };
 		bool			empty( void ) const { return ((_size == 0) ? true : false); };
 		size_type 		max_size() const { return _allocker.max_size(); };
 		allocator_type	get_allocator( void ) const { return _allocker; };
+
 };
 
 

@@ -14,7 +14,7 @@ OBJS_DIR= objs
 
 $(OBJS_DIR)/%.o: %.cpp
 	@mkdir -p $(OBJS_DIR)
-	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -MMD -MP -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c -o $@ $<
 
 all: $(NAME)
 
