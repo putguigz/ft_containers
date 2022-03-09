@@ -2,6 +2,7 @@
 # define __VECTOR_HPP__
 
 # include "containers.hpp"
+# include "iterator.hpp"
 
 namespace ft{
 
@@ -9,7 +10,7 @@ template < typename T, typename A = std::allocator<T> >
 class vector{
     
     public:
-     
+
         typedef T value_type;
         typedef A allocator_type;
         typedef typename allocator_type::reference          reference;
@@ -140,6 +141,12 @@ class vector{
 			_capacity = new_capacity;
 			_vector = new_vec;
 		};
+
+		class iterator : public bidir_iterator<T>
+		{
+		};
+
+		iterator begin( void ) { return (iterator(_vector));};
 
     private:
         allocator_type	_allocker;

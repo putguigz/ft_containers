@@ -17,13 +17,21 @@ template < typename T>
 class bidir_iterator : public iterator_traits<T>
 {
 	public:
-		bidir_iterator( void ) : _it(nullptr) { };
+		using typename iterator_traits<T>::value_type;
+		using typename iterator_traits<T>::pointer;
+		using typename iterator_traits<T>::reference;
+		using typename iterator_traits<T>::difference_type;
+		using typename iterator_traits<T>::iterator_category;
+
+	public:
+		bidir_iterator( void ) : _it(nullptr) {};
+		bidir_iterator( ) : _it(nullptr) { };
 		~bidir_iterator( void ) {};
 		bidir_iterator ( bidir_iterator const & src){
-			if (*this == src)
+			if (this == src)
 				return;
 			else
-				it = src;
+				_it = src;
 		};
 		bidir_iterator & operator=(bidir_iterator const & src){
 			_it = src._it;
@@ -38,6 +46,7 @@ class bidir_iterator : public iterator_traits<T>
 		pointer		operator++( int ) { pointer tmp = _it; _it += 1; return tmp; };
 		pointer	&	operator--( void ) { return (_it -= 1); };
 		pointer		operator--( int ) { pointer tmp = _it; _it -= 1; return tmp; };
+	
 	private:
 		pointer _it;
 };
