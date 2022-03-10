@@ -61,7 +61,9 @@ class vector{
 			_size++;
 		};
 
-		void			pop_back( void ) { 
+		void			pop_back( void ) {
+			if (_size == 0)
+				return;
 			_allocker.destroy(&_vector[_size - 1]);
 			_size--;
 		};
@@ -120,7 +122,29 @@ class vector{
 		class iterator : public bidir_iterator<T>
 		{
 			public:
+				//THIS IS A RAI, SO LETS ERASE LAST TAG THAT WAS BIDIR_TAG
+				typedef std::random_access_iterator_tag	iterator_category;
+				using typename bidir_iterator<T>::difference_type;
+ 
 				iterator( pointer vct ){ bidir_iterator<T>::_it = vct; };
+
+				iterator 		operator+(int n) { return iterator((bidir_iterator<T>::_it) + n); };
+				iterator		operator-(int n) { return iterator((bidir_iterator<T>::_it) - n); };
+				friend iterator	operator+(int n, iterator it) { return iterator(n + (it._it)); };
+				difference_type	operator-(iterator it) { return ((bidir_iterator<T>::_it - it._it)); };
+				bool 			operator<(iterator it) { return ((bidir_iterator<T>::_it < it._it)); };
+				bool 			operator<=(iterator it) { return ((bidir_iterator<T>::_it <= it._it)); };
+				bool 			operator>(iterator it) { return ((bidir_iterator<T>::_it > it._it)); };
+				bool 			operator>=(iterator it) { return ((bidir_iterator<T>::_it >= it._it)); };
+				iterator&		operator+=(int n) { 
+					bidir_iterator<T>::_it = bidir_iterator<T>::_it + n;
+					return (*this); };
+				iterator&		operator-=(int n) { 
+					bidir_iterator<T>::_it = bidir_iterator<T>::_it - n;
+					return (*this); };
+				value_type&		operator[](int n) {
+					return (*(bidir_iterator<T>::_it + n));
+				}
 		};
 
 		iterator begin( void ) { return (iterator(_vector)); };

@@ -27,7 +27,6 @@ class bidir_iterator : public iterator_traits<T>
 
 	public:
 		bidir_iterator( void ) : _it(NULL) {};
-		bidir_iterator( pointer vct ) : _it(vct) {};
 		~bidir_iterator( void ) {};
 		bidir_iterator ( bidir_iterator const & src){
 				*this = src;
@@ -47,7 +46,7 @@ class bidir_iterator : public iterator_traits<T>
 		pointer		operator++( int ) { pointer tmp = _it; _it++; return tmp; };
 		pointer	&	operator--( void ) { return (_it--); };
 		pointer		operator--( int ) { pointer tmp = _it; _it--; return tmp; };
-	
+
 	protected:
 		pointer _it;
 };

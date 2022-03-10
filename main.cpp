@@ -10,28 +10,69 @@ typedef struct	my_struct{
 template < typename V >
 void	print_vector(V & bail)
 {
-	for (unsigned long i = 0; i != bail.size(); i++)
-		std::cout << "bail[i] = " << bail[i] << std::endl;
+	for ( typename V::iterator it = bail.begin(); it != bail.end(); it++)
+		std::cout << "it_elem = " << *it << std::endl;
 }
 
 int main(void)
 {
 	//t_struct	elem = {4, "Hello world"};
-	typedef ft::vector<int>::iterator iterator;
-
-    ft::vector<int> v1;
-	//v1.push_back(elem);
-	v1.push_back(18);
-	v1.push_back(19);
-	v1.push_back(20);
-	v1.push_back(21);
-	v1.push_back(22);
-	print_vector(v1);
-
-	iterator it = v1.begin();
-	for (; it != v1.end(); it++)
+	//typedef ft::vector<int>::iterator iterator;
 	{
-		std::cout << it->i << std::endl;
-		std::cout << it->str << std::endl;
+		using namespace ft;
+		ft::vector<int> v1;
+		v1.push_back(0);
+		v1.push_back(1);
+		v1.push_back(2);
+		v1.push_back(3);
+		v1.push_back(4);
+		v1.push_back(5);
+		vector<int>::iterator it2 = v1.begin();
+		std::cout << &it2 << std::endl;
+		it2 += 6;
+		it2 += -2;
+		std::cout << &it2 << std::endl;
+		std::cout << it2[0] << std::endl;
+		std::cout << it2[1] << std::endl;
+		it2[1] = 42;
+		std::cout << it2[1] << std::endl;
+	
+		print_vector(v1);
+
+		// iterator it = v1.begin();
+		// for (; it != v1.end(); it++)
+		// {
+		// 	std::cout << it->i << std::endl;
+		// 	std::cout << it->str << std::endl;
+		// }
+	}
+	{
+		using namespace std;
+		vector<int> v1;
+		v1.push_back(0);
+		v1.push_back(1);
+		v1.push_back(2);
+		v1.push_back(3);
+		v1.push_back(4);
+		v1.push_back(5);
+		vector<int>::iterator it2 = v1.begin();
+		std::cout << &it2 << std::endl;
+		it2 += 6;
+		it2 += -2;
+		std::cout << BLUE;
+		std::cout << &it2 << std::endl;
+		std::cout << it2[0] << std::endl;
+		std::cout << it2[1] << std::endl;
+		it2[1] = 42;
+		std::cout << it2[1] << std::endl;
+		std::cout << RESET;
+		print_vector(v1);
+
+		// iterator it = v1.begin();
+		// for (; it != v1.end(); it++)
+		// {
+		// 	std::cout << it->i << std::endl;
+		// 	std::cout << it->str << std::endl;
+		// }
 	}
 }
