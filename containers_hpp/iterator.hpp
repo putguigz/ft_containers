@@ -42,11 +42,11 @@ class bidir_iterator : public iterator_traits<T>
 		bool 		operator==(bidir_iterator const & src) { return (_it == src._it ? true : false); };
 		bool 		operator!=(bidir_iterator const & src) { return (!(*this == src)); };
 		reference 	operator*( void ) { return (*_it); };
-		reference	operator->( void ) { return (*_it); };
-		pointer &	operator++( void ) { return (_it += 1); };
-		pointer		operator++( int ) { pointer tmp = _it; _it += 1; return tmp; };
-		pointer	&	operator--( void ) { return (_it -= 1); };
-		pointer		operator--( int ) { pointer tmp = _it; _it -= 1; return tmp; };
+		pointer		operator->( void ) { return (_it); };
+		pointer &	operator++( void ) { return (_it++); };
+		pointer		operator++( int ) { pointer tmp = _it; _it++; return tmp; };
+		pointer	&	operator--( void ) { return (_it--); };
+		pointer		operator--( int ) { pointer tmp = _it; _it--; return tmp; };
 	
 	protected:
 		pointer _it;
