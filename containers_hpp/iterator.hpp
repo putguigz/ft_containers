@@ -1,19 +1,21 @@
 #ifndef __ITERATOR_HPP__
 # define __ITERATOR_HPP__
 
+# include "vector.hpp"
+
 namespace ft{
 
 template < typename T>
 class iterator_traits{
 	public:
-		typedef	T			value_type;
-		typedef	T*			pointer;
-		typedef	T&			reference;
-		typedef ptrdiff_t	difference_type;
+		typedef	T								value_type;
+		typedef	T*								pointer;
+		typedef	T&								reference;
+		typedef std::ptrdiff_t					difference_type;
 		typedef std::bidirectional_iterator_tag	iterator_category;
 };
 
-template < typename T>
+template < typename T >
 class bidir_iterator : public iterator_traits<T>
 {
 	public:
@@ -24,22 +26,21 @@ class bidir_iterator : public iterator_traits<T>
 		using typename iterator_traits<T>::iterator_category;
 
 	public:
-		bidir_iterator( void ) : _it(nullptr) {};
-		bidir_iterator( ) : _it(nullptr) { };
+		bidir_iterator( void ) : _it(NULL) {};
+		bidir_iterator( pointer vct ) : _it(vct) {};
 		~bidir_iterator( void ) {};
 		bidir_iterator ( bidir_iterator const & src){
-			if (this == src)
-				return;
-			else
-				_it = src;
+				*this = src;
 		};
 		bidir_iterator & operator=(bidir_iterator const & src){
-			_it = src._it;
+			if (*this != src)
+				_it = src._it;
+			return *this;
 		};
 
 	public:
-		bool 		operator==(bidir_iterator const & src) { return (_it = src._it ? true : false); };
-		bool 		operator!=(bidir_iterator const & src) { return (!(this == src)); };
+		bool 		operator==(bidir_iterator const & src) { return (_it == src._it ? true : false); };
+		bool 		operator!=(bidir_iterator const & src) { return (!(*this == src)); };
 		reference 	operator*( void ) { return (*_it); };
 		reference	operator->( void ) { return (*_it); };
 		pointer &	operator++( void ) { return (_it += 1); };
@@ -47,9 +48,10 @@ class bidir_iterator : public iterator_traits<T>
 		pointer	&	operator--( void ) { return (_it -= 1); };
 		pointer		operator--( int ) { pointer tmp = _it; _it -= 1; return tmp; };
 	
-	private:
+	protected:
 		pointer _it;
 };
+
 
 
 }

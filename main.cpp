@@ -11,7 +11,9 @@ void	print_vector(V & bail)
 
 int main(void)
 {    
-    ft::vector<int> v1(10, 42);
+	typedef ft::vector<int>::iterator iterator;
+
+    ft::vector<int> v1;
 	v1.push_back(18);
 	v1.push_back(19);
 	v1.push_back(20);
@@ -19,5 +21,9 @@ int main(void)
 	v1.push_back(22);
 	print_vector(v1);
 
-	ft::vector<int>::iterator it;
+	iterator it = v1.begin();
+	for (; it != v1.end();)
+	{
+		std::cout << "it = " << *it++ << std::endl;
+	}
 }

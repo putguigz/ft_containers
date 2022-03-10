@@ -11,8 +11,8 @@ class vector{
     
     public:
 
-        typedef T value_type;
-        typedef A allocator_type;
+        typedef T 											value_type;
+        typedef A											allocator_type;
         typedef typename allocator_type::reference          reference;
         typedef typename allocator_type::const_reference    const_reference;
         typedef typename allocator_type::pointer            pointer;
@@ -117,6 +117,15 @@ class vector{
 			x._capacity = tmp_cap;
 		};
 
+		class iterator : public bidir_iterator<T>
+		{
+			public:
+				iterator( pointer vct ){ bidir_iterator<T>::_it = vct; };
+		};
+
+		iterator begin( void ) { return (iterator(_vector)); };
+		iterator end( void ) { return (iterator(&_vector[_size])); };
+
 	private:
 
 		void _destroy_vector( void ){
@@ -142,11 +151,6 @@ class vector{
 			_vector = new_vec;
 		};
 
-		class iterator : public bidir_iterator<T>
-		{
-		};
-
-		iterator begin( void ) { return (iterator(_vector));};
 
     private:
         allocator_type	_allocker;
