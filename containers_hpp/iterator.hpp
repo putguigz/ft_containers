@@ -5,6 +5,8 @@
 
 namespace ft{
 
+
+//SHOULD BE A FUNCTION NOT A CLASS
 template < typename T>
 class iterator_traits{
 	public:
@@ -15,15 +17,15 @@ class iterator_traits{
 		typedef std::bidirectional_iterator_tag	iterator_category;
 };
 
-template < typename T >
-class bidir_iterator : public iterator_traits<T>
+template < typename T, typename A >
+class bidir_iterator
 {
 	public:
-		using typename iterator_traits<T>::value_type;
-		using typename iterator_traits<T>::pointer;
-		using typename iterator_traits<T>::reference;
-		using typename iterator_traits<T>::difference_type;
-		using typename iterator_traits<T>::iterator_category;
+		typedef	T								value_type;
+		typedef typename A::pointer            	pointer;
+		typedef typename A::reference          	reference;
+		typedef std::ptrdiff_t					difference_type;
+		typedef std::bidirectional_iterator_tag	iterator_category;
 
 	public:
 		bidir_iterator( void ) : _it(NULL) {};

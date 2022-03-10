@@ -10,19 +10,14 @@ template < typename T, typename A = std::allocator<T> >
 class vector{
     
     public:
-
         typedef T 											value_type;
         typedef A											allocator_type;
-        typedef typename allocator_type::reference          reference;
-        typedef typename allocator_type::const_reference    const_reference;
-        typedef typename allocator_type::pointer            pointer;
-        typedef typename allocator_type::const_pointer      const_pointer;
-		//NEXT LINE SHOULD USE DIFFERENCE TYPE TO DEFINE ITSELF
 		typedef size_t										size_type;
-		//DIFFERENCE_TYPE IS BASED ON ITERATOR_TRAITS, CODE IT PLEASE
-        /* THERE IS MORE TO ADD HERE
-        ...
-        */
+		typedef	ssize_t										difference_type;
+        typedef typename A::pointer            				pointer;
+        typedef typename A::const_pointer      				const_pointer;
+        typedef typename A::reference          				reference;
+        typedef typename A::const_reference    				const_reference;
 
 	public:
         //CONSTRUCTOR
@@ -119,31 +114,30 @@ class vector{
 			x._capacity = tmp_cap;
 		};
 
-		class iterator : public bidir_iterator<T>
+		class iterator : public bidir_iterator<T, A>
 		{
 			public:
-				//THIS IS A RAI, SO LETS ERASE LAST TAG THAT WAS BIDIR_TAG
 				typedef std::random_access_iterator_tag	iterator_category;
-				using typename bidir_iterator<T>::difference_type;
+				using typename bidir_iterator<T, A>::difference_type;
  
-				iterator( pointer vct ){ bidir_iterator<T>::_it = vct; };
+				iterator( pointer vct ){ bidir_iterator<T, A>::_it = vct; };
 
-				iterator 		operator+(int n) { return iterator((bidir_iterator<T>::_it) + n); };
-				iterator		operator-(int n) { return iterator((bidir_iterator<T>::_it) - n); };
+				iterator 		operator+(int n) { return iterator((bidir_iterator<T, A>::_it) + n); };
+				iterator		operator-(int n) { return iterator((bidir_iterator<T, A>::_it) - n); };
 				friend iterator	operator+(int n, iterator it) { return iterator(n + (it._it)); };
-				difference_type	operator-(iterator it) { return ((bidir_iterator<T>::_it - it._it)); };
-				bool 			operator<(iterator it) { return ((bidir_iterator<T>::_it < it._it)); };
-				bool 			operator<=(iterator it) { return ((bidir_iterator<T>::_it <= it._it)); };
-				bool 			operator>(iterator it) { return ((bidir_iterator<T>::_it > it._it)); };
-				bool 			operator>=(iterator it) { return ((bidir_iterator<T>::_it >= it._it)); };
+				difference_type	operator-(iterator it) { return ((bidir_iterator<T, A>::_it - it._it)); };
+				bool 			operator<(iterator it) { return ((bidir_iterator<T, A>::_it < it._it)); };
+				bool 			operator<=(iterator it) { return ((bidir_iterator<T, A>::_it <= it._it)); };
+				bool 			operator>(iterator it) { return ((bidir_iterator<T, A>::_it > it._it)); };
+				bool 			operator>=(iterator it) { return ((bidir_iterator<T, A>::_it >= it._it)); };
 				iterator&		operator+=(int n) { 
-					bidir_iterator<T>::_it = bidir_iterator<T>::_it + n;
+					bidir_iterator<T, A>::_it = bidir_iterator<T, A>::_it + n;
 					return (*this); };
 				iterator&		operator-=(int n) { 
-					bidir_iterator<T>::_it = bidir_iterator<T>::_it - n;
+					bidir_iterator<T, A>::_it = bidir_iterator<T, A>::_it - n;
 					return (*this); };
 				value_type&		operator[](int n) {
-					return (*(bidir_iterator<T>::_it + n));
+					return (*(bidir_iterator<T, A>::_it + n));
 				}
 		};
 
