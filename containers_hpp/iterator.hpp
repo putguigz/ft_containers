@@ -5,27 +5,24 @@
 
 namespace ft{
 
-
-//SHOULD BE A FUNCTION NOT A CLASS
-template < typename T>
-class iterator_traits{
-	public:
-		typedef	T								value_type;
-		typedef	T*								pointer;
-		typedef	T&								reference;
-		typedef std::ptrdiff_t					difference_type;
-		typedef std::bidirectional_iterator_tag	iterator_category;
+template < class Iterator >
+struct iterator_traits{
+		typedef	typename Iterator::value_type			value_type;
+		typedef	typename Iterator::pointer				pointer;
+		typedef	typename Iterator::reference			reference;
+		typedef typename Iterator::difference_type		difference_type;
+		typedef typename Iterator::iterator_category	iterator_category;
 };
 
-template < typename T, typename A >
+template < typename container >
 class bidir_iterator
 {
 	public:
-		typedef	T								value_type;
-		typedef typename A::pointer            	pointer;
-		typedef typename A::reference          	reference;
-		typedef std::ptrdiff_t					difference_type;
-		typedef std::bidirectional_iterator_tag	iterator_category;
+		typedef	typename container::value_type			value_type;
+		typedef typename container::pointer       		pointer;
+		typedef typename container::reference      		reference;
+		typedef typename container::difference_type		difference_type;
+		typedef std::bidirectional_iterator_tag			iterator_category;
 
 	public:
 		bidir_iterator( void ) : _it(NULL) {};
