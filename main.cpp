@@ -16,8 +16,8 @@ void	print_vector(V & bail)
 
 int main(void)
 {
-	//t_struct	elem = {4, "Hello world"};
-	//typedef ft::vector<int>::iterator iterator;
+	// t_struct	elem = {4, "Hello world"};
+	// typedef ft::vector<int>::iterator iterator;
 	{
 		using namespace ft;
 		ft::vector<int> v1;
@@ -27,14 +27,14 @@ int main(void)
 		v1.push_back(3);
 		v1.push_back(4);
 		v1.push_back(5);
-		vector<int>::iterator it2 = v1.begin();
+		vector<int>::const_iterator it2 = v1.begin();
 		std::cout << &it2 << std::endl;
 		it2 += 6;
 		it2 += -2;
 		std::cout << &it2 << std::endl;
 		std::cout << it2[0] << std::endl;
 		std::cout << it2[1] << std::endl;
-		it2[1] = 42;
+		//it2[1] = 42;
 		std::cout << it2[1] << std::endl;
 	
 		print_vector(v1);
@@ -55,7 +55,7 @@ int main(void)
 		v1.push_back(3);
 		v1.push_back(4);
 		v1.push_back(5);
-		vector<int>::iterator it2 = v1.begin();
+		vector<int>::const_iterator it2 = v1.begin();
 		std::cout << &it2 << std::endl;
 		it2 += 6;
 		it2 += -2;
@@ -63,7 +63,7 @@ int main(void)
 		std::cout << &it2 << std::endl;
 		std::cout << it2[0] << std::endl;
 		std::cout << it2[1] << std::endl;
-		it2[1] = 42;
+		//it2[1] = 42;
 		std::cout << it2[1] << std::endl;
 		std::cout << RESET;
 		print_vector(v1);

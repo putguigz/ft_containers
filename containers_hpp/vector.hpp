@@ -18,7 +18,8 @@ class vector{
         typedef typename A::const_pointer      							const_pointer;
         typedef typename A::reference          							reference;
         typedef typename A::const_reference    							const_reference;
-		typedef typename ft::RandomAccessIterator< ft::vector<T, A> >	iterator;
+		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, pointer, reference >				iterator;
+		typedef	typename ft::RandomAccessIterator< ft::vector<T, A>, const_pointer, const_reference >	const_iterator;
 
 	public:
         //CONSTRUCTOR
@@ -115,8 +116,9 @@ class vector{
 			x._capacity = tmp_cap;
 		};
 
-		iterator begin( void ) { return (iterator(_vector)); };
-		iterator end( void ) { return (iterator(&_vector[_size])); };
+		iterator 		begin( void ) { return (iterator(_vector)); };
+		const_iterator	begin( void ) const { return (const_iterator(_vector)); };
+		iterator		end( void ) { return (iterator(&_vector[_size])); };
 
 	private:
 

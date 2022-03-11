@@ -14,18 +14,19 @@ struct iterator_traits{
 		typedef typename Iterator::iterator_category	iterator_category;
 };
 
-template < typename container >
+template < typename container, typename rcv_pointer, typename rcv_reference >
 class bidir_iterator
 {
 	public:
 		typedef	typename container::value_type			value_type;
-		typedef typename container::pointer       		pointer;
-		typedef typename container::reference      		reference;
+		typedef rcv_pointer								pointer;
+		typedef rcv_reference							reference;
 		typedef typename container::difference_type		difference_type;
 		typedef std::bidirectional_iterator_tag			iterator_category;
 
 	public:
 		bidir_iterator( void ) : _it(NULL) {};
+		bidir_iterator( pointer vct ) : _it(vct) {};
 		~bidir_iterator( void ) {};
 		bidir_iterator ( bidir_iterator const & src){
 				*this = src;
@@ -50,11 +51,11 @@ class bidir_iterator
 		pointer _it;
 };
 
-template < typename container >
-class RandomAccessIterator : public bidir_iterator< container >
+template < typename container, typename rcv_pointer, typename rcv_reference >
+class RandomAccessIterator : public bidir_iterator< container, rcv_pointer, rcv_reference >
 {
 	public:
-		typedef bidir_iterator< container >			bidir_iterator;
+		typedef bidir_iterator< container, rcv_pointer, rcv_reference >			bidir_iterator;
 
 		using typename bidir_iterator::value_type;
 		using typename bidir_iterator::pointer;
@@ -62,8 +63,9 @@ class RandomAccessIterator : public bidir_iterator< container >
 		using typename bidir_iterator::difference_type;
 		typedef std::random_access_iterator_tag		iterator_category;
 
-
-		RandomAccessIterator( pointer vct ){ bidir_iterator::_it = vct; };
+		RandomAccessIterator( void ) : bidir_iterator() {};
+		RandomAccessIterator( pointer vct ) : bidir_iterator(vct) {};
+		~RandomAccessIterator( void ) {};
 
 		RandomAccessIterator 		operator+(int n) { return RandomAccessIterator((bidir_iterator::_it) + n); };
 		RandomAccessIterator		operator-(int n) { return RandomAccessIterator((bidir_iterator::_it) - n); };
@@ -75,7 +77,7 @@ class RandomAccessIterator : public bidir_iterator< container >
 		bool 						operator>=(RandomAccessIterator it) { return ((bidir_iterator::_it >= it._it)); };
 		RandomAccessIterator&		operator+=(int n) { bidir_iterator::_it = bidir_iterator::_it + n; return (*this); };
 		RandomAccessIterator&		operator-=(int n) { bidir_iterator::_it = bidir_iterator::_it - n; return (*this); };
-		value_type&					operator[](int n) { return (*(bidir_iterator::_it + n)); }
+		reference					operator[](int n) { return (*(bidir_iterator::_it + n)); }
 };
 
 
