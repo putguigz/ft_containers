@@ -10,14 +10,15 @@ template < typename T, typename A = std::allocator<T> >
 class vector{
     
     public:
-        typedef T 											value_type;
-        typedef A											allocator_type;
-		typedef typename A::size_type						size_type;
-		typedef	typename A::difference_type					difference_type;
-        typedef typename A::pointer            				pointer;
-        typedef typename A::const_pointer      				const_pointer;
-        typedef typename A::reference          				reference;
-        typedef typename A::const_reference    				const_reference;
+        typedef T 														value_type;
+        typedef A														allocator_type;
+		typedef typename A::size_type									size_type;
+		typedef	typename A::difference_type								difference_type;
+        typedef typename A::pointer            							pointer;
+        typedef typename A::const_pointer      							const_pointer;
+        typedef typename A::reference          							reference;
+        typedef typename A::const_reference    							const_reference;
+		typedef typename ft::RandomAccessIterator< ft::vector<T, A> >	iterator;
 
 	public:
         //CONSTRUCTOR
@@ -112,33 +113,6 @@ class vector{
 			x._vector = tmp_vector;
 			x._size = tmp_size;
 			x._capacity = tmp_cap;
-		};
-
-		class iterator : public bidir_iterator< ft::vector<T, A> >
-		{
-			public:
-				typedef bidir_iterator< ft::vector<T, A> >	bidir_iterator;
-				typedef std::random_access_iterator_tag		iterator_category;
- 
-				iterator( pointer vct ){ bidir_iterator::_it = vct; };
-
-				iterator 		operator+(int n) { return iterator((bidir_iterator::_it) + n); };
-				iterator		operator-(int n) { return iterator((bidir_iterator::_it) - n); };
-				friend iterator	operator+(int n, iterator it) { return iterator(n + (it._it)); };
-				difference_type	operator-(iterator it) { return ((bidir_iterator::_it - it._it)); };
-				bool 			operator<(iterator it) { return ((bidir_iterator::_it < it._it)); };
-				bool 			operator<=(iterator it) { return ((bidir_iterator::_it <= it._it)); };
-				bool 			operator>(iterator it) { return ((bidir_iterator::_it > it._it)); };
-				bool 			operator>=(iterator it) { return ((bidir_iterator::_it >= it._it)); };
-				iterator&		operator+=(int n) { 
-					bidir_iterator::_it = bidir_iterator::_it + n;
-					return (*this); };
-				iterator&		operator-=(int n) { 
-					bidir_iterator::_it = bidir_iterator::_it - n;
-					return (*this); };
-				value_type&		operator[](int n) {
-					return (*(bidir_iterator::_it + n));
-				}
 		};
 
 		iterator begin( void ) { return (iterator(_vector)); };
