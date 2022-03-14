@@ -69,6 +69,8 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 		RandomAccessIterator( pointer vct ) : bidir_iterator(vct) {};
 		~RandomAccessIterator( void ) {};
 
+		operator RandomAccessIterator<container, true>() const { return RandomAccessIterator<container, true>(this->_it); }
+
 		RandomAccessIterator 		operator+(int n) { return RandomAccessIterator((bidir_iterator::_it) + n); };
 		RandomAccessIterator		operator-(int n) { return RandomAccessIterator((bidir_iterator::_it) - n); };
 		friend RandomAccessIterator	operator+(int n, RandomAccessIterator it) { return RandomAccessIterator(n + (it._it)); };
