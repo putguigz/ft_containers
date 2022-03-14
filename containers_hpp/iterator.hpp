@@ -69,15 +69,6 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 		RandomAccessIterator( void ) : bidir_iterator() {};
 		RandomAccessIterator( pointer vct ) : bidir_iterator(vct) {};
 		~RandomAccessIterator( void ) {};
-		RandomAccessIterator ( RandomAccessIterator<container, isConst> const & src){
-				*this = src;
-		};
-
-		RandomAccessIterator & operator=(RandomAccessIterator<container, isConst> const & src){
-			if (*this != src)
-				bidir_iterator::_it = src._it;
-			return *this;
-		};
 
 		operator RandomAccessIterator<container, true>() const { return RandomAccessIterator<container, true>(this->_it); };
 
