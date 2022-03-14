@@ -3,6 +3,7 @@
 
 # include "containers.hpp"
 # include "iterator.hpp"
+# include "traits.hpp"
 
 namespace ft{
 
@@ -39,8 +40,9 @@ class vector{
 
 		template <class InputIterator>
         vector (InputIterator first, InputIterator last,
-                 const allocator_type& alloc = allocator_type())
+                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type = 0)
 		{
+			(void) first, last, alloc;
 			std::cout << "got in here" << std::endl;
 		}
 
@@ -50,6 +52,50 @@ class vector{
 		};
 
         //PUBLIC FCT
+	
+		template <class InputIterator>
+  		void assign (InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0){
+			size_type oldsize = _size;
+
+			size_type i = 0;
+			for (; first != last; first++)
+		  	{	
+				std::cout<< RED << "*first =" << *first <<RESET << std::endl;
+				if (i < _size)
+					_allocker.destroy(&_vector[i]);
+				if (i > _capacity)
+					_realloc(_size + 1);
+				_allocker.construct(&_vector[i], *first);
+				std::cout << "_vector[i]" << _vector[i] << std::endl;
+				i++;
+			}
+			_size = i;
+			if (_size < oldsize)
+			{
+				for (size_type idx = _size; idx != oldsize; idx++)
+					_allocker.destroy(&_vector[idx]);
+			}
+		}
+
+		void assign (size_type n, const value_type& val){
+			if (n > _capacity)
+			{
+				_realloc(n);
+				for (size_type i = 0; i != n; i++)
+					_allocker.construct(&_vector[i], val);
+				_size = n;
+			}
+			else
+			{
+				for (size_type i = 0; i != n; i++)
+				{
+					_allocker.destroy(&_vector[i]);
+					_allocker.construct(&_vector[i], val);
+				}
+				_size = n;
+			}
+		}
+
 		void			push_back( const value_type & val) { 
 			if (_size + 1 > _capacity)
 			{
