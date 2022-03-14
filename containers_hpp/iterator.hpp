@@ -33,6 +33,7 @@ class bidir_iterator
 		bidir_iterator ( bidir_iterator const & src){
 				*this = src;
 		};
+
 		bidir_iterator & operator=(bidir_iterator const & src){
 			if (*this != src)
 				_it = src._it;
@@ -69,7 +70,7 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 		RandomAccessIterator( pointer vct ) : bidir_iterator(vct) {};
 		~RandomAccessIterator( void ) {};
 
-		operator RandomAccessIterator<container, true>() const { return RandomAccessIterator<container, true>(this->_it); }
+		operator RandomAccessIterator<container, true>() const { return RandomAccessIterator<container, true>(this->_it); };
 
 		RandomAccessIterator 		operator+(int n) { return RandomAccessIterator((bidir_iterator::_it) + n); };
 		RandomAccessIterator		operator-(int n) { return RandomAccessIterator((bidir_iterator::_it) - n); };
@@ -84,6 +85,45 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 		reference					operator[](int n) { return (*(bidir_iterator::_it + n)); }
 };
 
+
+template < typename iterator >
+class reverse_iterator{	
+
+	typedef typename iterator::value_type	value_type;
+	typedef typename iterator::pointer		pointer;
+	typedef typename iterator::reference	reference;
+	typedef typename iterator::difference_type	difference_type;
+
+	private:
+		iterator _it;
+	public:
+		reverse_iterator( void ) {};
+		explicit reverse_iterator(iterator it) : _it(it) {};
+		reverse_iterator( reverse_iterator<iterator> const & cpy)
+		{
+			*this = cpy;
+		}
+
+		operator reverse_iterator< iterator >() const { return reverse_iterator<iterator>(_it); }
+
+		reverse_iterator & operator=( reverse_iterator<iterator> const & cpy)
+		{
+			if (*this != cpy)
+				_it = cpy._it;
+			return *this;
+		}
+		
+		bool	operator==(reverse_iterator const & src) { return (_it == src._it ? true : false); };
+		bool	operator!=(reverse_iterator const & src) { return (!(*this == src)); };
+
+		reference operator*( void ) const{
+			return (*(_it - 1));
+		}
+
+	public:
+		iterator base( void ) const {return _it;};
+
+};
 
 }
 

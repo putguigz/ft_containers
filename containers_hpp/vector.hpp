@@ -10,17 +10,18 @@ template < typename T, typename A = std::allocator<T> >
 class vector{
     
     public:
-        typedef T 														value_type;
-        typedef A														allocator_type;
-		typedef typename A::size_type									size_type;
-		typedef	typename A::difference_type								difference_type;
-        typedef typename A::pointer            							pointer;
-        typedef typename A::const_pointer      							const_pointer;
-        typedef typename A::reference          							reference;
-        typedef typename A::const_reference    							const_reference;
+        typedef T 																value_type;
+        typedef A																allocator_type;
+		typedef typename A::size_type											size_type;
+		typedef	typename A::difference_type										difference_type;
+        typedef typename A::pointer            									pointer;
+        typedef typename A::const_pointer      									const_pointer;
+        typedef typename A::reference          									reference;
+        typedef typename A::const_reference    									const_reference;
 		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, false >	iterator;
 		typedef	typename ft::RandomAccessIterator< ft::vector<T, A>, true >		const_iterator;
-
+		typedef typename ft::reverse_iterator< iterator >						reverse_iterator;
+		typedef typename ft::reverse_iterator< const_iterator >					const_reverse_iterator;
 	public:
         //CONSTRUCTOR
         explicit vector( const allocator_type& alloc = allocator_type() ) : _allocker(alloc), _size(0), _capacity(0)
@@ -116,9 +117,15 @@ class vector{
 			x._capacity = tmp_cap;
 		};
 
+		//ITERATOR BASED FCT
 		iterator 		begin( void ) { return (iterator(_vector)); };
 		const_iterator	begin( void ) const { return (const_iterator(_vector)); };
 		iterator		end( void ) { return (iterator(&_vector[_size])); };
+		const_iterator	end( void ) const { return (const_iterator(&_vector[_size])); };
+		reverse_iterator rbegin( void ) { return reverse_iterator(end()); };
+		reverse_iterator rend( void ) { return reverse_iterator(begin()); };
+		const_reverse_iterator rbegin( void ) const { return reverse_iterator(end()); };
+		const_reverse_iterator rend( void ) const { return reverse_iterator(begin()); };
 
 	private:
 

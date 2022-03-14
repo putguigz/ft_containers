@@ -2,7 +2,7 @@ NAME= containerz
 
 CXX= clang++
 
-CXXFLAGS= -Wall -Wextra -Werror -std=c++98
+CXXFLAGS= -Wall -Wextra -Werror -std=c++98 -pedantic
 
 INCLUDES= containers_hpp
 
