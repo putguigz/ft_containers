@@ -36,11 +36,13 @@ class vector{
 			for (size_type i = 0; i != _size; i++)
 				_allocker.construct(&_vector[i], val);
 		};
-		/* THERE IS MORE TO ADD HERE
-        **INPUT OPERATOR CONSTRUCTOR
-		**COPY CONSTRUCTOR
-        */
 
+		template <class InputIterator>
+        vector (InputIterator first, InputIterator last,
+                 const allocator_type& alloc = allocator_type())
+		{
+			std::cout << "got in here" << std::endl;
+		}
 
 		//DESTRUCTOR
         ~vector( void ){

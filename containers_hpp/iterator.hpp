@@ -16,6 +16,17 @@ struct iterator_traits{
 		typedef typename Iterator::iterator_category	iterator_category;
 };
 
+template < bool B, typename T = void >
+struct enable_if
+{
+};
+
+template <class T>
+struct enable_if<true, T> 
+{ 
+  typedef T type; 
+};
+
 template < typename container, bool isConst = false >
 class bidir_iterator
 {
