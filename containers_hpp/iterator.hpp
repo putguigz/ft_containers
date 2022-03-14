@@ -2,30 +2,9 @@
 # define __ITERATOR_HPP__
 
 # include "vector.hpp"
+# include "traits.hpp"
 
 namespace ft{
-
-template < class Iterator >
-struct iterator_traits{
-		typedef	typename Iterator::value_type			value_type;
-		typedef typename Iterator::pointer           	pointer;
-        typedef typename Iterator::const_pointer     	const_pointer;
-        typedef typename Iterator::reference         	reference;
-        typedef typename Iterator::const_reference   	const_reference;
-		typedef typename Iterator::difference_type		difference_type;
-		typedef typename Iterator::iterator_category	iterator_category;
-};
-
-template < bool B, typename T = void >
-struct enable_if
-{
-};
-
-template <class T>
-struct enable_if<true, T> 
-{ 
-  typedef T type; 
-};
 
 template < typename container, bool isConst = false >
 class bidir_iterator

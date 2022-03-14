@@ -16,7 +16,7 @@ class vector{
 		typedef	typename A::difference_type										difference_type;
         typedef typename A::pointer            									pointer;
         typedef typename A::const_pointer      									const_pointer;
-        typedef typename A::reference          									reference;
+        typedef typename A::reference								reference;
         typedef typename A::const_reference    									const_reference;
 		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, false >	iterator;
 		typedef	typename ft::RandomAccessIterator< ft::vector<T, A>, true >		const_iterator;
