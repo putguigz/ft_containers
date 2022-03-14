@@ -18,8 +18,8 @@ class vector{
         typedef typename A::const_pointer      							const_pointer;
         typedef typename A::reference          							reference;
         typedef typename A::const_reference    							const_reference;
-		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, pointer, reference >				iterator;
-		typedef	typename ft::RandomAccessIterator< ft::vector<T, A>, const_pointer, const_reference >	const_iterator;
+		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, false >	iterator;
+		typedef	typename ft::RandomAccessIterator< ft::vector<T, A>, true >		const_iterator;
 
 	public:
         //CONSTRUCTOR

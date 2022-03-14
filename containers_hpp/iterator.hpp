@@ -8,21 +8,23 @@ namespace ft{
 template < class Iterator >
 struct iterator_traits{
 		typedef	typename Iterator::value_type			value_type;
-		typedef	typename Iterator::pointer				pointer;
-		typedef	typename Iterator::reference			reference;
+		typedef typename Iterator::pointer           	pointer;
+        typedef typename Iterator::const_pointer     	const_pointer;
+        typedef typename Iterator::reference         	reference;
+        typedef typename Iterator::const_reference   	const_reference;
 		typedef typename Iterator::difference_type		difference_type;
 		typedef typename Iterator::iterator_category	iterator_category;
 };
 
-template < typename container, typename rcv_pointer, typename rcv_reference >
+template < typename container, bool isConst = false >
 class bidir_iterator
 {
 	public:
 		typedef	typename container::value_type			value_type;
-		typedef rcv_pointer								pointer;
-		typedef rcv_reference							reference;
 		typedef typename container::difference_type		difference_type;
 		typedef std::bidirectional_iterator_tag			iterator_category;
+		typedef typename std::conditional< isConst, typename container::const_reference, typename container::reference >::type	reference;
+		typedef typename std::conditional< isConst, typename container::const_pointer, typename container::pointer >::type		pointer;
 
 	public:
 		bidir_iterator( void ) : _it(NULL) {};
@@ -51,11 +53,11 @@ class bidir_iterator
 		pointer _it;
 };
 
-template < typename container, typename rcv_pointer, typename rcv_reference >
-class RandomAccessIterator : public bidir_iterator< container, rcv_pointer, rcv_reference >
+template < typename container, bool isConst = false >
+class RandomAccessIterator : public bidir_iterator< container, isConst >
 {
 	public:
-		typedef bidir_iterator< container, rcv_pointer, rcv_reference >			bidir_iterator;
+		typedef bidir_iterator< container, isConst >			bidir_iterator;
 
 		using typename bidir_iterator::value_type;
 		using typename bidir_iterator::pointer;
