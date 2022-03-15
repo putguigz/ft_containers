@@ -77,7 +77,7 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 };
 
 
-template < typename iterator >
+template < typename iterator, typename const_ite >
 class reverse_iterator{	
 
 	typedef typename iterator::value_type		value_type;
@@ -90,14 +90,14 @@ class reverse_iterator{
 	public:
 		reverse_iterator( void ) {};
 		explicit reverse_iterator(iterator it) : _it(it) {};
-		reverse_iterator( reverse_iterator<iterator> const & cpy)
+		reverse_iterator( reverse_iterator<iterator, const_ite> const & cpy)
 		{
 			*this = cpy;
 		}
 
-		operator reverse_iterator< iterator >() const { return reverse_iterator<iterator>(_it); }
+		operator reverse_iterator< const_ite, iterator >() const { return reverse_iterator<const_ite, iterator>(_it); }
 
-		reverse_iterator & operator=( reverse_iterator<iterator> const & cpy)
+		reverse_iterator & operator=( reverse_iterator<iterator, const_ite> const & cpy)
 		{
 			if (*this != cpy)
 				_it = cpy._it;

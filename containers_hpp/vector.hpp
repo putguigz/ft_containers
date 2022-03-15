@@ -21,8 +21,8 @@ class vector{
         typedef typename A::const_reference    									const_reference;
 		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, false >	iterator;
 		typedef	typename ft::RandomAccessIterator< ft::vector<T, A>, true >		const_iterator;
-		typedef typename ft::reverse_iterator< iterator >						reverse_iterator;
-		typedef typename ft::reverse_iterator< const_iterator >					const_reverse_iterator;
+		typedef typename ft::reverse_iterator< iterator, const_iterator >						reverse_iterator;
+		typedef typename ft::reverse_iterator< const_iterator, iterator >					const_reverse_iterator;
 	public:
         //CONSTRUCTOR
         explicit vector( const allocator_type& alloc = allocator_type() ) : _allocker(alloc), _size(0), _capacity(0)
@@ -40,9 +40,13 @@ class vector{
 
 		template <class InputIterator>
         vector (InputIterator first, InputIterator last,
-                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type = 0) : _allocker(alloc)
+                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type* = 0) : _allocker(alloc)
 		{
 			assign(first, last);
+		}
+
+		vector (const vector & x){
+			*this = x;
 		}
 
 		//DESTRUCTOR
@@ -216,6 +220,14 @@ class vector{
 		pointer			_vector;
 
 	public:
+		vector& 		operator= (const vector& x){
+			clear();
+			reserve(x._size);
+			for (size_type i = 0; i != x._size; i++)
+				_allocker.construct(&_vector[i], x._vector[i]);
+			_size = x.size();
+			return (*this);
+		};
 		reference		operator[] ( size_type n ) { return _vector[n]; };
 		const_reference	operator[] ( size_type n ) const { return _vector[n]; };
 		reference 		front( void ) { return _vector[0]; };
