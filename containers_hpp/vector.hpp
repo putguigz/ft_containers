@@ -55,25 +55,33 @@ class vector{
 	
 		template <class InputIterator>
   		void assign (InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0){
-			size_type oldsize = _size;
+			size_type	i = 0, oldsize = _size;
 
-			size_type i = 0;
 			for (; first != last; first++)
-		  	{	
-				std::cout<< RED << "*first =" << *first <<RESET << std::endl;
+		  	{
 				if (i < _size)
-					_allocker.destroy(&_vector[i]);
-				if (i > _capacity)
-					_realloc(_size + 1);
-				_allocker.construct(&_vector[i], *first);
-				std::cout << "_vector[i]" << _vector[i] << std::endl;
+				{
+				  	_allocker.destroy(&_vector[i]);
+				  	_allocker.construct(&_vector[i], *first);
+				}
+				else
+				{
+					if (i < _capacity)
+					  	_allocker.construct(&_vector[i], *first);
+					else
+					{
+						_realloc(i + 1);
+						_allocker.construct(&_vector[i], *first);
+					}
+					_size++;
+				}
 				i++;
 			}
 			_size = i;
 			if (_size < oldsize)
 			{
-				for (size_type idx = _size; idx != oldsize; idx++)
-					_allocker.destroy(&_vector[idx]);
+				for (i = _size; i != oldsize; i++)
+					_allocker.destroy(&_vector[i]);
 			}
 		}
 
@@ -83,7 +91,6 @@ class vector{
 				_realloc(n);
 				for (size_type i = 0; i != n; i++)
 					_allocker.construct(&_vector[i], val);
-				_size = n;
 			}
 			else
 			{
@@ -92,8 +99,8 @@ class vector{
 					_allocker.destroy(&_vector[i]);
 					_allocker.construct(&_vector[i], val);
 				}
-				_size = n;
 			}
+			_size = n;
 		}
 
 		void			push_back( const value_type & val) { 

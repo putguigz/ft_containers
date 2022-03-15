@@ -19,14 +19,14 @@ void	print_vector(V & bail)
 int main(void)
 {
 	{
-		ft::vector<int> v1(10, 42);
+		ft::vector<int> v1(20, 42);
 		
 		ft::vector<int> v2;
-		for (int i = 0; i != 16; i++)
+		for (int i = 0; i != 20; i++)
 			v2.push_back(i);
 
 		print_vector(v1);
-		v1.assign(v2.begin(), v2.end() - 2);
+		v1.assign(v2.begin(), v2.end());
 		std::cout << std::endl;
 		print_vector(v1);
 
@@ -34,16 +34,16 @@ int main(void)
 
 	{
 		std::cout << std::endl;
-		std::vector<int> v1(10, 42);
+		std::vector<int> v1(20, 42);
 
 		std::vector<int> v2;
-		for (int i = 0; i != 16; i++)
+		for (int i = 0; i != 20; i++)
 			v2.push_back(i);
 
 
 		std::cout << BLUE;
 		print_vector(v1);
-		v1.assign(v2.begin(), v2.end() - 2);
+		v1.assign(v2.begin(), v2.end());
 		std::cout << std::endl;
 		print_vector(v1);
 		std::cout << RESET;
