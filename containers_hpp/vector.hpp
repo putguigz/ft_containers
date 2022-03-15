@@ -40,10 +40,9 @@ class vector{
 
 		template <class InputIterator>
         vector (InputIterator first, InputIterator last,
-                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type = 0)
+                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type = 0) : _allocker(alloc)
 		{
-			(void) first, last, alloc;
-			std::cout << "got in here" << std::endl;
+			assign(first, last);
 		}
 
 		//DESTRUCTOR
@@ -123,7 +122,6 @@ class vector{
 
 		void			reserve(size_type n)
 		{
-			std::cout << "RESERVE" << std::endl;
 			if (n > max_size())
 				throw std::length_error("vector::reserve");
 			if (n <= _capacity)
@@ -133,7 +131,6 @@ class vector{
 		};
 	
 		void resize (size_type n, value_type val = value_type()){
-			std::cout << "RESIZE" << std::endl;
 			if (n > _capacity)
 				_realloc(n);
 			if ( n < _size)
@@ -185,6 +182,9 @@ class vector{
 	private:
 
 		void _destroy_vector( void ){
+			std::cout << "_size = " << _size << std::endl;
+			std::cout << "_capacity = " << _capacity  << std::endl;
+			std::cout << "_vector[0] = " << _vector[0]  << std::endl;
 			for (size_type i = 0; i != _size; i++)
 				_allocker.destroy(&_vector[i]);
 			_allocker.deallocate(_vector, _capacity);
@@ -205,6 +205,7 @@ class vector{
 			_allocker.deallocate(_vector, _capacity);
 			_capacity = new_capacity;
 			_vector = new_vec;
+			std::cout << FIRE << "_vector[0] = " << _vector[0]  << RESET << std::endl;
 		};
 
 
