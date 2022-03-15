@@ -13,8 +13,8 @@ class bidir_iterator
 		typedef	typename container::value_type			value_type;
 		typedef typename container::difference_type		difference_type;
 		typedef std::bidirectional_iterator_tag			iterator_category;
-		typedef typename std::conditional< isConst, typename container::const_reference, typename container::reference >::type	reference;
-		typedef typename std::conditional< isConst, typename container::const_pointer, typename container::pointer >::type		pointer;
+		typedef typename ft::conditional< isConst, typename container::const_reference, typename container::reference >::type	reference;
+		typedef typename ft::conditional< isConst, typename container::const_pointer, typename container::pointer >::type		pointer;
 
 	public:
 		bidir_iterator( void ) : _it(NULL) {};

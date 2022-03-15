@@ -14,6 +14,16 @@ struct iterator_traits{
 		typedef typename Iterator::iterator_category	iterator_category;
 };
 
+template<bool B, typename first, typename second>
+struct conditional{
+	typedef second type;
+};
+
+template < typename first, typename second >
+struct conditional<true, first, second>{
+	typedef first	type;
+};
+
 template < bool B, typename T = void >
 struct enable_if
 {
