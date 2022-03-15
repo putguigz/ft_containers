@@ -10,9 +10,11 @@ typedef struct	my_struct{
 template < typename V >
 void	print_vector(V & bail)
 {
-	std::cout << FIRE << bail.size() << std::endl;
-	std::cout << bail.capacity() << RESET << std::endl;
-	for ( typename V::iterator it = bail.begin(); it != bail.end(); it++)
+	std::cout << "SIZE = " << bail.size() << std::endl;
+	std::cout << "CAPACITY = " << bail.capacity() << std::endl;
+	typename V::iterator it = bail.begin();
+	typename V::iterator it_end = bail.end();
+	for (; it != it_end; it++)
 		std::cout << "it_elem = " << *it << std::endl;
 }
 
@@ -23,16 +25,28 @@ int main(void)
 		for (int i = 0; i != 20; i++)
 			v1.push_back(i);
 		
+		std::cout << "FT - BEFORE" << std::endl;
+		print_vector(v1);
+		std::cout << std::endl;
 		ft::vector<int>::iterator it = v1.begin();
 		v1.insert(it + 5, 10, 42);
+		std::cout << "FT - AFTER" << RED << std::endl;
+		print_vector(v1);
+		std::cout << RESET << std::endl;
 	}
 	{		
 		std::vector<int> v1;
 		for (int i = 0; i != 20; i++)
 			v1.push_back(i);
 		
+		std::cout << YELLOW << "STD - BEFORE" << std::endl;
+		print_vector(v1);
+		std::cout << std::endl;
 		std::vector<int>::iterator it = v1.begin();
 		v1.insert(it + 5, 10, 42);
+		std::cout << "STD - AFTER" << std::endl;
+		print_vector(v1);
+		std::cout << RESET << std::endl;
 	}
 	// {
 	// 	ft::vector<int> v1(20, 42);

@@ -64,15 +64,30 @@ class vector{
 		void insert(iterator position, size_type n, const value_type& val)
 		{
 			if (_size + n > _capacity)
-				_realloc(_size + n);
-			//point to end
+			{
+				size_type new_capacity = _size + n;
+				pointer new_vec;
 
-			//iter down to insertion position
-			for (iterator it = end();it != position; it--)
+				new_vec = _allocker.allocate(new_capacity);
+				for (size_type i = 0; i != _size; i++)
+				{
+						
+					_allocker.construct(&new_vec[i], _vector[i]);
+					if (position == &(_vector[i]))
+						position = &new_vec[i];
+					_allocker.destroy(&_vector[i]);
+				}
+				_allocker.deallocate(_vector, _capacity);
+				_capacity = new_capacity;
+				_vector = new_vec;
+			}
+			//DUE TO THE REALLOC, WE LOSE THE FUCKING POSITION ITERATOR TO THE NEW _VECTOR.......
+			for (iterator it = end() - 1; it != position; it--)
 			{
 				_allocker.construct(&(*(it + n)), *it);
 				_allocker.destroy(&(*it));
 			}
+			std::cout << std::endl;
 			for (iterator it = position; it != position + n; it++)
 				_allocker.construct(&(*it), val);
 			_size += n;
