@@ -56,8 +56,33 @@ class vector{
 
         //PUBLIC FCT
 	
+		// iterator insert(iterator position, const value_type& val)
+		// {
+		// 	insert(position, 1, val);
+		// }
+
+		void insert(iterator position, size_type n, const value_type& val)
+		{
+			if (_size + n > _capacity)
+				_realloc(_size + n);
+			//point to end
+
+			//iter down to insertion position
+			for (iterator it = end();it != position; it--)
+			{
+				_allocker.construct(&(*(it + n)), *it);
+				_allocker.destroy(&(*it));
+			}
+			for (iterator it = position; it != position + n; it++)
+				_allocker.construct(&(*it), val);
+			_size += n;
+		}
+
+		// template <class InputIterator>
+    	// void insert(iterator position, InputIterator first, InputIterator last);
+
 		template <class InputIterator>
-  		void assign (InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0){
+  		void assign(InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0){
 			size_type	i = 0, oldsize = _size;
 
 			for (; first != last; first++)
@@ -88,7 +113,7 @@ class vector{
 			}
 		}
 
-		void assign (size_type n, const value_type& val){
+		void assign(size_type n, const value_type& val){
 			if (n > _capacity)
 			{
 				_realloc(n);
@@ -186,9 +211,6 @@ class vector{
 	private:
 
 		void _destroy_vector( void ){
-			std::cout << "_size = " << _size << std::endl;
-			std::cout << "_capacity = " << _capacity  << std::endl;
-			std::cout << "_vector[0] = " << _vector[0]  << std::endl;
 			for (size_type i = 0; i != _size; i++)
 				_allocker.destroy(&_vector[i]);
 			_allocker.deallocate(_vector, _capacity);
@@ -209,7 +231,6 @@ class vector{
 			_allocker.deallocate(_vector, _capacity);
 			_capacity = new_capacity;
 			_vector = new_vec;
-			std::cout << FIRE << "_vector[0] = " << _vector[0]  << RESET << std::endl;
 		};
 
 

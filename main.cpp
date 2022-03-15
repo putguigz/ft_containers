@@ -18,36 +18,52 @@ void	print_vector(V & bail)
 
 int main(void)
 {
-	{
-		ft::vector<int> v1(20, 42);
+	{		
+		ft::vector<int> v1;
+		for (int i = 0; i != 20; i++)
+			v1.push_back(i);
 		
-		ft::vector<int> v2;
-		for (int i = 0; i != 20; i++)
-			v2.push_back(i);
-
-		print_vector(v1);
-		v1.assign(v2.begin(), v2.end());
-		std::cout << std::endl;
-		print_vector(v1);
-
+		ft::vector<int>::iterator it = v1.begin();
+		v1.insert(it + 5, 10, 42);
 	}
-
-	{
-		std::cout << std::endl;
-		std::vector<int> v1(20, 42);
-
-		std::vector<int> v2;
+	{		
+		std::vector<int> v1;
 		for (int i = 0; i != 20; i++)
-			v2.push_back(i);
-
-
-		std::cout << BLUE;
-		print_vector(v1);
-		v1.assign(v2.begin(), v2.end());
-		std::cout << std::endl;
-		print_vector(v1);
-		std::cout << RESET;
+			v1.push_back(i);
+		
+		std::vector<int>::iterator it = v1.begin();
+		v1.insert(it + 5, 10, 42);
 	}
+	// {
+	// 	ft::vector<int> v1(20, 42);
+		
+	// 	ft::vector<int> v2;
+	// 	for (int i = 0; i != 20; i++)
+	// 		v2.push_back(i);
+
+	// 	print_vector(v1);
+	// 	v1.assign(v2.begin(), v2.end());
+	// 	std::cout << std::endl;
+	// 	print_vector(v1);
+
+	// }
+
+	// {
+	// 	std::cout << std::endl;
+	// 	std::vector<int> v1(20, 42);
+
+	// 	std::vector<int> v2;
+	// 	for (int i = 0; i != 20; i++)
+	// 		v2.push_back(i);
+
+
+	// 	std::cout << BLUE;
+	// 	print_vector(v1);
+	// 	v1.assign(v2.begin(), v2.end());
+	// 	std::cout << std::endl;
+	// 	print_vector(v1);
+	// 	std::cout << RESET;
+	// }
 	// t_struct	elem = {4, "Hello world"};
 	// typedef ft::vector<int>::iterator iterator;
 	{
