@@ -55,10 +55,10 @@ class vector{
 		};
 
         //PUBLIC FCT
-	
 		// iterator insert(iterator position, const value_type& val)
 		// {
 		// 	insert(position, 1, val);
+		// 	return (position - 1);
 		// }
 
 		void insert(iterator position, size_type n, const value_type& val)
@@ -81,13 +81,11 @@ class vector{
 				_capacity = new_capacity;
 				_vector = new_vec;
 			}
-			//DUE TO THE REALLOC, WE LOSE THE FUCKING POSITION ITERATOR TO THE NEW _VECTOR.......
-			for (iterator it = end() - 1; it != position; it--)
+			for (iterator it = end() - 1; it >= position; it--)
 			{
 				_allocker.construct(&(*(it + n)), *it);
 				_allocker.destroy(&(*it));
 			}
-			std::cout << std::endl;
 			for (iterator it = position; it != position + n; it++)
 				_allocker.construct(&(*it), val);
 			_size += n;

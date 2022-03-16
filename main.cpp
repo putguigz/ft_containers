@@ -22,28 +22,28 @@ int main(void)
 {
 	{		
 		ft::vector<int> v1;
-		for (int i = 0; i != 20; i++)
+		for (int i = 0; i != 10; i++)
 			v1.push_back(i);
-		
+
 		std::cout << "FT - BEFORE" << std::endl;
 		print_vector(v1);
 		std::cout << std::endl;
 		ft::vector<int>::iterator it = v1.begin();
-		v1.insert(it + 5, 10, 42);
+		v1.insert(it, 10, 42);
 		std::cout << "FT - AFTER" << RED << std::endl;
 		print_vector(v1);
 		std::cout << RESET << std::endl;
 	}
 	{		
 		std::vector<int> v1;
-		for (int i = 0; i != 20; i++)
+		for (int i = 0; i != 10; i++)
 			v1.push_back(i);
 		
 		std::cout << YELLOW << "STD - BEFORE" << std::endl;
 		print_vector(v1);
 		std::cout << std::endl;
 		std::vector<int>::iterator it = v1.begin();
-		v1.insert(it + 5, 10, 42);
+		v1.insert(it, 10, 42);
 		std::cout << "STD - AFTER" << std::endl;
 		print_vector(v1);
 		std::cout << RESET << std::endl;
