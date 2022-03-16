@@ -55,32 +55,18 @@ class vector{
 		};
 
         //PUBLIC FCT
-		// iterator insert(iterator position, const value_type& val)
-		// {
-		// 	insert(position, 1, val);
-		// 	return (position - 1);
-		// }
+		iterator insert(iterator position, const value_type& val)
+		{
+			if (_size + 1 > _capacity)
+				_realloc_memorize_position(_size + 1, position);
+			insert(position, 1, val);
+			return (position);
+		}
 
 		void insert(iterator position, size_type n, const value_type& val)
 		{
 			if (_size + n > _capacity)
-			{
-				size_type new_capacity = _size + n;
-				pointer new_vec;
-
-				new_vec = _allocker.allocate(new_capacity);
-				for (size_type i = 0; i != _size; i++)
-				{
-						
-					_allocker.construct(&new_vec[i], _vector[i]);
-					if (position == &(_vector[i]))
-						position = &new_vec[i];
-					_allocker.destroy(&_vector[i]);
-				}
-				_allocker.deallocate(_vector, _capacity);
-				_capacity = new_capacity;
-				_vector = new_vec;
-			}
+				_realloc_memorize_position(_size + n, position);
 			for (iterator it = end() - 1; it >= position; it--)
 			{
 				_allocker.construct(&(*(it + n)), *it);
@@ -246,6 +232,25 @@ class vector{
 			_vector = new_vec;
 		};
 
+		void _realloc_memorize_position(size_type new_capacity, iterator &position)
+		{
+			pointer new_vec;
+
+			new_vec = _allocker.allocate(new_capacity);
+			size_type i = 0;
+			for (; i != _size; i++)
+			{	
+				_allocker.construct(&new_vec[i], _vector[i]);
+				if (position == &(_vector[i]))
+					position = &new_vec[i];
+				_allocker.destroy(&_vector[i]);
+			}
+			if (position == &(_vector[i]))
+				position = &new_vec[i];
+			_allocker.deallocate(_vector, _capacity);
+			_capacity = new_capacity;
+			_vector = new_vec;
+		};
 
     private:
         allocator_type	_allocker;

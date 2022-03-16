@@ -28,8 +28,9 @@ int main(void)
 		std::cout << "FT - BEFORE" << std::endl;
 		print_vector(v1);
 		std::cout << std::endl;
-		ft::vector<int>::iterator it = v1.begin();
-		v1.insert(it, 10, 42);
+		ft::vector<int>::iterator it = v1.end();
+		v1.insert(it - 10, 10, 42);
+		//std::cout << "RECEP IT = " << *recep << std::endl;
 		std::cout << "FT - AFTER" << RED << std::endl;
 		print_vector(v1);
 		std::cout << RESET << std::endl;
@@ -42,8 +43,9 @@ int main(void)
 		std::cout << YELLOW << "STD - BEFORE" << std::endl;
 		print_vector(v1);
 		std::cout << std::endl;
-		std::vector<int>::iterator it = v1.begin();
-		v1.insert(it, 10, 42);
+		std::vector<int>::iterator it = v1.end();
+		std::vector<int>::iterator recep = v1.insert(it - 10, 10, 42);
+		std::cout << "RECEP IT = " << *recep << std::endl;
 		std::cout << "STD - AFTER" << std::endl;
 		print_vector(v1);
 		std::cout << RESET << std::endl;
