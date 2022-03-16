@@ -21,8 +21,8 @@ class vector{
         typedef typename A::const_reference    									const_reference;
 		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, false >	iterator;
 		typedef	typename ft::RandomAccessIterator< ft::vector<T, A>, true >		const_iterator;
-		typedef typename ft::reverse_iterator< iterator, const_iterator >						reverse_iterator;
-		typedef typename ft::reverse_iterator< const_iterator, iterator >					const_reverse_iterator;
+		typedef typename ft::reverse_iterator< iterator, const_iterator >		reverse_iterator;
+		typedef typename ft::reverse_iterator< const_iterator, iterator >		const_reverse_iterator;
 	public:
         //CONSTRUCTOR
         explicit vector( const allocator_type& alloc = allocator_type() ) : _allocker(alloc), _size(0), _capacity(0)
@@ -87,6 +87,27 @@ class vector{
 				insert(position, 1, *first);
 				position++;
 			}
+		}
+
+		iterator erase (iterator position){
+			return (erase(position, position + 1));
+		}
+
+		iterator erase (iterator first, iterator last){
+			size_type offset = 0;
+			for(; first != last; first++)
+			{
+				_allocker.destroy(&(*first));
+				offset++;
+			}
+			for (iterator it = last; it != end(); it++)
+			{
+				_allocker.construct(&(*(it - offset)), *it);
+				_allocker.destroy(&(*it));
+			}
+			last -= offset;
+			_size -= offset;
+			return (last);
 		}
 
 		template <class InputIterator>

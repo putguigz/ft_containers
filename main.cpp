@@ -32,8 +32,12 @@ int main(void)
 		std::cout << "FT - BEFORE" << std::endl;
 		print_vector(v1);
 		std::cout << std::endl;
-		v1.insert(v1.end(), v2.begin() + 3, v2.end());
+		v1.insert(v1.begin() + 3, v2.begin() + 3, v2.end());
 		std::cout << "FT - AFTER" << RED << std::endl;
+		print_vector(v1);
+		v1.erase(v1.end() - 1);
+		std::cout << std::endl;
+		std::cout << "FT - AFTER ERASE" << RED << std::endl;
 		print_vector(v1);
 		std::cout << RESET << std::endl;
 	}
@@ -49,11 +53,62 @@ int main(void)
 		std::cout << YELLOW << "STD - BEFORE" << std::endl;
 		print_vector(v1);
 		std::cout << std::endl;
-		v1.insert(v1.end(), v2.begin() + 3, v2.end());
+		v1.insert(v1.begin() + 3, v2.begin() + 3, v2.end());
 		std::cout << "STD - AFTER" << std::endl;
+		print_vector(v1);
+		v1.erase(v1.end() - 1);
+		std::cout << std::endl;
+		std::cout << "STD - AFTER ERASE" << std::endl;
 		print_vector(v1);
 		std::cout << RESET << std::endl;
 	}
+	// {
+	// 	ft::vector<int> v1(20, 42);
+		
+	// 	ft::vector<int> v2;
+	// 	for (int i = 0; i != 20; i++)
+	// 		v2.push_back(i);
+
+	// 	print_vector(v1);
+	// 	v1.assign(v2.begin(), v2.end());
+	// 	std::cout << std::endl;
+	// 	print_vector(v1);
+
+	// }
+	// {		
+	// 	ft::vector<int> v1;
+	// 	ft::vector<int> v2;
+	// 	for (int i = 0; i != 10; i++)
+	// 		v1.push_back(i);
+
+	// 	for (int i = 10; i != 20; i++)
+	// 		v2.push_back(i);
+
+	// 	std::cout << "FT - BEFORE" << std::endl;
+	// 	print_vector(v1);
+	// 	std::cout << std::endl;
+	// 	v1.insert(v1.end(), v2.begin() + 3, v2.end());
+	// 	std::cout << "FT - AFTER" << RED << std::endl;
+	// 	print_vector(v1);
+	// 	std::cout << RESET << std::endl;
+	// }
+	// {		
+	// 	std::vector<int> v1;
+	// 	std::vector<int> v2;
+	// 	for (int i = 0; i != 10; i++)
+	// 		v1.push_back(i);
+
+	// 	for (int i = 10; i != 20; i++)
+	// 		v2.push_back(i);
+
+	// 	std::cout << YELLOW << "STD - BEFORE" << std::endl;
+	// 	print_vector(v1);
+	// 	std::cout << std::endl;
+	// 	v1.insert(v1.end(), v2.begin() + 3, v2.end());
+	// 	std::cout << "STD - AFTER" << std::endl;
+	// 	print_vector(v1);
+	// 	std::cout << RESET << std::endl;
+	// }
 	// {
 	// 	ft::vector<int> v1(20, 42);
 		
