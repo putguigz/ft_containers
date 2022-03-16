@@ -77,8 +77,17 @@ class vector{
 			_size += n;
 		}
 
-		// template <class InputIterator>
-    	// void insert(iterator position, InputIterator first, InputIterator last);
+		template <class InputIterator>
+    	void insert(iterator position, InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0)
+		{
+			for (; first != last; first++)
+			{
+				if (_size + 1 > _capacity)
+					_realloc_memorize_position(_size + 1, position);
+				insert(position, 1, *first);
+				position++;
+			}
+		}
 
 		template <class InputIterator>
   		void assign(InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0){
