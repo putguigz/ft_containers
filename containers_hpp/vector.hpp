@@ -45,7 +45,8 @@ class vector{
 			assign(first, last);
 		}
 
-		vector (const vector & x){
+		vector (const vector & x) : _allocker(x._allocker), _size(0), _capacity(0){
+			_vector = _allocker.allocate(_capacity);
 			*this = x;
 		}
 
