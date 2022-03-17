@@ -35,10 +35,10 @@ class bidir_iterator
 		bool 			operator!=(bidir_iterator const & src) { return (!(*this == src)); };
 		reference 		operator*( void ) { return (*_it); };
 		pointer			operator->( void ) { return (_it); };
-		bidir_iterator 	operator++( void ) { _it++; return (*this); };
-		bidir_iterator	operator++( int ) { bidir_iterator tmp = _it; _it++; return tmp; };
-		bidir_iterator	operator--( void ) { _it--; return (*this); };
-		bidir_iterator	operator--( int ) { bidir_iterator tmp = _it; _it--; return tmp; };
+		bidir_iterator& operator++( void ) { _it++; return (*this); };
+		bidir_iterator	operator++( int ) { bidir_iterator tmp(_it); _it++; return tmp; };
+		bidir_iterator&	operator--( void ) { _it--; return (*this); };
+		bidir_iterator	operator--( int ) { bidir_iterator tmp(_it); _it--; return tmp; };
 
 	protected:
 		pointer _it;
@@ -59,9 +59,25 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 		RandomAccessIterator( void ) : bidir_iterator() {};
 		RandomAccessIterator( pointer vct ) : bidir_iterator(vct) {};
 		~RandomAccessIterator( void ) {};
+		RandomAccessIterator ( RandomAccessIterator const & src) : bidir_iterator(){
+				*this = src;
+		};
+
+		RandomAccessIterator & operator=(RandomAccessIterator const & src){
+			if (*this != src)
+				bidir_iterator::_it = src._it;
+			return *this;
+		};
 
 		operator RandomAccessIterator<container, true>() const { return RandomAccessIterator<container, true>(this->_it); };
 
+		//surcharge de fonctions existantes dans BIDIR:
+		RandomAccessIterator& 	operator++( void ) { bidir_iterator::_it++; return (*this); };
+		RandomAccessIterator	operator++( int ) { RandomAccessIterator tmp(bidir_iterator::_it); bidir_iterator::_it++; return tmp; };
+		RandomAccessIterator&	operator--( void ) { bidir_iterator::_it--; return (*this); };
+		RandomAccessIterator	operator--( int ) { RandomAccessIterator tmp(bidir_iterator::_it); bidir_iterator::_it--; return tmp; };
+
+		//operator overload classics
 		RandomAccessIterator 		operator+(difference_type n) const { return RandomAccessIterator((bidir_iterator::_it) + n); };
 		RandomAccessIterator		operator-(difference_type n) const { return RandomAccessIterator((bidir_iterator::_it) - n); };
 		friend RandomAccessIterator	operator+(difference_type n, RandomAccessIterator it) { return RandomAccessIterator(n + (it._it)); };
