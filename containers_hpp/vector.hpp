@@ -4,6 +4,7 @@
 # include "containers.hpp"
 # include "iterator.hpp"
 # include "traits.hpp"
+# include "utils.hpp"
 
 namespace ft{
 
@@ -306,13 +307,13 @@ class vector{
 		reference 		back( void ) { return _vector[_size - 1]; };
 		const_reference back( void ) const { return _vector[_size - 1]; };
 		reference 		at (size_type n){
-			if (n < 0 && n >= _size)
+			if (n < 0 || n >= _size)
 				throw std::out_of_range("ft::vector::at");
 			else
 				return (_vector[n]);
 		};
 		const_reference at (size_type n) const{
-			if (n < 0 && n >= _size)
+			if (n < 0 || n >= _size)
 				throw std::out_of_range("ft::vector::at");
 			else
 				return (_vector[n]);
@@ -325,6 +326,54 @@ class vector{
 
 };
 
+//NON-MEMBER
+template <class T, class Alloc>
+void swap(ft::vector<T,Alloc>& x, ft::vector<T,Alloc>& y){
+	x.swap(y);
+}
+
+template <class T, class Alloc>
+bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	if (lhs.size() == rhs.size())
+	{
+		for(typename ft::vector<T,Alloc>::size_type i = 0; i != lhs.size(); i++)
+		{
+			if (lhs.at(i) != rhs.at(i))
+				return false;
+		}
+		return true;
+	}
+	return false;
+}
+
+template <class T, class Alloc>
+bool operator!= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template <class T, class Alloc>
+bool operator<  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
+{
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+}
+
+template <class T, class Alloc>
+bool operator>  (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs){
+	return (rhs < lhs);
+}
+
+template <class T, class Alloc>
+bool operator<= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs){
+	return (!(lhs > rhs));
+}
+
+
+template <class T, class Alloc>
+bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs){
+	return (!(lhs < rhs));
+}
 
 }
 
