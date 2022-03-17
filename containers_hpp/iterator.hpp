@@ -20,7 +20,7 @@ class bidir_iterator
 		bidir_iterator( void ) : _it(NULL) {};
 		bidir_iterator( pointer vct ) : _it(vct) {};
 		~bidir_iterator( void ) {};
-		bidir_iterator ( bidir_iterator const & src){
+		bidir_iterator ( bidir_iterator const & src) : _it(NULL){
 				*this = src;
 		};
 
