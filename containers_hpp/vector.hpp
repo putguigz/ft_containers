@@ -40,8 +40,9 @@ class vector{
 
 		template <class InputIterator>
         vector (InputIterator first, InputIterator last,
-                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type* = 0) : _allocker(alloc)
+                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type* = 0) : _allocker(alloc), _size(0), _capacity(0)
 		{
+			_vector = _allocker.allocate(_capacity);
 			assign(first, last);
 		}
 
