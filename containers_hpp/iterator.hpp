@@ -19,7 +19,7 @@ class bidir_iterator
 	public:
 		bidir_iterator( void ) : _it(NULL) {};
 		bidir_iterator( pointer vct ) : _it(vct) {};
-		~bidir_iterator( void ) {};
+		virtual ~bidir_iterator( void ) {};
 		bidir_iterator ( bidir_iterator const & src) : _it(NULL){
 				*this = src;
 		};
@@ -29,10 +29,6 @@ class bidir_iterator
 				_it = src._it;
 			return *this;
 		};
-
-		operator bidir_iterator<container, true>() const { return bidir_iterator<container, true>(this->_it); };
-
-
 
 	public:		
 		friend bool	operator==(bidir_iterator const & lhs, bidir_iterator const & rhs){
@@ -70,7 +66,8 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 
 		RandomAccessIterator( void ) : bidir_iterator() {};
 		RandomAccessIterator( pointer vct ) : bidir_iterator(vct) {};
-		~RandomAccessIterator( void ) {};
+		virtual ~RandomAccessIterator( void ) {};
+
 		RandomAccessIterator ( RandomAccessIterator const & src) : bidir_iterator(){
 				*this = src;
 		};
@@ -81,7 +78,7 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 			return *this;
 		};
 
-		operator RandomAccessIterator<container, true>() const { return RandomAccessIterator<container, true>(this->_it); };
+		operator RandomAccessIterator< const container, true>() const { return RandomAccessIterator< const container, true>(this->_it); };
 
 		//surcharge de fonctions existantes dans BIDIR:
 		RandomAccessIterator& 	operator++( void ) { bidir_iterator::_it++; return (*this); };
@@ -104,33 +101,38 @@ class RandomAccessIterator : public bidir_iterator< container, isConst >
 		reference					operator[](difference_type n) const { return (*(bidir_iterator::_it + n)); }
 };
 
-template < typename iterator, typename const_ite >
+template < class Iterator >
 class reverse_iterator{	
+	
+	public:
+		typedef typename Iterator::value_type		value_type;
+		typedef typename Iterator::pointer			pointer;
+		typedef typename Iterator::reference		reference;
+		typedef typename Iterator::difference_type	difference_type;
 
-	typedef typename iterator::value_type		value_type;
-	typedef typename iterator::pointer			pointer;
-	typedef typename iterator::reference		reference;
-	typedef typename iterator::difference_type	difference_type;
 
 	private:
-		iterator _it;
+		Iterator _it;
+	
 	public:
 		reverse_iterator( void ) {};
-		explicit reverse_iterator(iterator it) : _it(it) {};
-		reverse_iterator( reverse_iterator<iterator, const_ite> const & cpy)
+		virtual ~reverse_iterator( void ) {};
+		explicit reverse_iterator(Iterator it) : _it(it) {};
+		
+		template <typename Snd_Ite>
+		reverse_iterator( reverse_iterator<Snd_Ite> const & cpy)
 		{
 			*this = cpy;
 		}
 
-		operator reverse_iterator< const_ite, iterator >() const { return reverse_iterator<const_ite, iterator>(_it); }
-
-		reverse_iterator & operator=( reverse_iterator<iterator, const_ite> const & cpy)
+		template <typename Snd_Ite>
+		reverse_iterator & operator=( reverse_iterator<Snd_Ite> const & cpy)
 		{
 			if (*this != cpy)
-				_it = cpy._it;
+				_it = cpy.base();
 			return *this;
 		}
-		
+
 		//MEMBER:
 		reference			operator*( void ) const { return (*(_it - 1)); };
 		reverse_iterator	operator+(difference_type n) const { return reverse_iterator(_it - n); };
@@ -141,17 +143,24 @@ class reverse_iterator{
 		reverse_iterator &	operator--( void ) { _it++; return (*this); };
 		reverse_iterator	operator--( int ) { reverse_iterator tmp = *this; _it++; return tmp; };
 		reverse_iterator & 	operator-= (difference_type n) { _it += n ; return (*this);};
-		pointer				operator->( void ) { return (_it); };
+		pointer				operator->( void ) { return (&(*_it)); };
 		reference 			operator[] (difference_type n) const {return (_it[-n - 1]); };
 
 		//SUPPOSEDLY NONMEMBER:
-		bool	operator==(reverse_iterator const & src) { return (_it == src._it ? true : false); };
-		bool	operator!=(reverse_iterator const & src) { return (!(*this == src)); };
-    	friend reverse_iterator operator+( difference_type n, const reverse_iterator& it ) { return reverse_iterator(n + it._it); };
-		friend difference_type operator-(const reverse_iterator& lhs, const reverse_iterator& rhs) { return (lhs._it - rhs._it); };
+		template <typename Ite2>
+		friend bool	operator==(reverse_iterator<Iterator> const & lhs, reverse_iterator<Ite2> const & rhs) { return (lhs.base() == rhs.base() ? true : false); };
+
+		template <typename Ite2>
+		friend bool	operator!=(reverse_iterator<Iterator> const & lhs, reverse_iterator<Ite2> const & rhs) { return (!(lhs == rhs)); };
+
+    	friend reverse_iterator operator+( difference_type n, const reverse_iterator<Iterator>& rhs ) { return reverse_iterator<Iterator>(rhs + n); };
+
+		template <typename Ite2>
+		friend difference_type operator-(const reverse_iterator<Iterator>& lhs, const reverse_iterator<Ite2>& rhs) { return rhs.base() - lhs.base(); };
+
 
 	public:
-		iterator base( void ) const {return _it;}
+		Iterator base( void ) const {return _it;}
 
 };
 
