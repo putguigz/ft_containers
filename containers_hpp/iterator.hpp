@@ -151,17 +151,31 @@ class reverse_iterator{
 
 };
 
-template <class Iterator>
-bool	operator==(reverse_iterator<Iterator> const & lhs, reverse_iterator<Iterator> const & rhs) { return (lhs.base() == rhs.base() ? true : false); }
+// template <class Iterator>
+// bool	operator==(reverse_iterator<Iterator> const & lhs, reverse_iterator<Iterator> const & rhs) { return (lhs.base() == rhs.base() ? true : false); }
+
+// template <class Iterator>
+// bool	operator!=(reverse_iterator<Iterator> const & lhs, reverse_iterator<Iterator> const & rhs) { return (!(lhs == rhs)); }
 
 template <class Ite1, class Ite2>
 bool	operator==(reverse_iterator<Ite1> const & lhs, reverse_iterator<Ite2> const & rhs) { return (lhs.base() == rhs.base() ? true : false); }
 
-template <class Iterator>
-bool	operator!=(reverse_iterator<Iterator> const & lhs, reverse_iterator<Iterator> const & rhs) { return (!(lhs == rhs)); }
-
 template <class Ite1, class Ite2>
 bool	operator!=(reverse_iterator<Ite1> const & lhs, reverse_iterator<Ite2> const & rhs) { return (!(lhs == rhs)); }
+
+//START
+template <class Ite1, class Ite2>
+bool	operator<(reverse_iterator<Ite1> const & lhs, reverse_iterator<Ite2> const & rhs) { return (lhs.base() > rhs.base()); }
+
+template <class Ite1, class Ite2>
+bool	operator<=(reverse_iterator<Ite1> const & lhs, reverse_iterator<Ite2> const & rhs) { return (lhs.base() >= rhs.base()); }
+
+template <class Ite1, class Ite2>
+bool	operator>(reverse_iterator<Ite1> const & lhs, reverse_iterator<Ite2> const & rhs) { return (lhs.base() < rhs.base()); }
+
+template <class Ite1, class Ite2>
+bool	operator>=(reverse_iterator<Ite1> const & lhs, reverse_iterator<Ite2> const & rhs) { return (lhs.base() <= rhs.base()); }
+
 
 template < class Iterator >
 reverse_iterator<Iterator> operator+( typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rhs ) { return reverse_iterator<Iterator>(rhs + n); }
