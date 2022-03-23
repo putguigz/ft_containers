@@ -3,15 +3,29 @@
 
 namespace ft{
 
+
+template <class T1, class T2>
+struct pair{
+	typedef T1 first_type;
+	typedef T2 second_type;
+
+	first_type first;
+	second_type second;
+
+	pair( void ) {};
+	template<class U, class V> pair (const pair<U,V>& pr) {};
+	pair (const first_type& a, const second_type& b) {};
+};
+
 template < class Iterator >
 struct iterator_traits{
-		typedef	typename Iterator::value_type			value_type;
-		typedef typename Iterator::pointer           	pointer;
-        typedef typename Iterator::const_pointer     	const_pointer;
-        typedef typename Iterator::reference         	reference;
-        typedef typename Iterator::const_reference   	const_reference;
-		typedef typename Iterator::difference_type		difference_type;
-		typedef typename Iterator::iterator_category	iterator_category;
+	typedef	typename Iterator::value_type			value_type;
+	typedef typename Iterator::pointer           	pointer;
+    typedef typename Iterator::const_pointer     	const_pointer;
+    typedef typename Iterator::reference         	reference;
+    typedef typename Iterator::const_reference   	const_reference;
+	typedef typename Iterator::difference_type		difference_type;
+	typedef typename Iterator::iterator_category	iterator_category;
 };
 
 template<bool B, typename first, typename second>
