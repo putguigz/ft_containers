@@ -34,18 +34,18 @@ class map
         value_compare   _compare;
         allocator_type  _allocker;
         size_type       _size;
-     
+        BST             **_bst;
 
     public:
         explicit map (const key_compare& comp = key_compare(), 
-                const allocator_type& alloc = allocator_type()) : _compare(comp), _allocker(alloc) { }
+                const allocator_type& alloc = allocator_type()) : _compare(comp), _allocker(alloc), _bst(NULL) { }
         
-        map (const map& x) : _compare(x._compare), _allocker(x._allocker) { /*ADD COPY*/ }
+        map (const map& x) : _compare(x._compare), _allocker(x._allocker), _bst(NULL) { /*ADD COPY*/ }
 
         template <class InputIterator>
         map (InputIterator first, InputIterator last,
         const key_compare& comp = key_compare(),
-        const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc) { /*DO THINGS*/ }
+        const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc), _bst(NULL) { /*DO THINGS*/ }
 
         ~map( void ) { /* DESTROY AND DEALLOCATE ELEMS */ }
 

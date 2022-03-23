@@ -6,11 +6,7 @@ namespace ft{
 template <>
 struct BST
 {
-    value_type	elem;
-	BST*	left;
-	BST*	right;
 
-	
 };
 
 }
