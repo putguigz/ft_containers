@@ -17,7 +17,7 @@ class map
         typedef Key                                             key_type;
         typedef T                                               mapped_type;
         typedef ft::pair< const Key, T >                        value_type;
-        typedef Compare                                         value_compare;
+        typedef Compare                                         key_compare;
         typedef Alloc                                           allocator_type;
         typedef typename allocator_type::reference              reference;
         typedef typename allocator_type::const_reference        const_reference;
@@ -31,10 +31,10 @@ class map
         typedef A::size_type                                    size_type;
     
     private:
-        value_compare   _compare;
-        allocator_type  _allocker;
-        size_type       _size;
-        BST             **_bst;
+        value_compare                       _compare;
+        allocator_type                      _allocker;
+        size_type                           _size;
+        BST<value_type, key_compare>**    _bst;
 
     public:
         explicit map (const key_compare& comp = key_compare(), 
