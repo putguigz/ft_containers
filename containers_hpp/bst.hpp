@@ -32,20 +32,23 @@ struct BST
 	balance_factor depth;	
 
 	BST( pair_type new_pair ) : elem(new_pair), left(NULL), right(NULL), depth() {}
-	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), left(src.left), right(src.right), depth(src.depth) {}
+	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), depth(src.depth) {
+		left = copy_this(*src.left);
+		right = copy_this(*src.right);
+	}
 	~BST( void ) {
 		destroy_sub_pointers();
 	}
 
 	reference operator=( BST<pair_type, key_compare> const & src )
 	{
-		if (*this != src)
+		if (this != &src)
 		{
 			elem = src.elem;
 			destroy_sub_pointers();
 			depth =  src.depth;
-			left = src.left;
-			right = src.right;
+			left = copy_this(*src.left);
+			right = copy_this(*src.right);
 		}
 		return (*this);
 	}
@@ -83,7 +86,6 @@ struct BST
 			else
 				left = create_leaf(pair);
 			depth.left = std::max<int>(left->depth.left, left->depth.right) + 1;
-			depth.balance = depth.left - depth.right;
 
 		}
 		else
@@ -93,10 +95,32 @@ struct BST
 			else
 				right = create_leaf(pair);
 			depth.right = std::max<int>(right->depth.left, right->depth.right) + 1;
-			depth.balance = depth.left - depth.right;
 		}
-		//ACTUALIZE DEPTH
+		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
+		depth.balance = depth.left - depth.right;
+		if (depth.balance < -1 || depth.balance > 1)
+			left_left();
+		else
+			return;
+	}
 
+	pointer	copy_this( BST<pair_type, key_compare> const & cpy )
+	{
+		pointer tmp;
+		tmp = allocker.allocate(1);
+		allocker.construct(tmp, cpy);
+		return tmp;
+	}
+
+	void	left_left( void ){
+		pointer tmp = copy_this(*this);
+
+		// std::cout << "tmp->elem.first " << tmp->elem.first << std::endl;
+		// std::cout << "tmp->depth.balance " << tmp->depth.balance << std::endl;
+
+
+		*this = *this->left;
+		this->right = tmp;
 	}
 
 };
