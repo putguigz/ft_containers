@@ -120,7 +120,7 @@ struct BST
 		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
 		depth.balance = depth.left - depth.right;
 		if (depth.balance < -1 || depth.balance > 1)
-			left_left();
+			right_right();
 		else
 			return;
 	}
@@ -144,6 +144,20 @@ struct BST
 		this->right = tmp;
 
 		depth.right = std::max<int>(right->depth.left, right->depth.right) + 1;
+		depth.balance = depth.left - depth.right;
+	}
+
+	void	right_right( void ){
+		pointer tmp = copy_this(*this);
+		destroy_pointer(tmp->right);
+		
+		tmp->depth.right = 0;
+		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
+
+		*this = *(this->right);
+		this->left = tmp;
+
+		depth.left = std::max<int>(left->depth.left, left->depth.right) + 1;
 		depth.balance = depth.left - depth.right;
 	}
 

@@ -16,8 +16,8 @@ int main(void)
 	ft::BST<pair_type, compare>	*first = new ft::BST<pair_type, compare>(pair);
 
 
-	first->insert(std::make_pair(10, 0));
-	first->insert(std::make_pair(5, 0));
+	first->insert(std::make_pair(30, 0));
+	first->insert(std::make_pair(40, 0));
 
 	print2D< ft::BST<pair_type, compare > *>(first);
 
