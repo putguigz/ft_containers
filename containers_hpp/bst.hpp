@@ -42,7 +42,7 @@ struct BST
 		if (src.right != NULL)
 		{
 			right = allocker.allocate(1);
-			allocker.construct(right, *src.left);
+			allocker.construct(right, *src.right);
 		}
 	}
 	~BST( void ) {
@@ -64,7 +64,7 @@ struct BST
 			if (src.right != NULL)
 			{
 				right = allocker.allocate(1);
-				allocker.construct(right, *src.left);
+				allocker.construct(right, *src.right);
 			}
 			destroy_pointer(tmp1);
 			destroy_pointer(tmp2);
