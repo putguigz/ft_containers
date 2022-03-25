@@ -22,9 +22,17 @@ struct BST
 
 	BST( pair_type new_pair ) : elem(new_pair), left(NULL), right(NULL) {}
 	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), left(NULL), right(NULL) {}
-	~BST( void ) { 
-		allocker.destroy(this);
-		allocker.deallocate(this, 1);
+	~BST( void ) {
+		if (left != NULL)
+		{
+			allocker.destroy(left);
+			allocker.deallocate(left, 1);
+		}
+		if (right != NULL)
+		{
+			allocker.destroy(right);
+			allocker.deallocate(right, 1);
+		}
 	}
 
 	reference operator=( BST<pair_type, key_compare> const & src )
