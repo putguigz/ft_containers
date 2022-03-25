@@ -6,11 +6,11 @@
 
 int main(void)
 {
-	typedef int					Key;
-	typedef std::pair<int, int>		pair_type;
-	typedef std::less< Key >	compare;
+	typedef std::string				Key;
+	typedef std::pair< Key, int >	pair_type;
+	typedef std::less< Key >		compare;
 	
-	pair_type	pair = std::make_pair(1, 69);
+	pair_type	pair = std::make_pair("Dov", 69);
 
 	ft::BST<pair_type, compare>	*first = new ft::BST<pair_type, compare>(pair);
 	ft::BST<pair_type, compare> *second;
@@ -18,8 +18,8 @@ int main(void)
 	std::cout << first->elem.first << std::endl;
 	std::cout << first->elem.second << std::endl;
 
-	first->insert(std::make_pair(2, 18));
-	first->insert(std::make_pair(0, -42));
+	first->insert(std::make_pair("Guigz", 18));
+	first->insert(std::make_pair("Philippe", 5));
 	
 	second = first->left;
 	std::cout << second->elem.first << std::endl;
