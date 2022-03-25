@@ -2,6 +2,7 @@
 # define __BST_HPP__
 
 # include "containers.hpp"
+# include "tree_printer.hpp"
 
 namespace ft{
 
@@ -32,12 +33,20 @@ struct BST
 	balance_factor depth;	
 
 	BST( pair_type new_pair ) : elem(new_pair), left(NULL), right(NULL), depth() {}
-	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), depth(src.depth) {
-		left = copy_this(*src.left);
-		right = copy_this(*src.right);
+	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), left(NULL), right(NULL), depth(src.depth) {
+		if (src.left != NULL)
+		{
+			left = allocker.allocate(1);
+			allocker.construct(left, *src.left);
+		}
+		if (src.right != NULL)
+		{
+			right = allocker.allocate(1);
+			allocker.construct(right, *src.left);
+		}
 	}
 	~BST( void ) {
-		destroy_sub_pointers();
+		destroy_sub_pointers(this->left, this->right);
 	}
 
 	reference operator=( BST<pair_type, key_compare> const & src )
@@ -45,25 +54,36 @@ struct BST
 		if (this != &src)
 		{
 			elem = src.elem;
-			destroy_sub_pointers();
 			depth =  src.depth;
-			left = copy_this(*src.left);
-			right = copy_this(*src.right);
+			pointer tmp1 = left, tmp2 = right;
+			if (src.left != NULL)
+			{
+				left = allocker.allocate(1);
+				allocker.construct(left, *src.left);
+			}
+			if (src.right != NULL)
+			{
+				right = allocker.allocate(1);
+				allocker.construct(right, *src.left);
+			}
+			destroy_sub_pointers(tmp1, tmp2);
 		}
 		return (*this);
 	}
 
-	void	destroy_sub_pointers( void )
+	void	destroy_sub_pointers( pointer tmp1, pointer tmp2 )
 	{
-		if (left != NULL)
+		if (tmp1 != NULL)
 		{
-			allocker.destroy(left);
-			allocker.deallocate(left, 1);
+			allocker.destroy(tmp1);
+			allocker.deallocate(tmp1, 1);
+			tmp1 = NULL;
 		}
-		if (right != NULL)
+		if (tmp2 != NULL)
 		{
-			allocker.destroy(right);
-			allocker.deallocate(right, 1);
+			allocker.destroy(tmp2);
+			allocker.deallocate(tmp2, 1);
+			tmp2 = NULL;
 		}
 	}
 
@@ -114,12 +134,10 @@ struct BST
 
 	void	left_left( void ){
 		pointer tmp = copy_this(*this);
+		tmp->depth.left = 0;
+		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
 
-		// std::cout << "tmp->elem.first " << tmp->elem.first << std::endl;
-		// std::cout << "tmp->depth.balance " << tmp->depth.balance << std::endl;
-
-
-		*this = *this->left;
+		*this = *(this->left);
 		this->right = tmp;
 	}
 
