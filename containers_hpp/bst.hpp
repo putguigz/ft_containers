@@ -46,7 +46,7 @@ struct BST
 		}
 	}
 	~BST( void ) {
-		destroy_sub_pointers(this->left, this->right);
+		destroy_sub_pointers();
 	}
 
 	reference operator=( BST<pair_type, key_compare> const & src )
@@ -66,25 +66,26 @@ struct BST
 				right = allocker.allocate(1);
 				allocker.construct(right, *src.left);
 			}
-			destroy_sub_pointers(tmp1, tmp2);
+			destroy_pointer(tmp1);
+			destroy_pointer(tmp2);
 		}
 		return (*this);
 	}
 
-	void	destroy_sub_pointers( pointer tmp1, pointer tmp2 )
+	void	destroy_pointer( pointer & tmp)
 	{
-		if (tmp1 != NULL)
+		if (tmp != NULL)
 		{
-			allocker.destroy(tmp1);
-			allocker.deallocate(tmp1, 1);
-			tmp1 = NULL;
+			allocker.destroy(tmp);
+			allocker.deallocate(tmp, 1);
+			tmp = NULL;
 		}
-		if (tmp2 != NULL)
-		{
-			allocker.destroy(tmp2);
-			allocker.deallocate(tmp2, 1);
-			tmp2 = NULL;
-		}
+	}
+
+	void	destroy_sub_pointers( void )
+	{
+		destroy_pointer(this->left);
+		destroy_pointer(this->right);
 	}
 
 	pointer create_leaf(pair_type const & pair)
@@ -134,11 +135,16 @@ struct BST
 
 	void	left_left( void ){
 		pointer tmp = copy_this(*this);
+		destroy_pointer(tmp->left);
+		
 		tmp->depth.left = 0;
 		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
 
 		*this = *(this->left);
 		this->right = tmp;
+
+		depth.right = std::max<int>(right->depth.left, right->depth.right) + 1;
+		depth.balance = depth.left - depth.right;
 	}
 
 };
