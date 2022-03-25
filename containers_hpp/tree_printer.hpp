@@ -1,6 +1,7 @@
 #ifndef __TREE_PRINTER_HPP__
 # define __TREE_PRINTER_HPP__
 
+# include "containers.hpp"
 # define COUNT 10
 
 template<class pointer>
@@ -21,7 +22,7 @@ void print2DUtil(pointer root, int space)
     std::cout<<std::endl;
     for (int i = COUNT; i < space; i++)
         std::cout<<" ";
-    std::cout<< root->elem.first <<"\n";
+    std::cout<< root->elem.first << ", " << RED << root->depth.balance << RESET <<"\n";
  
     // Process left child
     print2DUtil(root->left, space);
