@@ -108,6 +108,8 @@ struct BST
 		}
 		else
 		{
+			if (pair.first == this->elem.first)
+				return;
 			if (this->right != NULL)
 				right->insert(pair);
 			else
