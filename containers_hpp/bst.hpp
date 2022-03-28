@@ -166,6 +166,26 @@ struct BST
 		depth.balance = depth.left - depth.right;
 	}
 
+	void TEST_left_left(void)
+	{
+		void	left_left( void ){
+		pointer tmp = copy_this(this);
+		pointer new_root = tmp->right;
+		print2D(new_root);
+		tmp->right = tmp->right->left;
+
+		new_root->left = tmp;
+		
+		// tmp->depth.right = max_depth_under(sub_left);
+		// tmp->depth.balance = tmp->depth.left - tmp->depth.right;
+
+
+		*this = *new_root;
+
+		// depth.left = max_depth_under(left);
+		// depth.balance = depth.left - depth.right;
+	}
+
 	int	max_depth_under( pointer side) {
 		if (!side)
 			return 0;
