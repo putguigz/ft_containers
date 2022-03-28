@@ -117,9 +117,22 @@ struct BST
 		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
 		depth.balance = depth.left - depth.right;
 		if (depth.balance < -1 || depth.balance > 1)
-			left_right();
-		else
-			return;
+		{
+			if (depth.balance > 0)
+			{
+				if (left->depth.right == std::max(left->depth.left, left->depth.right))
+					left_right();
+				else
+					right_right();
+			}
+			else
+			{
+				if (right->depth.left == std::max(right->depth.left, right->depth.right))
+					right_left();
+				else
+					left_left();
+			}
+		}
 	}
 
 	pointer	copy_this( const_pointer cpy )
@@ -172,29 +185,13 @@ struct BST
 
 	void left_right( void )
 	{
-		print2D(this);
-		std::cout << std::endl;
-		std::cout << std::endl;
-		std::cout << std::endl;
 		left->left_left();
-		print2D(this);
-		std::cout << std::endl;
-		std::cout << std::endl;
-		std::cout << std::endl;
 		this->right_right();
 	}
 
 	void right_left( void )
 	{
-		print2D(this);
-		std::cout << std::endl;
-		std::cout << std::endl;
-		std::cout << std::endl;
 		right->right_right();
-		print2D(this);
-		std::cout << std::endl;
-		std::cout << std::endl;
-		std::cout << std::endl;
 		this->left_left();
 	}
 
