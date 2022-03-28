@@ -55,7 +55,7 @@ struct BST
 		{
 			elem = src.elem;
 			depth =  src.depth;
-			pointer tmp1 = left, tmp2 = right;
+			destroy_sub_pointers();
 			if (src.left != NULL)
 			{
 				left = allocker.allocate(1);
@@ -66,8 +66,6 @@ struct BST
 				right = allocker.allocate(1);
 				allocker.construct(right, *src.right);
 			}
-			destroy_pointer(tmp1);
-			destroy_pointer(tmp2);
 		}
 		return (*this);
 	}
@@ -119,7 +117,7 @@ struct BST
 		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
 		depth.balance = depth.left - depth.right;
 		if (depth.balance < -1 || depth.balance > 1)
-			right_left();
+			left_right();
 		else
 			return;
 	}
@@ -137,7 +135,8 @@ struct BST
 	void	right_right( void ){
 		pointer tmp = copy_this(this);
 		pointer new_root = tmp->left;
-		tmp->left = tmp->left->right;
+
+		tmp->left = new_root->right; 
 
 		new_root->right = tmp;
 
@@ -156,7 +155,7 @@ struct BST
 	{
 		pointer tmp = copy_this(this);
 		pointer new_root = tmp->right;
-		tmp->right = tmp->right->left;
+		tmp->right = new_root->left;
 
 		new_root->left = tmp;
 
@@ -173,14 +172,29 @@ struct BST
 
 	void left_right( void )
 	{
-		this->left->left_left();
+		print2D(this);
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+		left->left_left();
+		print2D(this);
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
 		this->right_right();
 	}
 
 	void right_left( void )
 	{
 		print2D(this);
-		this->right->right_right();
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+		right->right_right();
+		print2D(this);
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
 		this->left_left();
 	}
 
