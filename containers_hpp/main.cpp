@@ -17,7 +17,11 @@ int main(void)
 
 
 	first->insert(std::make_pair(30, 0));
-	first->insert(std::make_pair(40, 0));
+	first->insert(std::make_pair(25, 0));
+	first->insert(std::make_pair(35, 0));
+	first->insert(std::make_pair(22, 0));
+	first->insert(std::make_pair(60, 0));
+
 
 	print2D< ft::BST<pair_type, compare > *>(first);
 

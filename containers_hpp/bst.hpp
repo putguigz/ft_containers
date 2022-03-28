@@ -106,8 +106,7 @@ struct BST
 				left->insert(pair);
 			else
 				left = create_leaf(pair);
-			depth.left = std::max<int>(left->depth.left, left->depth.right) + 1;
-
+			depth.left = max_depth_under(left);
 		}
 		else
 		{
@@ -115,7 +114,7 @@ struct BST
 				right->insert(pair);
 			else
 				right = create_leaf(pair);
-			depth.right = std::max<int>(right->depth.left, right->depth.right) + 1;
+			depth.right = max_depth_under(right);
 		}
 		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
 		depth.balance = depth.left - depth.right;
@@ -125,40 +124,54 @@ struct BST
 			return;
 	}
 
-	pointer	copy_this( BST<pair_type, key_compare> const & cpy )
+	pointer	copy_this( const_pointer cpy )
 	{
+		if (cpy == NULL)
+			return NULL;
 		pointer tmp;
 		tmp = allocker.allocate(1);
-		allocker.construct(tmp, cpy);
+		allocker.construct(tmp, *cpy);
 		return tmp;
 	}
 
-	void	left_left( void ){
-		pointer tmp = copy_this(*this);
+	void	right_right( void ){
+		pointer tmp = copy_this(this);
+		pointer sub_right = copy_this(this->left->right);
 		destroy_pointer(tmp->left);
+		tmp->left = sub_right;
 		
-		tmp->depth.left = 0;
+		tmp->depth.left = max_depth_under(sub_right);
 		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
 
 		*this = *(this->left);
 		this->right = tmp;
 
-		depth.right = std::max<int>(right->depth.left, right->depth.right) + 1;
+		depth.right = max_depth_under(right);
 		depth.balance = depth.left - depth.right;
 	}
 
-	void	right_right( void ){
-		pointer tmp = copy_this(*this);
+	void	left_left( void ){
+		pointer tmp = copy_this(this);
+		pointer sub_left = copy_this(this->right->left);
 		destroy_pointer(tmp->right);
+		tmp->right = sub_left;
 		
-		tmp->depth.right = 0;
+		tmp->depth.right = max_depth_under(sub_left);
 		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
 
 		*this = *(this->right);
 		this->left = tmp;
 
-		depth.left = std::max<int>(left->depth.left, left->depth.right) + 1;
+		depth.left = max_depth_under(left);
 		depth.balance = depth.left - depth.right;
+	}
+
+	int	max_depth_under( pointer side) {
+		if (!side)
+			return 0;
+		else{
+			return (std::max<int>(side->depth.left, side->depth.right) + 1);
+		}
 	}
 
 };
