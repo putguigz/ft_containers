@@ -117,6 +117,10 @@ struct BST
 				right = create_leaf(pair);
 			depth.right = max_depth_under(right);
 		}
+		if (left)
+			left->parent = this;
+		if (right)	
+			right->parent = this;
 		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
 		depth.balance = depth.left - depth.right;
 		if (depth.balance < -1 || depth.balance > 1)
@@ -135,6 +139,7 @@ struct BST
 				else
 					left_left();
 			}
+			connect_parents();
 		}
 	}
 
