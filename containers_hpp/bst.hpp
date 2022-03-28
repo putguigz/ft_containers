@@ -119,7 +119,7 @@ struct BST
 		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
 		depth.balance = depth.left - depth.right;
 		if (depth.balance < -1 || depth.balance > 1)
-			right_right();
+			left_left();
 		else
 			return;
 	}
@@ -150,40 +150,23 @@ struct BST
 		depth.balance = depth.left - depth.right;
 	}
 
-	void	left_left( void ){
-		pointer tmp = copy_this(this);
-		pointer sub_left = copy_this(this->right->left);
-		destroy_pointer(tmp->right);
-		tmp->right = sub_left;
-		
-		tmp->depth.right = max_depth_under(sub_left);
-		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
-
-		*this = *(this->right);
-		this->left = tmp;
-
-		depth.left = max_depth_under(left);
-		depth.balance = depth.left - depth.right;
-	}
-
-	void TEST_left_left(void)
+	void left_left(void)
 	{
-		void	left_left( void ){
 		pointer tmp = copy_this(this);
 		pointer new_root = tmp->right;
-		print2D(new_root);
 		tmp->right = tmp->right->left;
 
 		new_root->left = tmp;
-		
-		// tmp->depth.right = max_depth_under(sub_left);
-		// tmp->depth.balance = tmp->depth.left - tmp->depth.right;
 
+		tmp->depth.right = max_depth_under(tmp->right);
+		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
 
 		*this = *new_root;
 
-		// depth.left = max_depth_under(left);
-		// depth.balance = depth.left - depth.right;
+		depth.left = max_depth_under(left);
+		depth.balance = depth.left - depth.right;
+
+		destroy_pointer(new_root);
 	}
 
 	int	max_depth_under( pointer side) {
