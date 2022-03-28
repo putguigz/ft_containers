@@ -34,7 +34,7 @@ class map
         value_compare                       _compare;
         allocator_type                      _allocker;
         size_type                           _size;
-        BST<value_type, key_compare>**    _bst;
+        BST<value_type, key_compare>**    	_bst;
 
     public:
         explicit map (const key_compare& comp = key_compare(), 

@@ -22,7 +22,13 @@ void print2DUtil(pointer root, int space)
     std::cout<<std::endl;
     for (int i = COUNT; i < space; i++)
         std::cout<<" ";
-    std::cout<< root->elem.first << ", " << RED << root->depth.balance << RESET <<"\n";
+    std::cout<< root->elem.first << ", ";
+	std::cout << RED << root->depth.balance << RESET <<", ";
+	if (root->parent)
+		std::cout << YELLOW << root->parent->elem.first << RESET << std::endl;
+	else
+		std::cout << FIRE << "NICHT" << RESET << std::endl;
+
  
     // Process left child
     print2DUtil(root->left, space);

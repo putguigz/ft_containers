@@ -21,6 +21,7 @@ struct BST
 	pair_type		elem;
 	pointer			left;
 	pointer 		right;
+	pointer			parent;
 
 	struct balance_factor{
 		balance_factor( void ) : balance(0), left(0), right(0) {}
@@ -32,8 +33,8 @@ struct BST
 
 	balance_factor depth;	
 
-	BST( pair_type new_pair ) : elem(new_pair), left(NULL), right(NULL), depth() {}
-	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), left(NULL), right(NULL), depth(src.depth) {
+	BST( pair_type new_pair ) : elem(new_pair), left(NULL), right(NULL), parent(NULL), depth() {}
+	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), left(NULL), right(NULL), parent(NULL), depth(src.depth) {
 		if (src.left != NULL)
 		{
 			left = allocker.allocate(1);
@@ -134,6 +135,20 @@ struct BST
 				else
 					left_left();
 			}
+		}
+	}
+
+	void	connect_parents( void )
+	{
+		if (left)
+		{
+			left->parent = this;
+			left->connect_parents();
+		}
+		if (right)
+		{	
+			right->parent = this;
+			right->connect_parents();
 		}
 	}
 

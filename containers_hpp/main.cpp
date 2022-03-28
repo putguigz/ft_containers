@@ -26,7 +26,7 @@ int main(void)
 	first.insert(std::make_pair(42, 0));
 	first.insert(std::make_pair(28, 0));
 	first.insert(std::make_pair(17, 0));
-
+	first.connect_parents();
 
 	print2D< ft::BST<pair_type, compare > *>(&first);
 
