@@ -13,17 +13,15 @@ int main(void)
 	
 	pair_type	pair = std::make_pair(20, 0);
 
-	ft::BST<pair_type, compare>	*first = new ft::BST<pair_type, compare>(pair);
+	ft::BST<pair_type, compare>	first(pair);
 
 
-	first->insert(std::make_pair(30, 0));
-	first->insert(std::make_pair(25, 0));
-	first->insert(std::make_pair(35, 0));
-	first->insert(std::make_pair(22, 0));
-	first->insert(std::make_pair(60, 0));
+	first.insert(std::make_pair(30, 0));
+	first.insert(std::make_pair(10, 0));
+	first.insert(std::make_pair(5, 0));
+	first.insert(std::make_pair(15, 0));
+	first.insert(std::make_pair(2, 0));
 
+	print2D< ft::BST<pair_type, compare > *>(&first);
 
-	print2D< ft::BST<pair_type, compare > *>(first);
-
-	delete first;
 }
