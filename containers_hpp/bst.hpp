@@ -100,6 +100,13 @@ struct BST
 
 	bool compare( pair_type const & pair ) { return cmp(pair.first, elem.first); }
 
+	// void	balance(pointer elem)
+	// {
+	// 	elem->depth.left =  max_depth_under(left);
+	// 	elem->depth.right =  max_depth_under(right);
+
+	// }
+
 	void insert( pair_type const & pair )
 	{
 		if (compare(pair))
@@ -124,7 +131,6 @@ struct BST
 			left->parent = this;
 		if (right)	
 			right->parent = this;
-		//ACTUALIZE DEPTH_BALANCE AND IF SO --> ROTATE
 		depth.balance = depth.left - depth.right;
 		if (depth.balance < -1 || depth.balance > 1)
 		{
@@ -246,6 +252,55 @@ struct BST
 			else
 				return NULL;
 		}
+	}
+
+	int	destroy_no_child(pointer d_ptr)
+	{
+		pointer parent = d_ptr->parent;
+		if (!parent)
+			return 0;
+		else
+		{
+			if (d_ptr == parent->left)
+			{
+				destroy_pointer(parent->left);
+				return 1;
+			}
+			else
+			{
+				destroy_pointer(parent->right);
+				return -1;
+			}
+		}
+	}
+
+	void	destroy_mono_child(pointer d_ptr)
+	{
+		pointer parent = d_ptr->parent;
+		pointer save_me;
+		if (d_ptr->left)
+			save_me = d_ptr->left;
+		else
+			save_me = d_ptr->right;
+		d_ptr->left = NULL;
+		d_ptr->right = NULL;
+		int ret = destroy_no_child(d_ptr);
+		if (ret > 0)
+			parent->left = save_me;
+		else if (ret < 0)
+			parent->right = save_me;
+		save_me->parent = parent;
+	}
+
+	void	erase_elem( key_type key )
+	{
+		pointer d_stroy = find_by_key(key);
+		if (!d_stroy)
+			return ;
+		if (!d_stroy->left && !d_stroy->right)
+			destroy_no_child(d_stroy);
+		if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))
+			destroy_mono_child(d_stroy);
 	}
 
 };

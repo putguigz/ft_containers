@@ -29,9 +29,12 @@ int main(void)
 	
 	print2D< ft::BST<pair_type, compare > *>(&first);
 
-	ft::BST<pair_type, compare> * second = first.find_by_key(15);
-
-	print2D< ft::BST<pair_type, compare > *>(second);
-
+	first.erase_elem(35);
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+	print2D< ft::BST<pair_type, compare > *>(&first);
 
 }
