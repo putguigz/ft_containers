@@ -207,6 +207,7 @@ struct BST
 	}
 
 	pointer	right_right( void ){
+		std::cout << "debug" << std::endl;
 		pointer new_start = this->left;
 		this->left = new_start->right;
 		new_start->right = this;
@@ -217,6 +218,7 @@ struct BST
 
 	pointer left_left(void)
 	{
+		std::cout << "debug" << std::endl;
 		pointer new_start = this->right;
 		this->right = new_start->left;
 		new_start->left = this;
@@ -227,12 +229,14 @@ struct BST
 
 	pointer left_right( void )
 	{
+		std::cout << "debug" << std::endl;
 		left = left->left_left();
 		return (this->right_right());
 	}
 
 	pointer right_left( void )
 	{
+		std::cout << "should end Here" << std::endl;
 		right = right->right_right();
 		return (this->left_left());
 	}
