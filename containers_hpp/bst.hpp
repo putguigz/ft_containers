@@ -243,9 +243,9 @@ struct BST
 	{
 		if (!d_stroy->left && !d_stroy->right)
 			destroy_no_child(d_stroy);
-		if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))
+		else if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))
 			destroy_mono_child(d_stroy);
-		if (d_stroy->left && d_stroy->right)
+		else if (d_stroy->left && d_stroy->right)
 			destroy_two_child(d_stroy);
 	}
 
@@ -310,7 +310,7 @@ struct BST
 		pointer parent = closest_node->parent;
 		if (!closest_node->left && !closest_node->right)
 			destroy_no_child(closest_node);
-		if ((!closest_node->left && closest_node->right) || (closest_node->left && !closest_node->right))
+		else if ((!closest_node->left && closest_node->right) || (closest_node->left && !closest_node->right))
 			destroy_mono_child(closest_node);
 		balance(parent);
 		rotate(parent);
