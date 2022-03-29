@@ -20,10 +20,12 @@ class map
 		typedef ft::pair< const Key, T >                        value_type;
 		typedef Compare                                         key_compare;
 		typedef Alloc                                           allocator_type;
+		typedef typename Alloc::size_type						size_type;
 		typedef typename allocator_type::reference              reference;
 		typedef typename allocator_type::const_reference        const_reference;
 		typedef typename allocator_type::pointer                pointer;
 		typedef typename allocator_type::const_pointer          const_pointer;
+	
 		// typedef ft::MapIterator<ft::map<T, A>, false >          iterator;
 		// typedef ft::MapIterator<ft::map<T, A>, true >           const_iterator;
 		// typedef ft::reverse_iterator<iterator>                  reverse_iterator;
@@ -32,6 +34,7 @@ class map
 
 		typedef typename std::allocator< BST< value_type, key_compare > >	BST_allocator_type;
 		typedef typename BST_allocator_type::pointer						BST_pointer;
+		typedef BST_pointer													iterator;
 	
 	private:
 		key_compare							_compare;
@@ -52,7 +55,9 @@ class map
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last,
 		const key_compare& comp = key_compare(),
-		const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc), _bst(NULL) { /*DO THINGS*/ }
+		const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc), _bst(NULL) { 
+			insert(first, last);
+		}
 
 		~map( void ) { destroy_bst(); }
 
@@ -63,7 +68,7 @@ class map
 				_size = x._size;
 				destroy_bst();
 				if (x._bst)
-					_bst = x._bst->copy_this(_x._bst);
+					_bst = x._bst->copy_this(x._bst);
 				_bst_allocker = x._bst_allocker;
 			}
 			return (*this);
@@ -81,8 +86,7 @@ class map
 
 	public:
 		ft::pair<iterator,bool> insert (const value_type& val){
-			ft::pair<pointer, bool> ret;
-			
+			ft::pair<BST_pointer, bool> ret;
 			if (!_bst)
 			{
 				_bst = _bst_allocker.allocate(1);
@@ -91,7 +95,7 @@ class map
 				ret.second = true;
 			}
 			else
-				ret = _bst.insert(val);
+				ret = _bst->insert(val);
 			if (ret.second)
 				_size++;
 			return (ret);
@@ -99,13 +103,14 @@ class map
 
 		template <class InputIterator>
   		void insert (InputIterator first, InputIterator last){
-
+			for (; first != last; first++)
+				insert(*first);
 		}
 
 	public:
 		size_type size( void ) const { return _size; }
 		size_type max_size() const { return _allocker.max_size(); }
-		bool empty( void ) const { return (size == 0 ? true : false); }
+		bool empty( void ) const { return (_size == 0 ? true : false); }
 		allocator_type get_allocator( void ) const { return _allocker; }
 		key_compare key_comp() const { return _compare; }
 		void swap (map& x) { map<key_type, mapped_type> tmp(this); this = x; x = tmp; };
