@@ -2,6 +2,7 @@
 # define __BST_HPP__
 
 # include "containers.hpp"
+# include "traits.hpp"
 # include "tree_printer.hpp"
 
 namespace ft{
@@ -9,6 +10,8 @@ namespace ft{
 template <class pair_type, class key_compare>
 struct BST
 {
+	typedef typename pair_traits<pair_type>::key_type					key_type;
+	typedef typename pair_traits<pair_type>::value_type					value_type;
 	typedef typename std::allocator< BST< pair_type, key_compare > >	allocator_type;
 	typedef typename allocator_type::pointer							pointer;
 	typedef typename allocator_type::const_pointer						const_pointer;
@@ -222,6 +225,26 @@ struct BST
 			return 0;
 		else{
 			return (std::max<int>(side->depth.left, side->depth.right) + 1);
+		}
+	}
+
+	pointer find_by_key( key_type key )
+	{
+		if (cmp(key, this->elem.first))
+		{
+			if (left)
+				return (left->find_by_key(key));
+			else
+				return NULL;
+		}
+		else
+		{
+			if (key == this->elem.first)
+				return this;
+			else if (right)
+				return (right->find_by_key(key));
+			else
+				return NULL;
 		}
 	}
 

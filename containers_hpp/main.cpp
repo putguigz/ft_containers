@@ -26,7 +26,12 @@ int main(void)
 	first.insert(std::make_pair(42, 0));
 	first.insert(std::make_pair(28, 0));
 	first.insert(std::make_pair(17, 0));
-
+	
 	print2D< ft::BST<pair_type, compare > *>(&first);
+
+	ft::BST<pair_type, compare> * second = first.find_by_key(15);
+
+	print2D< ft::BST<pair_type, compare > *>(second);
+
 
 }
