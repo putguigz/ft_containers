@@ -100,56 +100,22 @@ struct BST
 
 	bool compare( pair_type const & pair ) { return cmp(pair.first, elem.first); }
 
-	// void	balance(pointer elem)
-	// {
-	// 	elem->depth.left =  max_depth_under(left);
-	// 	elem->depth.right =  max_depth_under(right);
-
-	// }
-
-	void insert( pair_type const & pair )
+	void	balance(pointer elem)
 	{
-		if (compare(pair))
-		{
-			if (this->left != NULL)
-				left->insert(pair);
-			else
-				left = create_leaf(pair);
-			depth.left = max_depth_under(left);
-		}
-		else
-		{
-			if (pair.first == this->elem.first)
-				return;
-			if (this->right != NULL)
-				right->insert(pair);
-			else
-				right = create_leaf(pair);
-			depth.right = max_depth_under(right);
-		}
-		if (left)
-			left->parent = this;
-		if (right)	
-			right->parent = this;
-		depth.balance = depth.left - depth.right;
-		if (depth.balance < -1 || depth.balance > 1)
-		{
-			if (depth.balance > 0)
-			{
-				if (left->depth.right == std::max(left->depth.left, left->depth.right))
-					left_right();
-				else
-					right_right();
-			}
-			else
-			{
-				if (right->depth.left == std::max(right->depth.left, right->depth.right))
-					right_left();
-				else
-					left_left();
-			}
-			connect_parents();
-		}
+		if (!elem)
+			return ;
+		elem->depth.left =  max_depth_under(elem->left);
+		elem->depth.right =  max_depth_under(elem->right);
+		elem->depth.balance = elem->depth.left - elem->depth.right;
+	}
+
+	void	recursive_balancing( void )
+	{
+		if (this->left)
+			left->recursive_balancing();
+		if (this->right)
+			right->recursive_balancing();
+		balance(this);
 	}
 
 	void	connect_parents( void )
@@ -164,6 +130,56 @@ struct BST
 			right->parent = this;
 			right->connect_parents();
 		}
+	}
+
+	void	rotate( pointer elem )
+	{
+		if (!elem)
+			return ;
+		if (elem->depth.balance < -1 || elem->depth.balance > 1)
+		{
+			if (elem->depth.balance > 0)
+			{
+				if (elem->left->depth.right == std::max(elem->left->depth.left, elem->left->depth.right))
+					elem->left_right();
+				else
+					elem->right_right();
+			}
+			else
+			{
+				if (elem->right->depth.left == std::max(elem->right->depth.left, elem->right->depth.right))
+					elem->right_left();
+				else
+					elem->left_left();
+			}
+			connect_parents();
+		}
+	}
+
+	void insert( pair_type const & pair )
+	{
+		if (compare(pair))
+		{
+			if (this->left != NULL)
+				left->insert(pair);
+			else
+				left = create_leaf(pair);
+		}
+		else
+		{
+			if (pair.first == this->elem.first)
+				return;
+			if (this->right != NULL)
+				right->insert(pair);
+			else
+				right = create_leaf(pair);
+		}
+		if (left)
+			left->parent = this;
+		if (right)	
+			right->parent = this;
+		balance(this);
+		rotate(this);
 	}
 
 	pointer	copy_this( const_pointer cpy )
@@ -183,15 +199,9 @@ struct BST
 		tmp->left = new_root->right; 
 
 		new_root->right = tmp;
-
-		tmp->depth.left = max_depth_under(tmp->left);
-		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
-
+		balance(new_root->right);
 		*this = *new_root;
-
-		depth.right = max_depth_under(right);
-		depth.balance = depth.left - depth.right;
-
+		balance(this);
 		destroy_pointer(new_root);
 	}
 
@@ -203,14 +213,9 @@ struct BST
 
 		new_root->left = tmp;
 
-		tmp->depth.right = max_depth_under(tmp->right);
-		tmp->depth.balance = tmp->depth.left - tmp->depth.right;
-
+		balance(new_root->left);
 		*this = *new_root;
-
-		depth.left = max_depth_under(left);
-		depth.balance = depth.left - depth.right;
-
+		balance(this);
 		destroy_pointer(new_root);
 	}
 
@@ -226,7 +231,7 @@ struct BST
 		this->left_left();
 	}
 
-	int	max_depth_under( pointer side) {
+	int	max_depth_under( pointer side ) {
 		if (!side)
 			return 0;
 		else{
@@ -234,24 +239,14 @@ struct BST
 		}
 	}
 
-	pointer find_by_key( key_type key )
+	void	destroy( pointer d_stroy )
 	{
-		if (cmp(key, this->elem.first))
-		{
-			if (left)
-				return (left->find_by_key(key));
-			else
-				return NULL;
-		}
-		else
-		{
-			if (key == this->elem.first)
-				return this;
-			else if (right)
-				return (right->find_by_key(key));
-			else
-				return NULL;
-		}
+		if (!d_stroy->left && !d_stroy->right)
+			destroy_no_child(d_stroy);
+		if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))
+			destroy_mono_child(d_stroy);
+		if (d_stroy->left && d_stroy->right)
+			destroy_two_child(d_stroy);
 	}
 
 	int	destroy_no_child(pointer d_ptr)
@@ -274,7 +269,7 @@ struct BST
 		}
 	}
 
-	void	destroy_mono_child(pointer d_ptr)
+	void	destroy_mono_child( pointer d_ptr )
 	{
 		pointer parent = d_ptr->parent;
 		pointer save_me;
@@ -292,15 +287,75 @@ struct BST
 		save_me->parent = parent;
 	}
 
-	void	erase_elem( key_type key )
+	void	destroy_two_child( pointer d_ptr )
 	{
-		pointer d_stroy = find_by_key(key);
-		if (!d_stroy)
-			return ;
-		if (!d_stroy->left && !d_stroy->right)
-			destroy_no_child(d_stroy);
-		if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))
-			destroy_mono_child(d_stroy);
+		static bool flag = true;
+
+		pointer closest_node;
+		if (flag)
+		{
+			flag = false;
+			closest_node = d_ptr->right;
+			while (closest_node->left)
+				closest_node = closest_node->left;
+		}
+		else
+		{
+			flag = true;
+			closest_node = d_ptr->left;
+			while (closest_node->right)
+				closest_node = closest_node->right;
+		}
+		d_ptr->elem = closest_node->elem;
+		pointer parent = closest_node->parent;
+		if (!closest_node->left && !closest_node->right)
+			destroy_no_child(closest_node);
+		if ((!closest_node->left && closest_node->right) || (closest_node->left && !closest_node->right))
+			destroy_mono_child(closest_node);
+		balance(parent);
+		rotate(parent);
+	}
+
+	int	RECURSIVE_erase_elem( key_type key)
+	{
+		int ret = 0;
+		if (cmp(key, this->elem.first))
+		{
+			if (left)
+			{
+				if (key == left->elem.first)
+				{
+					destroy(left);
+					balance(left);
+					rotate(left);
+					ret = 1;
+				}
+				else
+					ret = left->RECURSIVE_erase_elem(key);
+
+			}
+		}
+		else
+		{
+			if (right)
+			{
+				if (key == right->elem.first)
+				{	
+					destroy(right);
+					balance(right);
+					rotate(right);
+					ret = 1;
+				}
+				else
+					ret = right->RECURSIVE_erase_elem(key);
+			}
+		}
+		if (ret)
+		{
+			balance(this);
+			rotate(this);
+		}
+		return ret;
 	}
 
 };

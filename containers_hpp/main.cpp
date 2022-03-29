@@ -29,7 +29,13 @@ int main(void)
 	
 	print2D< ft::BST<pair_type, compare > *>(&first);
 
-	first.erase_elem(35);
+	// first.RECURSIVE_erase_elem(30);
+	// first.RECURSIVE_erase_elem(25);
+	// first.RECURSIVE_erase_elem(35);
+	// first.RECURSIVE_erase_elem(15);
+	// first.RECURSIVE_erase_elem(28);
+
+
 	std::cout << std::endl;
 	std::cout << std::endl;
 	std::cout << std::endl;
