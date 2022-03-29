@@ -156,23 +156,30 @@ struct BST
 		}
 	}
 
-	void insert( pair_type const & pair )
+	bool insert( pair_type const & pair )
 	{
+		bool flag = false;
 		if (compare(pair))
 		{
 			if (this->left != NULL)
-				left->insert(pair);
+				flag = left->insert(pair);
 			else
+			{	
 				left = create_leaf(pair);
+				return true;
+			}
 		}
 		else
 		{
 			if (pair.first == this->elem.first)
-				return;
+				return false;
 			if (this->right != NULL)
-				right->insert(pair);
+				flag = right->insert(pair);
 			else
+			{
 				right = create_leaf(pair);
+				return true;
+			}
 		}
 		if (left)
 			left->parent = this;
@@ -180,6 +187,7 @@ struct BST
 			right->parent = this;
 		balance(this);
 		rotate(this);
+		return flag;
 	}
 
 	pointer	copy_this( const_pointer cpy )
@@ -316,7 +324,7 @@ struct BST
 		rotate(parent);
 	}
 
-	int	RECURSIVE_erase_elem( key_type key)
+	int	erase_elem( key_type key)
 	{
 		int ret = 0;
 		if (cmp(key, this->elem.first))
@@ -331,7 +339,7 @@ struct BST
 					ret = 1;
 				}
 				else
-					ret = left->RECURSIVE_erase_elem(key);
+					ret = left->erase_elem(key);
 
 			}
 		}
@@ -347,7 +355,7 @@ struct BST
 					ret = 1;
 				}
 				else
-					ret = right->RECURSIVE_erase_elem(key);
+					ret = right->erase_elem(key);
 			}
 		}
 		if (ret)
