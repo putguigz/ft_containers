@@ -18,8 +18,9 @@ int main(void)
 	first.insert(ft::make_pair(35, 0));
 	first.insert(ft::make_pair(42, 0));
 	first.insert(ft::make_pair(28, 0));
-	first.insert(ft::make_pair(20, 0));
+	print2D(first.getBST());
 
+	first.insert(ft::make_pair(20, 0));
 
 	print2D(first.getBST());
 

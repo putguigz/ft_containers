@@ -133,28 +133,29 @@ struct BST
 		}
 	}
 
-	pointer	rotate( pointer elem )
+	pointer	rotate( pointer node )
 	{
-		pointer new_node = elem;
+		pointer new_node = node;
 
-		if (!elem)
+		if (!node)
 			return NULL;
-		if (elem->depth.balance < -1 || elem->depth.balance > 1)
+		if (node->depth.balance < -1 || node->depth.balance > 1)
 		{
-			if (elem->depth.balance > 0)
+			if (node->depth.balance > 0)
 			{
-				if (elem->left->depth.right == std::max(elem->left->depth.left, elem->left->depth.right))
-					new_node = elem->left_right();
+				if (node->left->depth.right == std::max(node->left->depth.left, node->left->depth.right))
+					new_node = node->left_right();
 				else
-					new_node = elem->right_right();
+					new_node = node->right_right();
 			}
 			else
 			{
-				if (elem->right->depth.left == std::max(elem->right->depth.left, elem->right->depth.right))
-					new_node = elem->right_left();
+				if (node->right->depth.left == std::max(node->right->depth.left, node->right->depth.right))
+					new_node = node->right_left();
 				else
-					new_node = elem->left_left();
+					new_node = node->left_left();
 			}
+			balance(this);
 		}
 		return new_node;
 	}
@@ -191,8 +192,8 @@ struct BST
 		if (right)	
 			right->parent = this;
 		balance(this);
-		rotate(this->left);
-		rotate(this->right);
+		left = rotate(this->left);
+		right = rotate(this->right);
 		return ret;
 	}
 
@@ -323,7 +324,7 @@ struct BST
 		else if ((!closest_node->left && closest_node->right) || (closest_node->left && !closest_node->right))
 			destroy_mono_child(closest_node);
 		balance(parent);
-		rotate(parent);
+		parent = rotate(parent);
 	}
 
 	int	erase_elem( key_type key)
@@ -337,7 +338,7 @@ struct BST
 				{
 					destroy(left);
 					balance(left);
-					rotate(left);
+					left = rotate(left);
 					ret = 1;
 				}
 				else
@@ -353,7 +354,7 @@ struct BST
 				{	
 					destroy(right);
 					balance(right);
-					rotate(right);
+					right = rotate(right);
 					ret = 1;
 				}
 				else

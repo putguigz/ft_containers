@@ -101,6 +101,8 @@ class map
 			else
 			{
 				ret = _bst->insert(val);
+				_bst->balance(_bst);
+				print2D(_bst);
 				_bst = _bst->rotate(_bst);
 				_bst->parent = NULL;
 			}
