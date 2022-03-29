@@ -80,17 +80,26 @@ class map
 		};
 
 	public:
-		pair<iterator,bool> insert (const value_type& val){
+		ft::pair<iterator,bool> insert (const value_type& val){
+			ft::pair<pointer, bool> ret;
+			
 			if (!_bst)
 			{
 				_bst = _bst_allocker.allocate(1);
 				_bst_allocker.construct(_bst, val);
-				_size++;
+				ret.first = _bst;
+				ret.second = true;
 			}
 			else
-			{
+				ret = _bst.insert(val);
+			if (ret.second)
+				_size++;
+			return (ret);
+		}
 
-			}
+		template <class InputIterator>
+  		void insert (InputIterator first, InputIterator last){
+
 		}
 
 	public:

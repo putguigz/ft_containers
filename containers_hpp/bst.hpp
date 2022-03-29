@@ -156,29 +156,31 @@ struct BST
 		}
 	}
 
-	bool insert( pair_type const & pair )
+	ft::pair<pointer, bool> insert( pair_type const & pair )
 	{
-		bool flag = false;
+		ft::pair<pointer, bool> ret;
 		if (compare(pair))
 		{
 			if (this->left != NULL)
-				flag = left->insert(pair);
+				ret = left->insert(pair);
 			else
-			{	
+			{
 				left = create_leaf(pair);
-				return true;
+				ret.first = left;
+				ret.second = true;
 			}
 		}
 		else
 		{
 			if (pair.first == this->elem.first)
-				return false;
+				return (ft::make_pair(this, false));
 			if (this->right != NULL)
-				flag = right->insert(pair);
+				ret = right->insert(pair);
 			else
 			{
 				right = create_leaf(pair);
-				return true;
+				ret.first = right;
+				ret.second = true;
 			}
 		}
 		if (left)
@@ -187,7 +189,7 @@ struct BST
 			right->parent = this;
 		balance(this);
 		rotate(this);
-		return flag;
+		return ret;
 	}
 
 	pointer	copy_this( const_pointer cpy )
