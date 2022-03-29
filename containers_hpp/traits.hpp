@@ -16,6 +16,12 @@ struct iterator_traits{
 	typedef typename Iterator::iterator_category	iterator_category;
 };
 
+template <class Pair>
+struct pair_traits{
+	typedef typename Pair::first_type	key_type;
+	typedef typename Pair::second_type	value_type;
+};
+
 template<bool B, typename first, typename second>
 struct conditional{
 	typedef second type;
