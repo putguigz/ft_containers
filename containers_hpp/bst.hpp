@@ -4,6 +4,7 @@
 # include "containers.hpp"
 # include "traits.hpp"
 # include "tree_printer.hpp"
+# include "utils.hpp"
 
 namespace ft{
 
@@ -132,28 +133,30 @@ struct BST
 		}
 	}
 
-	void	rotate( pointer elem )
+	pointer	rotate( pointer elem )
 	{
+		pointer new_node = elem;
+
 		if (!elem)
-			return ;
+			return NULL;
 		if (elem->depth.balance < -1 || elem->depth.balance > 1)
 		{
 			if (elem->depth.balance > 0)
 			{
 				if (elem->left->depth.right == std::max(elem->left->depth.left, elem->left->depth.right))
-					elem->left_right();
+					new_node = elem->left_right();
 				else
-					elem->right_right();
+					new_node = elem->right_right();
 			}
 			else
 			{
 				if (elem->right->depth.left == std::max(elem->right->depth.left, elem->right->depth.right))
-					elem->right_left();
+					new_node = elem->right_left();
 				else
-					elem->left_left();
+					new_node = elem->left_left();
 			}
-			connect_parents();
 		}
+		return new_node;
 	}
 
 	ft::pair<pointer, bool> insert( pair_type const & pair )
@@ -188,7 +191,8 @@ struct BST
 		if (right)	
 			right->parent = this;
 		balance(this);
-		rotate(this);
+		rotate(this->left);
+		rotate(this->right);
 		return ret;
 	}
 
@@ -202,43 +206,35 @@ struct BST
 		return tmp;
 	}
 
-	void	right_right( void ){
-		pointer tmp = copy_this(this);
-		pointer new_root = tmp->left;
-
-		tmp->left = new_root->right; 
-
-		new_root->right = tmp;
-		balance(new_root->right);
-		*this = *new_root;
-		balance(this);
-		destroy_pointer(new_root);
+	pointer	right_right( void ){
+		pointer new_start = this->left;
+		this->left = new_start->right;
+		new_start->right = this;
+		new_start->recursive_balancing();
+		new_start->connect_parents();
+		return new_start;
 	}
 
-	void left_left(void)
+	pointer left_left(void)
 	{
-		pointer tmp = copy_this(this);
-		pointer new_root = tmp->right;
-		tmp->right = new_root->left;
-
-		new_root->left = tmp;
-
-		balance(new_root->left);
-		*this = *new_root;
-		balance(this);
-		destroy_pointer(new_root);
+		pointer new_start = this->right;
+		this->right = new_start->left;
+		new_start->left = this;
+		new_start->recursive_balancing();
+		new_start->connect_parents();
+		return new_start;
 	}
 
-	void left_right( void )
+	pointer left_right( void )
 	{
-		left->left_left();
-		this->right_right();
+		left = left->left_left();
+		return (this->right_right());
 	}
 
-	void right_left( void )
+	pointer right_left( void )
 	{
-		right->right_right();
-		this->left_left();
+		right = right->right_right();
+		return (this->left_left());
 	}
 
 	int	max_depth_under( pointer side ) {

@@ -43,6 +43,10 @@ class map
 		BST_pointer							_bst;
 		BST_allocator_type					_bst_allocker;
 
+	//DELETE ME
+	public:
+		BST_pointer getBST( void ) const {return _bst;};
+
 	public:
 		explicit map (const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type()) : _compare(comp), _allocker(alloc), _size(0), _bst(NULL) { }
@@ -95,7 +99,11 @@ class map
 				ret.second = true;
 			}
 			else
+			{
 				ret = _bst->insert(val);
+				_bst = _bst->rotate(_bst);
+				_bst->parent = NULL;
+			}
 			if (ret.second)
 				_size++;
 			return (ret);
