@@ -106,7 +106,7 @@ struct pair{
 
 	pair & operator=( const pair & pr)
 	{
-		if (*this != pr)
+		if (this != &pr)
 		{
 			first = pr.first;
 			second = pr.second;
