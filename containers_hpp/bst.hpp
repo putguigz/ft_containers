@@ -293,7 +293,7 @@ struct BST
 			root->left = new_left;
 			root->parent = node;
 		}
-		else if(root->right == node)
+		else if (root->right == node)
 		{
 			pointer new_right = node->right;
 			pointer new_left = root->left;
@@ -332,17 +332,22 @@ struct BST
 		}
 
 		node->recursive_balancing();
-		
+
 		pointer root_parent = root->parent;
 		if (root_parent->left == root)
 			root_parent->left = destroy(root);
 		else
 			root_parent->right = destroy(root);
 
-		root_parent->balance(root_parent);
-		root_parent = root_parent->rotate(root_parent);
-		
 		node->recursive_balancing();
+
+		if (root->parent != node)
+		{
+			if (root_parent->left == root)
+				root_parent->left = rotate(root_parent->left);
+			else
+				root_parent->right = rotate(root_parent->right);
+		}
 		return node;
 	}
 
@@ -350,7 +355,7 @@ struct BST
 	pointer	destroy( pointer d_stroy )
 	{
 		pointer new_node;
-	
+		
 		if (!d_stroy->left && !d_stroy->right)
 			new_node = destroy_no_child(d_stroy);
 		else if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))

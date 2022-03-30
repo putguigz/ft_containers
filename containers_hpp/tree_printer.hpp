@@ -37,8 +37,10 @@ void print2DUtil(pointer root, int space)
 template <class pointer>
 void print2D(pointer root)
 {
+	std::cout << "\n<========================>\n";
     // Pass initial space count as 0
     print2DUtil(root, 0);
+	std::cout << "\n<========================>\n";
 }
 
 #endif

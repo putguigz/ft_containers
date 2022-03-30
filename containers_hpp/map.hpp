@@ -124,6 +124,12 @@ class map
 			if (_bst->elem.first == k)
 			{
 				_bst = _bst->destroy(_bst);
+				if (_bst)
+				{
+					_bst->balance(_bst);
+					_bst->rotate(_bst);
+					_bst->parent = NULL;
+				}
 				_size--;
 				return 1;
 			}
