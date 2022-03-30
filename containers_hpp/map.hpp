@@ -53,7 +53,7 @@ class map
 		
 		map (const map& x) : _compare(x._compare), _allocker(x._allocker), _size(x._size), _bst(NULL) {
 			if (x._bst)
-				_bst = x._bst->copy_this(_bst);
+				_bst = x._bst->copy_this();
 		 }
 
 		template <class InputIterator>
@@ -72,7 +72,7 @@ class map
 				_size = x._size;
 				destroy_bst();
 				if (x._bst)
-					_bst = x._bst->copy_this(x._bst);
+					_bst = x._bst->copy_this();
 				_bst_allocker = x._bst_allocker;
 			}
 			return (*this);
@@ -102,7 +102,6 @@ class map
 			{
 				ret = _bst->insert(val);
 				_bst->balance(_bst);
-				print2D(_bst);
 				_bst = _bst->rotate(_bst);
 				_bst->parent = NULL;
 			}

@@ -113,24 +113,16 @@ struct BST
 	void	recursive_balancing( void )
 	{
 		if (this->left)
-			left->recursive_balancing();
-		if (this->right)
-			right->recursive_balancing();
-		balance(this);
-	}
-
-	void	connect_parents( void )
-	{
-		if (left)
 		{
 			left->parent = this;
-			left->connect_parents();
+			left->recursive_balancing();
 		}
-		if (right)
-		{	
+		if (this->right)
+		{
 			right->parent = this;
-			right->connect_parents();
+			right->recursive_balancing();
 		}
+		balance(this);
 	}
 
 	pointer	rotate( pointer node )
@@ -187,57 +179,50 @@ struct BST
 				ret.second = true;
 			}
 		}
+		balance(this->left);
+		balance(this->right);
+		left = rotate(this->left);
+		right = rotate(this->right);
 		if (left)
 			left->parent = this;
 		if (right)	
 			right->parent = this;
-		balance(this);
-		left = rotate(this->left);
-		right = rotate(this->right);
 		return ret;
 	}
 
-	pointer	copy_this( const_pointer cpy )
+	pointer	copy_this( void )
 	{
-		if (cpy == NULL)
-			return NULL;
 		pointer tmp;
 		tmp = allocker.allocate(1);
-		allocker.construct(tmp, *cpy);
+		allocker.construct(tmp, this);
 		return tmp;
 	}
 
 	pointer	right_right( void ){
-		std::cout << "debug" << std::endl;
 		pointer new_start = this->left;
 		this->left = new_start->right;
 		new_start->right = this;
 		new_start->recursive_balancing();
-		new_start->connect_parents();
 		return new_start;
 	}
 
 	pointer left_left(void)
 	{
-		std::cout << "debug" << std::endl;
 		pointer new_start = this->right;
 		this->right = new_start->left;
 		new_start->left = this;
 		new_start->recursive_balancing();
-		new_start->connect_parents();
 		return new_start;
 	}
 
 	pointer left_right( void )
 	{
-		std::cout << "debug" << std::endl;
 		left = left->left_left();
 		return (this->right_right());
 	}
 
 	pointer right_left( void )
 	{
-		std::cout << "should end Here" << std::endl;
 		right = right->right_right();
 		return (this->left_left());
 	}
