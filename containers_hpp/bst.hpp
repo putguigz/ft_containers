@@ -257,90 +257,96 @@ struct BST
 
 	pointer	destroy_two_child( pointer root )
 	{
+		struct ptr_cpy{
+			pointer parent;
+			pointer	left;
+			pointer right;
+
+			ptr_cpy( pointer ptr ) : parent(ptr->parent), left(ptr->left), right(ptr->right) {};
+		};
+
 		static bool flag = false;
-		pointer	future_root;
+		pointer	node;
 		if (flag)
 		{
 			flag = false;
-			future_root = root->right;
-			while (future_root->left)
-				future_root = future_root->left;
+			node = root->right;
+			while (node->left)
+				node = node->left;
 		}
 		else
 		{
 			flag = true;
-			future_root = root->left;
-			while (future_root->right)
-				future_root = future_root->right;
+			node = root->left;
+			while (node->right)
+				node = node->right;
 		}
 
-		pointer delete_parent = future_root->parent;
-
-		if (root->left == future_root)
+		if (root->left == node)
 		{
-			pointer new_left = future_root->left;
+			pointer new_left = node->left;
 			pointer new_right = root->right;
 			root->right = NULL;
-			future_root->left = NULL;
-			future_root->left = root;
-			future_root->right = new_right;
+			node->left = NULL;
+			node->left = root;
+			node->right = new_right;
 			root->left = new_left;
+			root->parent = node;
 		}
-		else if(root->right == future_root)
+		else if(root->right == node)
 		{
-			pointer new_right = future_root->right;
+			pointer new_right = node->right;
 			pointer new_left = root->left;
 			root->left = NULL;
-			future_root->right = NULL;
-			future_root->right = root;
-			future_root->left = new_left;
+			node->right = NULL;
+			node->right = root;
+			node->left = new_left;
 			root->right = new_right;
+			root->parent = node;
 		}
 		else
-		{	
-			pointer tmp;
-			if (future_root->parent->left == future_root)
+		{
+			bool left;
+			if (node->parent->left && node->parent->left == node)
 			{
-				future_root->parent->left = NULL;
-				tmp = future_root->parent->left;
-			} 
-			else
-			{
-				future_root->parent->right = NULL;
-				tmp = future_root->parent->right;
+				node->parent->left = NULL;
+				left = true;
 			}
-			pointer root_left = root->left;
-			pointer root_right = root->right;
+			if (node->parent->right && node->parent->right == node)
+			{
+				node->parent->right = NULL;
+				left = false;
+			}
 
-			pointer node_left = future_root->left;
-			pointer node_right = future_root->right;
-			root->left = node_left;
-			root->right = node_right;
-			root->parent = delete_parent;
-			future_root->left = root_left;
-			future_root->right = root_right;
-			tmp = root;
-		}
-
-		if (!root->left && !root->right)
-		{
-			if (delete_parent->left && delete_parent->left == root)
-				delete_parent->left = destroy_no_child(root);
-			else if (delete_parent->right)
-				delete_parent->right = destroy_no_child(root);
-		}
-		else
-		{
-			if (delete_parent->left && delete_parent->left == root)
-				delete_parent->left = destroy_mono_child(root);
+			ptr_cpy root_cpy(root);
+			ptr_cpy node_cpy(node);
+			node->left = root_cpy.left;
+			node->right = root_cpy.right;
+			root->left = node_cpy.left;
+			root->right = node_cpy.right;
+			root->parent = node_cpy.parent;
+			if (left)
+				node_cpy.parent->left = root;
 			else
-				delete_parent->right = destroy_mono_child(root);
+				node_cpy.parent->right = root;
 		}
+		print2D(node);
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
 
-		delete_parent->recursive_balancing();
-		delete_parent = rotate(delete_parent);
+		node->recursive_balancing();
+		
+		if (root->parent->left == root)
+			root->parent->left = destroy(root);
+		else
+			root->parent->right = destroy(root);
 
-		return future_root;
+		print2D(node);
+
+		exit(1);
 	}
 
 

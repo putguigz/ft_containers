@@ -56,7 +56,7 @@ int main(void)
 	print2D< ft::BST<pair_type, compare > *>(ptr);
 
 	std::cout << "BEFORE INFINITY" << std::endl;
-	//ptr->erase_elem(30);
+	ptr->erase_elem(30);
 	std::cout << "AFTER INFINITY" << std::endl;
 
 
@@ -65,7 +65,7 @@ int main(void)
 	std::cout << std::endl;
 	std::cout << std::endl;
 	std::cout << std::endl;
-	print2D< ft::BST<pair_type, compare > *>(ptr);
+	//print2D< ft::BST<pair_type, compare > *>(ptr);
 	
 	std::allocator< ft::BST<pair_type, compare> > allocker;
 	allocker.destroy(ptr);
