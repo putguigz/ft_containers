@@ -14,8 +14,7 @@ int main(void)
 
 	pair_type	pair = std::make_pair(10, 0);
 
-	ft::BST<pair_type, compare>	first(pair);
-	ft::BST<pair_type, compare>	*ptr = &first;
+	ft::BST<pair_type, compare>	*ptr = new ft::BST<pair_type, compare>(pair) ;
 
 	ptr->insert(std::make_pair(30, 0));
 	ptr->balance(ptr);
@@ -57,7 +56,7 @@ int main(void)
 	print2D< ft::BST<pair_type, compare > *>(ptr);
 
 	std::cout << "BEFORE INFINITY" << std::endl;
-	ptr->erase_elem(30);
+	//ptr->erase_elem(30);
 	std::cout << "AFTER INFINITY" << std::endl;
 
 
@@ -67,5 +66,8 @@ int main(void)
 	std::cout << std::endl;
 	std::cout << std::endl;
 	print2D< ft::BST<pair_type, compare > *>(ptr);
-
+	
+	std::allocator< ft::BST<pair_type, compare> > allocker;
+	allocker.destroy(ptr);
+	allocker.deallocate(ptr, 1);
 }

@@ -259,84 +259,90 @@ struct BST
 	{
 		static bool flag = false;
 
-		pointer closest_node;
+		pointer	future_root;
 		if (flag)
 		{
 			flag = false;
-			closest_node = root->right;
-			while (closest_node->left)
-				closest_node = closest_node->left;
+			future_root = root->right;
+			while (future_root->left)
+				future_root = future_root->left;
 		}
 		else
 		{
 			flag = true;
-			closest_node = root->left;
-			while (closest_node->right)
-				closest_node = closest_node->right;
+			future_root = root->left;
+			while (future_root->right)
+				future_root = future_root->right;
 		}
 
-		pointer parent;
-		if (root->left == closest_node)
+		pointer delete_parent = future_root->parent;
+
+		if (root->left == future_root)
 		{
-			std::cout << "SIZI" << std::endl;
-			pointer new_left = closest_node->left;
+			pointer new_left = future_root->left;
 			pointer new_right = root->right;
 			root->right = NULL;
-			closest_node->left = NULL;
-			closest_node->left = root;
-			closest_node->right = new_right;
+			future_root->left = NULL;
+			future_root->left = root;
+			future_root->right = new_right;
 			root->left = new_left;
-			parent = closest_node;
 		}
-		else if(root->right == closest_node)
+		else if(root->right == future_root)
 		{
-			std::cout << "ZICI" << std::endl;
-			pointer new_right = closest_node->right;
+			pointer new_right = future_root->right;
 			pointer new_left = root->left;
 			root->left = NULL;
-			closest_node->right = NULL;
-			closest_node->right = root;
-			closest_node->left = new_left;
+			future_root->right = NULL;
+			future_root->right = root;
+			future_root->left = new_left;
 			root->right = new_right;
-			parent = closest_node;
 		}
 		else
 		{	
 			pointer tmp;
-			pointer parent2 = closest_node->parent;
-			if (closest_node->parent->left == closest_node)
+			pointer parent2 = future_root->parent;
+			if (future_root->parent->left == future_root)
 			{
-				closest_node->parent->left = NULL;
-				tmp = closest_node->parent->left;
+				future_root->parent->left = NULL;
+				tmp = future_root->parent->left;
 			} 
 			else
 			{
-				closest_node->parent->right = NULL;
-				tmp = closest_node->parent->right;
+				future_root->parent->right = NULL;
+				tmp = future_root->parent->right;
 			}
 			pointer root_left = root->left;
 			pointer root_right = root->right;
-			parent = root->parent;
 
-			pointer node_left = closest_node->left;
-			pointer node_right = closest_node->right;
+			pointer node_left = future_root->left;
+			pointer node_right = future_root->right;
 			root->left = node_left;
 			root->right = node_right;
 			root->parent = parent2;
-			closest_node->left = root_left;
-			closest_node->right = root_right;
+			future_root->left = root_left;
+			future_root->right = root_right;
 			tmp = root;
 		}
 
 		if (!root->left && !root->right)
-			destroy_no_child(root);
+		{
+			if (root->parent->left && root->parent->left == root)
+				root->parent->left = destroy_no_child(root);
+			else if (root->parent->right)
+				root->parent->right = destroy_no_child(root);
+		}
 		else
-			destroy_mono_child(root);
+		{
+			if (root->parent->left && root->parent->left == root)
+				root->parent->left = destroy_mono_child(root);
+			else
+				root->parent->right = destroy_mono_child(root);
+		}
 
-		parent->recursive_balancing();
-		parent = rotate(parent);
+		delete_parent->recursive_balancing();
+		delete_parent = rotate(delete_parent);
 
-		return closest_node;
+		return future_root;
 	}
 
 
