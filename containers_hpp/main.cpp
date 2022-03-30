@@ -23,6 +23,9 @@ int main(void)
 	first.insert(ft::make_pair(7, 0));
 	first.insert(ft::make_pair(8, 0));
 
+	std::cout << first.erase(10) << std::endl;
+	std::cout << first.erase(30) << std::endl;
+	std::cout << first.erase(17) << std::endl;
 
 	print2D(first.getBST());
 

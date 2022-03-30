@@ -89,6 +89,7 @@ class map
 		};
 
 	public:
+
 		ft::pair<iterator,bool> insert (const value_type& val){
 			ft::pair<BST_pointer, bool> ret;
 			if (!_bst)
@@ -114,6 +115,28 @@ class map
   		void insert (InputIterator first, InputIterator last){
 			for (; first != last; first++)
 				insert(*first);
+		}
+
+		size_type	erase(const key_type & k)
+		{
+			if (!_bst)
+				return 0;
+			if (_bst->elem.first == k)
+			{
+				_bst = _bst->destroy(_bst);
+				_size--;
+				return 1;
+			}
+			if (_bst->erase_elem(k))
+			{
+				_bst->balance(_bst);
+				_bst->rotate(_bst);
+				_bst->parent = NULL;
+				_size--;
+				return 1;
+			}
+			else
+				return 0;
 		}
 
 	public:
