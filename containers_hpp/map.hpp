@@ -123,7 +123,7 @@ class map
 				return 0;
 			if (_bst->elem.first == k)
 			{
-				_bst = _bst->destroy(_bst);
+				_bst = destroy(_bst);
 				if (_bst)
 				{
 					_bst->balance(_bst);
