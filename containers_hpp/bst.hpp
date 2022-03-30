@@ -258,7 +258,6 @@ struct BST
 	pointer	destroy_two_child( pointer root )
 	{
 		static bool flag = false;
-
 		pointer	future_root;
 		if (flag)
 		{
@@ -300,7 +299,6 @@ struct BST
 		else
 		{	
 			pointer tmp;
-			pointer parent2 = future_root->parent;
 			if (future_root->parent->left == future_root)
 			{
 				future_root->parent->left = NULL;
@@ -318,7 +316,7 @@ struct BST
 			pointer node_right = future_root->right;
 			root->left = node_left;
 			root->right = node_right;
-			root->parent = parent2;
+			root->parent = delete_parent;
 			future_root->left = root_left;
 			future_root->right = root_right;
 			tmp = root;
@@ -326,17 +324,17 @@ struct BST
 
 		if (!root->left && !root->right)
 		{
-			if (root->parent->left && root->parent->left == root)
-				root->parent->left = destroy_no_child(root);
-			else if (root->parent->right)
-				root->parent->right = destroy_no_child(root);
+			if (delete_parent->left && delete_parent->left == root)
+				delete_parent->left = destroy_no_child(root);
+			else if (delete_parent->right)
+				delete_parent->right = destroy_no_child(root);
 		}
 		else
 		{
-			if (root->parent->left && root->parent->left == root)
-				root->parent->left = destroy_mono_child(root);
+			if (delete_parent->left && delete_parent->left == root)
+				delete_parent->left = destroy_mono_child(root);
 			else
-				root->parent->right = destroy_mono_child(root);
+				delete_parent->right = destroy_mono_child(root);
 		}
 
 		delete_parent->recursive_balancing();
