@@ -330,23 +330,20 @@ struct BST
 			else
 				node_cpy.parent->right = root;
 		}
-		print2D(node);
-		std::cout << std::endl;
-		std::cout << std::endl;
-		std::cout << std::endl;
-		std::cout << std::endl;
-		std::cout << std::endl;
 
 		node->recursive_balancing();
 		
-		if (root->parent->left == root)
-			root->parent->left = destroy(root);
+		pointer root_parent = root->parent;
+		if (root_parent->left == root)
+			root_parent->left = destroy(root);
 		else
-			root->parent->right = destroy(root);
+			root_parent->right = destroy(root);
 
-		print2D(node);
-
-		exit(1);
+		root_parent->balance(root_parent);
+		root_parent = root_parent->rotate(root_parent);
+		
+		node->recursive_balancing();
+		return node;
 	}
 
 

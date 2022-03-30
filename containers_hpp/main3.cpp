@@ -52,12 +52,27 @@ int main(void)
 	ptr->balance(ptr);
 	ptr = ptr->rotate(ptr);
 	ptr->parent = NULL;
+	ptr->insert(std::make_pair(2, 0));
+	ptr->balance(ptr);
+	ptr = ptr->rotate(ptr);
+	ptr->parent = NULL;
+	ptr->insert(std::make_pair(0, 0));
+	ptr->balance(ptr);
+	ptr = ptr->rotate(ptr);
+	ptr->parent = NULL;
+	ptr->insert(std::make_pair(13, 0));
+	ptr->balance(ptr);
+	ptr = ptr->rotate(ptr);
+	ptr->parent = NULL;
 
 	print2D< ft::BST<pair_type, compare > *>(ptr);
 
-	std::cout << "BEFORE INFINITY" << std::endl;
-	ptr->erase_elem(30);
-	std::cout << "AFTER INFINITY" << std::endl;
+	ptr->erase_elem(10);
+	ptr->balance(ptr);
+	ptr->rotate(ptr);
+	ptr->parent = NULL;
+
+
 
 
 	std::cout << std::endl;
@@ -65,7 +80,8 @@ int main(void)
 	std::cout << std::endl;
 	std::cout << std::endl;
 	std::cout << std::endl;
-	//print2D< ft::BST<pair_type, compare > *>(ptr);
+	
+	print2D< ft::BST<pair_type, compare > *>(ptr);
 	
 	std::allocator< ft::BST<pair_type, compare> > allocker;
 	allocker.destroy(ptr);
