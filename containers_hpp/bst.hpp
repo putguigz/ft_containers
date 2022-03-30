@@ -235,39 +235,14 @@ struct BST
 		}
 	}
 
-	void	destroy( pointer d_stroy )
+	pointer	destroy_no_child(pointer d_ptr)
 	{
-		if (!d_stroy->left && !d_stroy->right)
-			destroy_no_child(d_stroy);
-		else if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))
-			destroy_mono_child(d_stroy);
-		else if (d_stroy->left && d_stroy->right)
-			destroy_two_child(d_stroy);
+		destroy_pointer(d_ptr);
+		return NULL;
 	}
 
-	int	destroy_no_child(pointer d_ptr)
+	pointer	destroy_mono_child( pointer d_ptr )
 	{
-		pointer parent = d_ptr->parent;
-		if (!parent)
-			return 0;
-		else
-		{
-			if (d_ptr == parent->left)
-			{
-				destroy_pointer(parent->left);
-				return 1;
-			}
-			else
-			{
-				destroy_pointer(parent->right);
-				return -1;
-			}
-		}
-	}
-
-	void	destroy_mono_child( pointer d_ptr )
-	{
-		pointer parent = d_ptr->parent;
 		pointer save_me;
 		if (d_ptr->left)
 			save_me = d_ptr->left;
@@ -275,41 +250,107 @@ struct BST
 			save_me = d_ptr->right;
 		d_ptr->left = NULL;
 		d_ptr->right = NULL;
-		int ret = destroy_no_child(d_ptr);
-		if (ret > 0)
-			parent->left = save_me;
-		else if (ret < 0)
-			parent->right = save_me;
-		save_me->parent = parent;
+		destroy_no_child(d_ptr);
+		save_me->parent = this;
+		return save_me;
 	}
 
-	void	destroy_two_child( pointer d_ptr )
+	pointer	destroy_two_child( pointer root )
 	{
-		static bool flag = true;
+		static bool flag = false;
 
 		pointer closest_node;
 		if (flag)
 		{
 			flag = false;
-			closest_node = d_ptr->right;
+			closest_node = root->right;
 			while (closest_node->left)
 				closest_node = closest_node->left;
 		}
 		else
 		{
 			flag = true;
-			closest_node = d_ptr->left;
+			closest_node = root->left;
 			while (closest_node->right)
 				closest_node = closest_node->right;
 		}
-		d_ptr->elem = closest_node->elem;
-		pointer parent = closest_node->parent;
-		if (!closest_node->left && !closest_node->right)
-			destroy_no_child(closest_node);
-		else if ((!closest_node->left && closest_node->right) || (closest_node->left && !closest_node->right))
-			destroy_mono_child(closest_node);
-		balance(parent);
+
+		pointer parent;
+		if (root->left == closest_node)
+		{
+			std::cout << "SIZI" << std::endl;
+			pointer new_left = closest_node->left;
+			pointer new_right = root->right;
+			root->right = NULL;
+			closest_node->left = NULL;
+			closest_node->left = root;
+			closest_node->right = new_right;
+			root->left = new_left;
+			parent = closest_node;
+		}
+		else if(root->right == closest_node)
+		{
+			std::cout << "ZICI" << std::endl;
+			pointer new_right = closest_node->right;
+			pointer new_left = root->left;
+			root->left = NULL;
+			closest_node->right = NULL;
+			closest_node->right = root;
+			closest_node->left = new_left;
+			root->right = new_right;
+			parent = closest_node;
+		}
+		else
+		{	
+			pointer tmp;
+			pointer parent2 = closest_node->parent;
+			if (closest_node->parent->left == closest_node)
+			{
+				closest_node->parent->left = NULL;
+				tmp = closest_node->parent->left;
+			} 
+			else
+			{
+				closest_node->parent->right = NULL;
+				tmp = closest_node->parent->right;
+			}
+			pointer root_left = root->left;
+			pointer root_right = root->right;
+			parent = root->parent;
+
+			pointer node_left = closest_node->left;
+			pointer node_right = closest_node->right;
+			root->left = node_left;
+			root->right = node_right;
+			root->parent = parent2;
+			closest_node->left = root_left;
+			closest_node->right = root_right;
+			tmp = root;
+		}
+
+		if (!root->left && !root->right)
+			destroy_no_child(root);
+		else
+			destroy_mono_child(root);
+
+		parent->recursive_balancing();
 		parent = rotate(parent);
+
+		return closest_node;
+	}
+
+
+	pointer	destroy( pointer d_stroy )
+	{
+		pointer new_node;
+	
+		if (!d_stroy->left && !d_stroy->right)
+			new_node = destroy_no_child(d_stroy);
+		else if ((!d_stroy->left && d_stroy->right) || (d_stroy->left && !d_stroy->right))
+			new_node = destroy_mono_child(d_stroy);
+		else
+			new_node = destroy_two_child(d_stroy);
+		return new_node;
 	}
 
 	int	erase_elem( key_type key)
@@ -321,7 +362,7 @@ struct BST
 			{
 				if (key == left->elem.first)
 				{
-					destroy(left);
+					left = destroy(left);
 					balance(left);
 					left = rotate(left);
 					ret = 1;
@@ -337,7 +378,7 @@ struct BST
 			{
 				if (key == right->elem.first)
 				{	
-					destroy(right);
+					right = destroy(right);
 					balance(right);
 					right = rotate(right);
 					ret = 1;
@@ -348,8 +389,14 @@ struct BST
 		}
 		if (ret)
 		{
-			balance(this);
-			rotate(this);
+			balance(this->left);
+			balance(this->right);
+			left = rotate(this->left);
+			right = rotate(this->right);
+			if (left)
+				left->parent = this;
+			if (right)	
+				right->parent = this;
 		}
 		return ret;
 	}
