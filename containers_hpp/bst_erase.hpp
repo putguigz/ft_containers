@@ -103,8 +103,6 @@ bst_pointer	destroy_two_child( bst_pointer root )
 		else
 			node_cpy.parent->right = root;
 	}
-	print2D(node);
-	print2D(root);
 
 	bst_pointer root_parent = root->parent;
 
@@ -114,9 +112,6 @@ bst_pointer	destroy_two_child( bst_pointer root )
 		root_parent->right = destroy(root);	
 	
 	node->recursive_balancing();
-
-	print2D(node);
-	print2D(root_parent);
 
 	if (node != root_parent)
 	{
