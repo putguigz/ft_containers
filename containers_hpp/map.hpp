@@ -102,8 +102,8 @@ class map
 			else
 			{
 				ret = _bst->insert(val);
-				_bst->balance(_bst);
-				_bst = _bst->rotate(_bst);
+				balance(_bst);
+				_bst = rotate(_bst);
 				_bst->parent = NULL;
 			}
 			if (ret.second)
@@ -126,8 +126,8 @@ class map
 				_bst = destroy(_bst);
 				if (_bst)
 				{
-					_bst->balance(_bst);
-					_bst->rotate(_bst);
+					balance(_bst);
+					_bst = rotate(_bst);
 					_bst->parent = NULL;
 				}
 				_size--;
@@ -135,8 +135,8 @@ class map
 			}
 			if (_bst->erase_elem(k))
 			{
-				_bst->balance(_bst);
-				_bst->rotate(_bst);
+				balance(_bst);
+				_bst = rotate(_bst);
 				_bst->parent = NULL;
 				_size--;
 				return 1;
