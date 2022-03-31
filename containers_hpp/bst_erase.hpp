@@ -4,14 +4,14 @@
 namespace ft{
 
 template <class bst_pointer>
-bst_pointer	destroy_no_child(bst_pointer d_ptr)
+bst_pointer	destroy_no_child(bst_pointer &d_ptr)
 {
 	destroy_pointer(d_ptr, d_ptr->allocker);
 	return NULL;
 }
 
 template <class bst_pointer>
-bst_pointer	destroy_mono_child( bst_pointer d_ptr )
+bst_pointer	destroy_mono_child( bst_pointer &d_ptr )
 {
 	bst_pointer save_me;
 	if (d_ptr->left)
@@ -57,10 +57,11 @@ bst_pointer	destroy_two_child( bst_pointer root )
 		bst_pointer new_left = node->left;
 		bst_pointer new_right = root->right;
 		root->right = NULL;
-		node->left = NULL;
+		root->left = NULL;
 		node->left = root;
 		node->right = new_right;
 		root->left = new_left;
+		node->parent = root->parent;
 		root->parent = node;
 	}
 	else if (root->right == node)
@@ -68,10 +69,11 @@ bst_pointer	destroy_two_child( bst_pointer root )
 		bst_pointer new_right = node->right;
 		bst_pointer new_left = root->left;
 		root->left = NULL;
-		node->right = NULL;
+		root->right = NULL;
 		node->right = root;
 		node->left = new_left;
 		root->right = new_right;
+		node->parent = root->parent;
 		root->parent = node;
 	}
 	else
@@ -92,6 +94,7 @@ bst_pointer	destroy_two_child( bst_pointer root )
 		ptr_cpy node_cpy(node);
 		node->left = root_cpy.left;
 		node->right = root_cpy.right;
+		node->parent = root_cpy.parent;
 		root->left = node_cpy.left;
 		root->right = node_cpy.right;
 		root->parent = node_cpy.parent;
@@ -100,29 +103,34 @@ bst_pointer	destroy_two_child( bst_pointer root )
 		else
 			node_cpy.parent->right = root;
 	}
-
-	node->recursive_balancing();
+	print2D(node);
+	print2D(root);
 
 	bst_pointer root_parent = root->parent;
+
 	if (root_parent->left == root)
 		root_parent->left = destroy(root);
 	else
-		root_parent->right = destroy(root);
-
+		root_parent->right = destroy(root);	
+	
 	node->recursive_balancing();
 
-	if (root->parent != node)
+	print2D(node);
+	print2D(root_parent);
+
+	if (node != root_parent)
 	{
-		if (root_parent->left == root)
-			root_parent->left = rotate(root_parent->left);
+		bst_pointer saved_parent = root_parent->parent;
+		if (saved_parent->left == root_parent)
+			saved_parent->left = rotate(root_parent);
 		else
-			root_parent->right = rotate(root_parent->right);
+			saved_parent->right = rotate(root_parent);
 	}
 	return node;
 }
 
 template <class bst_pointer>
-bst_pointer	destroy( bst_pointer d_stroy )
+bst_pointer	destroy( bst_pointer &d_stroy )
 {
 	bst_pointer new_node;
 	
