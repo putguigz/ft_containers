@@ -4,6 +4,7 @@
 # include "containers.hpp"
 # include "utils.hpp"
 # include "bst.hpp"
+# include "map_iterator.hpp"
 
 namespace ft{
 
@@ -25,16 +26,14 @@ class map
 		typedef typename allocator_type::const_reference        const_reference;
 		typedef typename allocator_type::pointer                pointer;
 		typedef typename allocator_type::const_pointer          const_pointer;
-	
-		// typedef ft::MapIterator<ft::map<T, A>, false >          iterator;
-		// typedef ft::MapIterator<ft::map<T, A>, true >           const_iterator;
-		// typedef ft::reverse_iterator<iterator>                  reverse_iterator;
-		// typedef ft::reverse_iterator<const_iterator>            const_reverse_iterator;
-		// typedef ft::iterator_traits<iterator>::difference_type  difference_type;
+		typedef typename allocator_type::difference_type		difference_type;
 
 		typedef typename std::allocator< BST< value_type, key_compare > >	BST_allocator_type;
 		typedef typename BST_allocator_type::pointer						BST_pointer;
-		typedef BST_pointer													iterator;
+		typedef typename ft::MapIterator< map<Key, T>, false  >				iterator;
+		typedef typename ft::MapIterator< const map<Key, T>, true >			const_iterator;
+		typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 	
 	private:
 		key_compare							_compare;
@@ -143,6 +142,22 @@ class map
 			}
 			else
 				return 0;
+		}
+
+	//ITERATORS//
+	public:
+		iterator begin( void ) {
+			if (_bst)
+				return (iterator(_bst->find_start()));
+			else
+				return (iterator());
+		}
+
+		iterator end( void ){
+			if (_bst)
+				return (iterator(_bst->find_end()));
+			else
+				return (iterator());
 		}
 
 	public:

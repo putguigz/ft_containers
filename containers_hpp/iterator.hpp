@@ -1,7 +1,6 @@
 #ifndef __ITERATOR_HPP__
 # define __ITERATOR_HPP__
 
-# include "vector.hpp"
 # include "traits.hpp"
 
 namespace ft{
@@ -30,7 +29,7 @@ class bidir_iterator
 			return *this;
 		};
 
-	public:		
+	public:	
 		friend bool	operator==(bidir_iterator const & lhs, bidir_iterator const & rhs){
 			return (lhs.base() == rhs.base() ? true : false);
 		}

@@ -26,24 +26,46 @@ int main(void)
 
 	print2D(first.getBST());
 
-	first.erase(40);
-	first.erase(43);
-	first.erase(10);
-	first.erase(8);
-	first.erase(15);
-	first.erase(16);
-	first.erase(28);
-	first.erase(20);
-	first.erase(18);
-	first.erase(42);
-	first.erase(35);
-	first.erase(30);
-	first.erase(17);
-	first.erase(42);
-	first.erase(7);
-	first.erase(42);
+	// first.erase(40);
+	// first.erase(43);
+	// first.erase(10);
+	// first.erase(8);
+	// first.erase(15);
+	// first.erase(16);
+	// first.erase(28);
+	// first.erase(20);
+	// first.erase(18);
+	// first.erase(42);
+	// first.erase(35);
+	// first.erase(30);
+	// first.erase(17);
+	// first.erase(42);
+	// first.erase(7);
+	// first.erase(42);
+//	print2D(first.getBST());
 
-
-	print2D(first.getBST());
-
+	ft::map<int, int>::iterator it = first.begin();
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
 }
