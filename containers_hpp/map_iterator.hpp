@@ -77,7 +77,32 @@ class MapIterator
 			MapIterator tmp(_it); operator++(); return tmp; 
 		};
 		MapIterator&	operator--( void ) { 
-			this->_it--; return (*this); 
+			BST_pointer tmp_it = this->_it;
+
+			if (this->_it->left)
+			{
+				tmp_it = tmp_it->left;
+				while (tmp_it->right)
+				{
+					tmp_it = tmp_it->right;
+				}
+				_it = tmp_it;
+			}
+			else
+			{
+				tmp_it = tmp_it->parent;
+				while (tmp_it)
+				{
+					if (comp(tmp_it->elem.first, _it->elem.first))
+						break;
+					tmp_it = tmp_it->parent;
+				}
+				if (tmp_it)
+					this->_it = tmp_it;
+				else
+					this->_it -= 1;
+			}
+			return (*this); 
 		};
 		MapIterator		operator--( int ) { 
 			MapIterator tmp(_it); operator--(); return tmp;

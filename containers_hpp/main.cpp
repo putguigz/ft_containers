@@ -68,4 +68,9 @@ int main(void)
 	std::cout << (*it).first << std::endl;
 	it++;
 	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+	it++;
+	std::cout << (*it).first << std::endl;
+
 }
