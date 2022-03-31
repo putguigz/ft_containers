@@ -24,13 +24,17 @@ class MapIterator
 		typedef typename map_traits<map>::BST_pointer			BST_pointer;
 
 	public:
-		MapIterator( void ) : _it(NULL) {};
+		MapIterator( void ) : _it(NULL), _out(false), _offset(0) {};
 		MapIterator( BST_pointer root) : _it(root) {};
 		virtual ~MapIterator( void ) {};
-		MapIterator( MapIterator const & src) : _it(NULL) {*this = src;};
+		MapIterator( MapIterator const & src) : _it(NULL), _out(false), _offset(0) {*this = src;};
 		MapIterator & operator=( MapIterator const & src ) {
 			if (*this != src)
+			{
 				_it = src._it;
+				_out = src._out;
+				_offset = srs._offset;
+			}
 			return *this;
 		};
 
@@ -46,30 +50,40 @@ class MapIterator
 		reference 		operator*( void ) { return (this->_it->elem); };
 		pointer			operator->( void ) { return (&(this->_it->elem)); };
 		MapIterator& 	operator++( void ) {
-			BST_pointer tmp_it = this->_it;
-			
-			if (this->_it->right)
-			{
-				tmp_it = tmp_it->right;
-				while (tmp_it->left)
-				{
-					tmp_it = tmp_it->left;
-				}
-				_it = tmp_it;
-			}
+			if (_out)
+				_it += 1;
 			else
 			{
-				tmp_it = tmp_it->parent;
-				while (tmp_it)
+				BST_pointer tmp_it = this->_it;
+				
+				if (this->_it->right)
 				{
-					if (!comp(tmp_it->elem.first, _it->elem.first))
-						break;
-					tmp_it = tmp_it->parent;
+					tmp_it = tmp_it->right;
+					while (tmp_it->left)
+					{
+						tmp_it = tmp_it->left;
+					}
+					_it = tmp_it;
 				}
-				if (tmp_it)
-					this->_it = tmp_it;
 				else
-					this->_it += 1;
+				{
+					tmp_it = tmp_it->parent;
+					while (tmp_it)
+					{
+						if (!comp(tmp_it->elem.first, _it->elem.first))
+							break;
+						tmp_it = tmp_it->parent;
+					}
+					if (tmp_it)
+						this->_it = tmp_it;
+					else
+					{
+						this->_it += 1;
+						this->_offset += 1;
+						if (_offset == 0)
+						this->_out = true;
+					}
+				}
 			}
 			return (*this); 
 		};
@@ -100,7 +114,10 @@ class MapIterator
 				if (tmp_it)
 					this->_it = tmp_it;
 				else
+				{
 					this->_it -= 1;
+					this->_out = true;
+				}
 			}
 			return (*this); 
 		};
@@ -113,6 +130,8 @@ class MapIterator
 	private:
 		BST_pointer _it;
 		key_compare comp;
+		bool		_out;
+		int			_offset;
 
 	public:
 		BST_pointer	base( void ) const { return _it;};
