@@ -50,5 +50,27 @@ int main(void)
 	{
 		std::cout << it->first << std::endl;
 	}
-
+	it++;
+	it++;
+	it--;
+	it--;
+	it--;
+	std::cout << it->first << std::endl;
+	it--;
+	std::cout << it->first << std::endl;
+	it--;
+	std::cout << it->first << std::endl;
+	it--;
+	std::cout << it->first << std::endl;
+	it--;
+	std::cout << it->first << std::endl;
+	it--;
+	std::cout << it->first << std::endl;
+	it--;
+	std::cout << it->first << std::endl;
+	for (; it != first.begin(); it--);
+	std::cout << it->first << std::endl;
+	it--;
+	it++;
+	std::cout << (*it).first << std::endl;
 }

@@ -33,7 +33,7 @@ class MapIterator
 			{
 				_it = src._it;
 				_out = src._out;
-				_offset = srs._offset;
+				_offset = src._offset;
 			}
 			return *this;
 		};
@@ -51,7 +51,12 @@ class MapIterator
 		pointer			operator->( void ) { return (&(this->_it->elem)); };
 		MapIterator& 	operator++( void ) {
 			if (_out)
+			{
 				_it += 1;
+				this->_offset += 1;
+				if (_offset == 0)
+					_out = false;
+			}
 			else
 			{
 				BST_pointer tmp_it = this->_it;
@@ -80,7 +85,6 @@ class MapIterator
 					{
 						this->_it += 1;
 						this->_offset += 1;
-						if (_offset == 0)
 						this->_out = true;
 					}
 				}
@@ -91,36 +95,48 @@ class MapIterator
 			MapIterator tmp(_it); operator++(); return tmp; 
 		};
 		MapIterator&	operator--( void ) { 
-			BST_pointer tmp_it = this->_it;
-
-			if (this->_it->left)
+			if (_out)
 			{
-				tmp_it = tmp_it->left;
-				while (tmp_it->right)
-				{
-					tmp_it = tmp_it->right;
-				}
-				_it = tmp_it;
+				_it -= 1;
+				this->_offset -= 1;
+				if (_offset == 0)
+					_out = false;
 			}
 			else
 			{
-				tmp_it = tmp_it->parent;
-				while (tmp_it)
+				BST_pointer tmp_it = this->_it;
+
+				if (this->_it->left)
 				{
-					if (comp(tmp_it->elem.first, _it->elem.first))
-						break;
-					tmp_it = tmp_it->parent;
+					tmp_it = tmp_it->left;
+					while (tmp_it->right)
+					{
+						tmp_it = tmp_it->right;
+					}
+					_it = tmp_it;
 				}
-				if (tmp_it)
-					this->_it = tmp_it;
 				else
 				{
-					this->_it -= 1;
-					this->_out = true;
+					tmp_it = tmp_it->parent;
+					while (tmp_it)
+					{
+						if (comp(tmp_it->elem.first, _it->elem.first))
+							break;
+						tmp_it = tmp_it->parent;
+					}
+					if (tmp_it)
+						this->_it = tmp_it;
+					else
+					{
+						this->_it -= 1;
+						this->_offset -= 1;
+						this->_out = true;
+					}
 				}
 			}
-			return (*this); 
+			return (*this);
 		};
+
 		MapIterator		operator--( int ) { 
 			MapIterator tmp(_it); operator--(); return tmp;
 		};
@@ -134,7 +150,10 @@ class MapIterator
 		int			_offset;
 
 	public:
-		BST_pointer	base( void ) const { return _it;};
+		void		setOut( bool bl) { _out = bl; };
+		void		setOffset( int nb) { _offset = nb; };
+		BST_pointer	base( void ) const { return _it; };
+
 };
 
 }

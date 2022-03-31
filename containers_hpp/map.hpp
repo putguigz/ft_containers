@@ -155,7 +155,12 @@ class map
 
 		iterator end( void ){
 			if (_bst)
-				return (iterator(_bst->find_end()));
+			{
+				iterator past_end = iterator(_bst->find_end());
+				past_end.setOut(true);
+				past_end.setOffset(1);
+				return (past_end);
+			}
 			else
 				return (iterator());
 		}
