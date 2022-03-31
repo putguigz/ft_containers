@@ -25,7 +25,7 @@ class MapIterator
 
 	public:
 		MapIterator( void ) : _it(NULL), _out(false), _offset(0) {};
-		MapIterator( BST_pointer root) : _it(root) {};
+		MapIterator( BST_pointer root) : _it(root), _out(false), _offset(0) {};
 		virtual ~MapIterator( void ) {};
 		MapIterator( MapIterator const & src) : _it(NULL), _out(false), _offset(0) {*this = src;};
 		MapIterator & operator=( MapIterator const & src ) {
