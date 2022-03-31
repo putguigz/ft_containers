@@ -214,7 +214,7 @@ struct BST
 	pointer	find_end( void )
 	{
 		if (this->right)
-			return (right->find_start());
+			return (right->find_end());
 		else
 			return (this + 1);
 	}

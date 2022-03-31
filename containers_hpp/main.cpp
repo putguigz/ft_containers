@@ -45,32 +45,10 @@ int main(void)
 //	print2D(first.getBST());
 
 	ft::map<int, int>::iterator it = first.begin();
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
-	it++;
-	std::cout << (*it).first << std::endl;
+	ft::map<int, int>::iterator it_end = first.end();
+	for (; it != it_end; it++)
+	{
+		std::cout << it->first << std::endl;
+	}
 
 }
