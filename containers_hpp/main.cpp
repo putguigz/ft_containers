@@ -27,7 +27,7 @@ int main(void)
 	first.insert(PREFIX::make_pair(7, 0));
 	first.insert(PREFIX::make_pair(8, 0));
 
-	//print2D(first.getBST());
+	print2D(first.getBST());
 
 	// first.erase(40);
 	// first.erase(43);
@@ -47,27 +47,5 @@ int main(void)
 	// first.erase(42);
 //	print2D(first.getBST());
 
-	PREFIX::map<int, int>::const_iterator it = first.begin();
-	PREFIX::map<int, int>::iterator it2 = first.begin();
-	PREFIX::map<int, int>::iterator it_end = first.end();
-	for (; it != it_end; it++)
-	{
-		std::cout << it->first << std::endl;
-	}
-	for (int i = 0; i != 5; i++)
-	{
-		std::cout << RED << (*++it2).first << RESET << std::endl;
-	}
-	while (it != it2)
-	{
-		it--;
-	}
-	std::cout << FIRE << "it->first " << it->first << RESET << std::endl;
-	std::cout << FIRE << "it->second " << it->second << RESET << std::endl;
-	it->second = 43;
-	std::cout << FIRE << "it->second " << it->second << RESET << std::endl;
-	std::cout << YELLOW << "it2->first " << it2->first << RESET << std::endl;
-	std::cout << YELLOW << "it2->second " << it2->second << RESET << std::endl;
-	it2->second = 42;
-	std::cout << YELLOW << "it2->second " << it2->second << RESET << std::endl;
+	PREFIX::map<int, int>::const_iterator it = first.lower_bound(45);
 }

@@ -219,6 +219,25 @@ struct BST
 			return (this + 1);
 	}
 
+	pointer find_by_key( key_type const & key )
+	{
+		if (cmp(key, this->elem.first))
+		{
+			if (left)
+				return (left->find_by_key(key));
+			else
+				return NULL;
+		}
+		else
+		{
+			if (key == this->elem.first)
+				return this;
+			else if (right)
+				return (right->find_by_key(key));
+			else
+				return NULL;
+		}
+	}
 };
 
 }

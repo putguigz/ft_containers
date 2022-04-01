@@ -84,6 +84,7 @@ class map
 				_bst_allocker.destroy(_bst);
 				_bst_allocker.deallocate(_bst, 1);
 				_bst = NULL;
+				_size = 0;
 			}
 		};
 
@@ -153,6 +154,14 @@ class map
 				return (iterator());
 		}
 
+		const_iterator begin() const {
+			if (_bst)
+				return (const_iterator(_bst->find_start()));
+			else
+				return (const_iterator());
+		};
+
+
 		iterator end( void ){
 			if (_bst)
 			{
@@ -165,7 +174,94 @@ class map
 				return (iterator());
 		}
 
+		const_iterator end( void ) const {
+			if (_bst)
+			{
+				const_iterator past_end = const_iterator(_bst->find_end());
+				past_end.setOut(true);
+				past_end.setOffset(1);
+				return (past_end);
+			}
+			else
+				return (const_iterator());
+		}
+
+		iterator find (const key_type& k){
+			if (_bst)
+			{
+				BST_pointer tmp = _bst->find_by_key(k);
+				if (tmp)
+					return (iterator(tmp));
+				else
+					return (end());
+			}
+			else
+				return (iterator());	
+		}
+
+		const_iterator find (const key_type& k) const{
+			if (_bst)
+			{
+				BST_pointer tmp = _bst->find_by_key(k);
+				if (tmp)
+					return (const_iterator(tmp));
+				else
+					return (end());
+			}
+			else
+				return (const_iterator());
+		}
+
+		size_type	count( const key_type& k) const{
+			if (_bst)
+			{
+				BST_pointer tmp = _bst->find_by_key(k);
+				if (tmp)
+					return 1;
+				else
+					return 0;
+			}
+			else
+				return 0;
+		}
+
+		iterator lower_bound (const key_type& k)
+		{
+			if (_bst)
+			{
+				iterator it = begin();
+				iterator it_end = end();
+				for (; it != it_end; it++)
+				{
+					if (!_compare(it->first, k))
+						break;
+				}
+				return (it);
+			}
+			else
+				return (iterator());
+		}
+
+		const_iterator lower_bound (const key_type& k) const
+		{
+			if (_bst)
+			{
+				const_iterator it = _bst->begin();
+				const_iterator it_end = _bst->end();
+				for (; it != it_end; it++)
+				{
+					if (!_compare(it->first, k))
+						break;
+				}
+				return (it);
+			}
+			else
+				return (const_iterator());
+		}
+	
+
 	public:
+		void clear() { destroy_bst(); };
 		size_type size( void ) const { return _size; }
 		size_type max_size() const { return _allocker.max_size(); }
 		bool empty( void ) const { return (_size == 0 ? true : false); }
