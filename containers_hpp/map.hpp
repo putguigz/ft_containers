@@ -357,6 +357,17 @@ class map
 				return (const_iterator());
 		}
 
+		reverse_iterator rbegin( void ) { return reverse_iterator(end()); };
+		reverse_iterator rend( void ) { return reverse_iterator(begin()); };
+		
+		const_reverse_iterator rbegin( void ) const { return const_reverse_iterator(end()); };
+		const_reverse_iterator rend( void ) const { return const_reverse_iterator(begin()); };
+
+		mapped_type& operator[] (const key_type& k)
+		{
+			return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
+		}
+
 	public:
 		void clear() { destroy_bst(); };
 		size_type size( void ) const { return _size; }
