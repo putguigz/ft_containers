@@ -176,10 +176,7 @@ class map
 		void		erase(iterator first, iterator last)
 		{
 			while (first != last)
-			{
-				print2D(_bst);
 				erase(first++);
-			}
 		}
 
 		size_type	erase(const key_type & k)

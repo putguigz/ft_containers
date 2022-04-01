@@ -79,11 +79,7 @@ int main(void)
 
 
 	PREFIX::map<int, int>::iterator it = first.begin();
-	PREFIX::map<int, int>::iterator it2 = first.upper_bound(30);
-
-	it2--;
-	std::cout << it->first << std::endl;
-	std::cout << it2->first << std::endl;
+	PREFIX::map<int, int>::iterator it2 = first.end();
 
 	first.erase(it, it2);
 
