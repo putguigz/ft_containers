@@ -121,7 +121,7 @@ class map
 		{
 			static_cast<void>(position);
 			ft::pair<iterator, bool> ret = insert(val);
-			return (ret->first);
+			return (ret.first);
 		}
 
 		size_type	erase(const key_type & k)
