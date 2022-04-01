@@ -21,7 +21,7 @@ class map
 		typedef ft::pair< const Key, T >                        value_type;
 		typedef Compare                                         key_compare;
 		typedef Alloc                                           allocator_type;
-		typedef typename Alloc::size_type						size_type;
+		typedef typename allocator_type::size_type				size_type;
 		typedef typename allocator_type::reference              reference;
 		typedef typename allocator_type::const_reference        const_reference;
 		typedef typename allocator_type::pointer                pointer;
@@ -135,7 +135,8 @@ class map
 
 		iterator insert (iterator position, const value_type& val)
 		{
-			static_cast<void>(position);
+			if (position == end())
+				return (position);
 			ft::pair<iterator, bool> ret = insert(val);
 			return (ret.first);
 		}
@@ -395,7 +396,7 @@ class map
 	public:
 		void 			clear() { destroy_bst(); };
 		size_type		size( void ) const { return _size; }
-		size_type		max_size() const { return _allocker.max_size(); }
+		size_type		max_size() const { return _bst_allocker.max_size(); }
 		bool			empty( void ) const { return (_size == 0 ? true : false); }
 		allocator_type	get_allocator( void ) const { return _allocker; }
 		key_compare		key_comp() const { return _compare; }

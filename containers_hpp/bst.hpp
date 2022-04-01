@@ -151,7 +151,7 @@ struct BST
 	{
 		pointer tmp;
 		tmp = allocker.allocate(1);
-		allocker.construct(tmp, this);
+		allocker.construct(tmp, *this);
 		return tmp;
 	}
 
