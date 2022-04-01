@@ -47,5 +47,7 @@ int main(void)
 	// first.erase(42);
 //	print2D(first.getBST());
 
-	PREFIX::map<int, int>::const_iterator it = first.lower_bound(45);
+	PREFIX::map<int, int>::iterator it = first.lower_bound(22);
+	first.insert(it, 29);
+	print2D(first.getBST());
 }

@@ -117,6 +117,13 @@ class map
 				insert(*first);
 		}
 
+		iterator insert (iterator position, const value_type& val)
+		{
+			static_cast<void>(position);
+			ft::pair<iterator, bool> ret = insert(val);
+			return (ret->first);
+		}
+
 		size_type	erase(const key_type & k)
 		{
 			if (!_bst)
@@ -259,6 +266,37 @@ class map
 				return (const_iterator());
 		}
 	
+		iterator upper_bound (const key_type& k){
+			if (_bst)
+			{
+				iterator it = _bst->begin();
+				iterator it_end = _bst->end();
+				for (; it != it_end; it++)
+				{
+					if (_compare(k, it->first))
+						break;
+				}
+				return (it);
+			}
+			else
+				return (iterator());
+		}
+
+		const_iterator upper_bound (const key_type& k) const{
+			if (_bst)
+			{
+				const_iterator it = _bst->begin();
+				const_iterator it_end = _bst->end();
+				for (; it != it_end; it++)
+				{
+					if (_compare(k, it->first))
+						break;
+				}
+				return (it);
+			}
+			else
+				return (const_iterator());
+		}
 
 	public:
 		void clear() { destroy_bst(); };
