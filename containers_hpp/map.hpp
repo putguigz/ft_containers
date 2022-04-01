@@ -130,7 +130,7 @@ class map
 				return ;
 			else
 			{
-				if (position == begin())
+				if (position == _bst)
 				{
 					_bst = destroy(_bst);
 					if (_bst)
@@ -144,7 +144,7 @@ class map
 				}
 				else
 				{
-					BST_pointer d_stroy = position->base();
+					BST_pointer d_stroy = position.base();
 					BST_pointer parent = d_stroy->parent;
 					BST_pointer parent2 = parent->parent;
 					if (parent->left == d_stroy)
@@ -163,6 +163,15 @@ class map
 					_size--;
 					return ;
 				}
+			}
+		}
+
+		void		erase(iterator first, iterator last)
+		{
+			while (first != last)
+			{
+				print2D(_bst);
+				erase(first++);
 			}
 		}
 
@@ -295,8 +304,8 @@ class map
 		{
 			if (_bst)
 			{
-				const_iterator it = _bst->begin();
-				const_iterator it_end = _bst->end();
+				const_iterator it = begin();
+				const_iterator it_end = end();
 				for (; it != it_end; it++)
 				{
 					if (!_compare(it->first, k))
@@ -311,12 +320,16 @@ class map
 		iterator upper_bound (const key_type& k){
 			if (_bst)
 			{
-				iterator it = _bst->begin();
-				iterator it_end = _bst->end();
+				iterator it = begin();
+				iterator it_end = end();
 				for (; it != it_end; it++)
 				{
-					if (_compare(k, it->first))
+					if (!_compare(it->first, k))
+					{
+						if (it->first == k)
+							it++; 
 						break;
+					}
 				}
 				return (it);
 			}
@@ -327,11 +340,11 @@ class map
 		const_iterator upper_bound (const key_type& k) const{
 			if (_bst)
 			{
-				const_iterator it = _bst->begin();
-				const_iterator it_end = _bst->end();
+				const_iterator it = begin();
+				const_iterator it_end = end();
 				for (; it != it_end; it++)
 				{
-					if (_compare(k, it->first))
+					if (!_compare(it->first, k))
 						break;
 				}
 				return (it);
