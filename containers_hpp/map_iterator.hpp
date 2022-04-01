@@ -46,7 +46,9 @@ class MapIterator
 			return (!(lhs == rhs));
 		}
 		reference 		operator*( void ) { return (this->_it->elem); };
+		reference 		operator*( void ) const { return (this->_it->elem); };
 		pointer			operator->( void ) { return (&(this->_it->elem)); };
+		pointer			operator->( void ) const { return (&(this->_it->elem)); };
 		MapIterator& 	operator++( void ) {
 			if (_out)
 			{

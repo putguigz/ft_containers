@@ -36,6 +36,22 @@ class map
 		typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 	
 	private:
+
+		class value_compare
+		{
+			protected:
+				Compare comp;
+			public:
+				value_compare (Compare c) : comp(c) {}
+				typedef bool result_type;
+				typedef value_type first_argument_type;
+				typedef value_type second_argument_type;
+				bool operator() (const value_type& x, const value_type& y) const
+				{
+					return comp(x.first, y.first);
+				}
+		};
+
 		key_compare							_compare;
 		allocator_type						_allocker;
 		size_type							_size;
@@ -357,6 +373,14 @@ class map
 				return (const_iterator());
 		}
 
+		ft::pair<iterator,iterator>             equal_range (const key_type& k){
+			return (ft::make_pair(lower_bound(k), upper_bound(k)));
+		}
+
+		ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const{
+			return (ft::make_pair(lower_bound(k), upper_bound(k)));
+		}
+
 		reverse_iterator rbegin( void ) { return reverse_iterator(end()); };
 		reverse_iterator rend( void ) { return reverse_iterator(begin()); };
 		
@@ -369,13 +393,15 @@ class map
 		}
 
 	public:
-		void clear() { destroy_bst(); };
-		size_type size( void ) const { return _size; }
-		size_type max_size() const { return _allocker.max_size(); }
-		bool empty( void ) const { return (_size == 0 ? true : false); }
-		allocator_type get_allocator( void ) const { return _allocker; }
-		key_compare key_comp() const { return _compare; }
-		void swap (map& x) { map<key_type, mapped_type> tmp(this); this = x; x = tmp; };
+		void 			clear() { destroy_bst(); };
+		size_type		size( void ) const { return _size; }
+		size_type		max_size() const { return _allocker.max_size(); }
+		bool			empty( void ) const { return (_size == 0 ? true : false); }
+		allocator_type	get_allocator( void ) const { return _allocker; }
+		key_compare		key_comp() const { return _compare; }
+		void			swap (map& x) { map<key_type, mapped_type> tmp(this); this = x; x = tmp; };
+
+		value_compare value_comp() const { return value_compare(_compare); };
 };
 
 
