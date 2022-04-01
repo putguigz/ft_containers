@@ -15,13 +15,11 @@ class MapIterator
 		typedef typename map_traits<map>::key_compare			key_compare;
 		typedef typename map_traits<map>::allocator_type		allocator_type;
 		typedef typename map_traits<map>::size_type				size_type;
-		typedef typename map_traits<map>::reference				reference;
-		typedef typename map_traits<map>::const_reference		const_reference;
-		typedef typename map_traits<map>::pointer				pointer;
-		typedef typename map_traits<map>::const_pointer			const_pointer;
 		typedef typename map_traits<map>::difference_type		difference_type;
 		typedef typename map_traits<map>::BST_allocator_type	BST_allocator_type;
 		typedef typename map_traits<map>::BST_pointer			BST_pointer;
+		typedef typename ft::conditional< isConst, typename map_traits<map>::const_reference, typename map_traits<map>::reference >::type	reference;
+		typedef typename ft::conditional< isConst, typename map_traits<map>::const_pointer, typename map_traits<map>::pointer >::type		pointer;
 
 	public:
 		MapIterator( void ) : _it(NULL), _out(false), _offset(0) {};

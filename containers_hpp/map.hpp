@@ -58,7 +58,7 @@ class map
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last,
 		const key_compare& comp = key_compare(),
-		const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc), _bst(NULL) { 
+		const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc), _size(0), _bst(NULL) { 
 			insert(first, last);
 		}
 
