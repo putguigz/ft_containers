@@ -147,18 +147,25 @@ class map
 					BST_pointer d_stroy = position.base();
 					BST_pointer parent = d_stroy->parent;
 					BST_pointer parent2 = parent->parent;
+
 					if (parent->left == d_stroy)
 						parent->left = destroy(d_stroy);
 					else
 						parent->right = destroy(d_stroy);
 					balance(parent);
-					if (parent2)
+					while (parent2 != NULL)
 					{
 						if (parent2->left == parent)
 							parent2->left = rotate(parent);
 						else
 							parent2->right = rotate(parent);
+						balance(parent2);
+						parent = parent2;
+						parent2 = parent2->parent;
 					}
+					balance(_bst);
+					_bst = rotate(_bst);
+					_bst->parent = NULL;
 					_bst->recursive_balancing();
 					_size--;
 					return ;
