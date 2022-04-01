@@ -124,6 +124,48 @@ class map
 			return (ret.first);
 		}
 
+		void		erase( iterator position )
+		{	
+			if (!_bst)
+				return ;
+			else
+			{
+				if (position == begin())
+				{
+					_bst = destroy(_bst);
+					if (_bst)
+					{
+						balance(_bst);
+						_bst = rotate(_bst);
+						_bst->parent = NULL;
+					}
+					_size--;
+					return ;
+				}
+				else
+				{
+					BST_pointer d_stroy = position->base();
+					BST_pointer parent = d_stroy->parent;
+					BST_pointer parent2 = parent->parent;
+					if (parent->left == d_stroy)
+						parent->left = destroy(d_stroy);
+					else
+						parent->right = destroy(d_stroy);
+					balance(parent);
+					if (parent2)
+					{
+						if (parent2->left == parent)
+							parent2->left = rotate(parent);
+						else
+							parent2->right = rotate(parent);
+					}
+					_bst->recursive_balancing();
+					_size--;
+					return ;
+				}
+			}
+		}
+
 		size_type	erase(const key_type & k)
 		{
 			if (!_bst)

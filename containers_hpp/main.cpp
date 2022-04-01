@@ -57,7 +57,6 @@ int main(void)
         i = myRandom (-1);
 		first.insert(PREFIX::make_pair(i, 0));
     }
-	print2D(first.getBST());
 
  	i = myRandom (25);
 	int j = 0;
