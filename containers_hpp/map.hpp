@@ -135,8 +135,7 @@ class map
 
 		iterator insert (iterator position, const value_type& val)
 		{
-			if (position == end())
-				return (position);
+			static_cast<void> (position);
 			ft::pair<iterator, bool> ret = insert(val);
 			return (ret.first);
 		}
@@ -348,7 +347,7 @@ class map
 					if (!_compare(it->first, k))
 					{
 						if (it->first == k)
-							it++; 
+							it++;
 						break;
 					}
 				}
@@ -366,7 +365,11 @@ class map
 				for (; it != it_end; it++)
 				{
 					if (!_compare(it->first, k))
+					{
+						if (it->first == k)
+							it++;
 						break;
+					}
 				}
 				return (it);
 			}
