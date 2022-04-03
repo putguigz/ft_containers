@@ -73,17 +73,10 @@ int main(void)
 	first.insert(PREFIX::make_pair(43, 0));
 	first.insert(PREFIX::make_pair(7, 0));
 	first.insert(PREFIX::make_pair(8, 0));
-
 	print2D(first.getBST());
 
-
-
-	PREFIX::map<int, int>::iterator it = first.begin();
-	PREFIX::map<int, int>::iterator it2 = first.end();
-
-	first.erase(it, it2);
-
-	print2D(first.getBST());
+	PREFIX::map<int, int> second(first);
+	print2D(second.getBST());
 
 	// first.erase(40);
 	// first.erase(43);

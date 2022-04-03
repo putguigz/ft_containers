@@ -46,11 +46,13 @@ struct BST
 		{
 			left = allocker.allocate(1);
 			allocker.construct(left, *src.left);
+			left->parent = this;
 		}
 		if (src.right != NULL)
 		{
 			right = allocker.allocate(1);
 			allocker.construct(right, *src.right);
+			right->parent = this;
 		}
 	}
 	~BST( void ) {
@@ -171,7 +173,6 @@ struct BST
 				}
 				else
 					ret = left->erase_elem(key);
-
 			}
 		}
 		else

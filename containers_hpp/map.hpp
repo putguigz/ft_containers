@@ -84,10 +84,10 @@ class map
 			if (this != &x)
 			{
 				_compare = x._compare;
-				_size = x._size;
 				destroy_bst();
 				if (x._bst)
 					_bst = x._bst->copy_this();
+				_size = x._size;
 				_bst_allocker = x._bst_allocker;
 			}
 			return (*this);
