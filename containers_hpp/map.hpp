@@ -57,16 +57,29 @@ class map
 		size_type							_size;
 		BST_pointer							_bst;
 		BST_allocator_type					_bst_allocker;
+		BST_pointer							_dummy_end;
 
 	//DELETE ME
 	public:
 		BST_pointer getBST( void ) const {return _bst;};
 
+	private:
+		void	init_dummy( void )
+		{
+			_dummy_end = _bst_allocker.allocate(1);
+		}
+
+		void	destroy_dummy( void )
+		{
+			_bst_allocker.deallocate(_dummy_end, 1);
+		}
+
 	public:
 		explicit map (const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()) : _compare(comp), _allocker(alloc), _size(0), _bst(NULL) { }
+				const allocator_type& alloc = allocator_type()) : _compare(comp), _allocker(alloc), _size(0), _bst(NULL), _dummy_end(NULL) { init_dummy(); }
 		
-		map (const map& x) : _compare(x._compare), _allocker(x._allocker), _size(x._size), _bst(NULL) {
+		map (const map& x) : _compare(x._compare), _allocker(x._allocker), _size(x._size), _bst(NULL), _dummy_end(NULL) {
+			init_dummy();
 			if (x._bst)
 				_bst = x._bst->copy_this();
 		 }
@@ -74,11 +87,12 @@ class map
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last,
 		const key_compare& comp = key_compare(),
-		const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc), _size(0), _bst(NULL) { 
+		const allocator_type& alloc = allocator_type()) :  _compare(comp), _allocker(alloc), _size(0), _bst(NULL), _dummy_end(NULL) { 
+			init_dummy();
 			insert(first, last);
 		}
 
-		~map( void ) { destroy_bst(); }
+		~map( void ) { destroy_dummy(); destroy_bst(); }
 
 		map&	operator=(const map& x) {
 			if (this != &x)
@@ -107,7 +121,9 @@ class map
 	public:
 
 		ft::pair<iterator,bool> insert (const value_type& val){
-			ft::pair<BST_pointer, bool> ret;
+			ft::pair<BST_pointer, bool>	ret;
+			ft::pair<iterator, bool> 	convert;
+
 			if (!_bst)
 			{
 				_bst = _bst_allocker.allocate(1);
@@ -122,9 +138,19 @@ class map
 				_bst = rotate(_bst);
 				_bst->parent = NULL;
 			}
+			
 			if (ret.second)
+			{
+				convert.second = true;
+				convert.first = iterator(ret.first, _dummy_end, false);
 				_size++;
-			return (ret);
+			}
+			else
+			{
+				convert.second = false;
+				convert.first = iterator(ret.first, _dummy_end, false);
+			}
+			return (convert);
 		}
 
 		template <class InputIterator>
@@ -146,7 +172,7 @@ class map
 				return ;
 			else
 			{
-				if (position == _bst)
+				if (position.base() == _bst)
 				{
 					_bst = destroy(_bst);
 					if (_bst)
@@ -227,41 +253,31 @@ class map
 	public:
 		iterator begin( void ) {
 			if (_bst)
-				return (iterator(_bst->find_start()));
+				return (iterator(_bst->find_start(), _dummy_end, false));
 			else
-				return (iterator());
+				return (iterator(_dummy_end, _dummy_end, true));
 		}
 
 		const_iterator begin() const {
 			if (_bst)
-				return (const_iterator(_bst->find_start()));
+				return (const_iterator(_bst->find_start(), _dummy_end, false));
 			else
-				return (const_iterator());
+				return (const_iterator(_dummy_end, _dummy_end, true));
 		};
 
 
 		iterator end( void ){
 			if (_bst)
-			{
-				iterator past_end(_bst->find_end());
-				past_end.setOut(true);
-				past_end.setOffset(1);
-				return (past_end);
-			}
+				return (iterator(_bst->find_end(), _dummy_end, true));
 			else
-				return (iterator());
+				return (iterator(_dummy_end, _dummy_end, true));
 		}
 
 		const_iterator end( void ) const {
 			if (_bst)
-			{
-				const_iterator past_end(_bst->find_end());
-				past_end.setOut(true);
-				past_end.setOffset(1);
-				return (past_end);
-			}
+				return (const_iterator (_bst->find_end(), _dummy_end, true));
 			else
-				return (const_iterator());
+				return (const_iterator(_dummy_end, _dummy_end, true));
 		}
 
 		iterator find (const key_type& k){
@@ -269,12 +285,12 @@ class map
 			{
 				BST_pointer tmp = _bst->find_by_key(k);
 				if (tmp)
-					return (iterator(tmp));
+					return (iterator(tmp, _dummy_end, false));
 				else
 					return (end());
 			}
 			else
-				return (iterator());	
+				return (iterator(_dummy_end, _dummy_end, true));	
 		}
 
 		const_iterator find (const key_type& k) const{
@@ -282,12 +298,12 @@ class map
 			{
 				BST_pointer tmp = _bst->find_by_key(k);
 				if (tmp)
-					return (const_iterator(tmp));
+					return (const_iterator(tmp, _dummy_end, false));
 				else
 					return (end());
 			}
 			else
-				return (const_iterator());
+				return (const_iterator(_dummy_end, _dummy_end, true));
 		}
 
 		size_type	count( const key_type& k) const{
@@ -317,7 +333,7 @@ class map
 				return (it);
 			}
 			else
-				return (iterator());
+				return (iterator(_dummy_end, _dummy_end, true));
 		}
 
 		const_iterator lower_bound (const key_type& k) const
@@ -334,7 +350,7 @@ class map
 				return (it);
 			}
 			else
-				return (const_iterator());
+				return (const_iterator(_dummy_end, _dummy_end, true));
 		}
 	
 		iterator upper_bound (const key_type& k){
@@ -354,7 +370,7 @@ class map
 				return (it);
 			}
 			else
-				return (iterator());
+				return (iterator(_dummy_end, _dummy_end, true));
 		}
 
 		const_iterator upper_bound (const key_type& k) const{
@@ -374,7 +390,7 @@ class map
 				return (it);
 			}
 			else
-				return (const_iterator());
+				return (const_iterator(_dummy_end, _dummy_end, true));
 		}
 
 		ft::pair<iterator,iterator>             equal_range (const key_type& k){
@@ -393,7 +409,7 @@ class map
 
 		mapped_type& operator[] (const key_type& k)
 		{
-			return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
+			return (*((this->insert(ft::make_pair(k, mapped_type()))).first)).second;
 		}
 
 	public:

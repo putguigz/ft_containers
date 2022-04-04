@@ -217,7 +217,7 @@ struct BST
 		if (this->right)
 			return (right->find_end());
 		else
-			return (this + 1);
+			return (this);
 	}
 
 	pointer find_by_key( key_type const & key )

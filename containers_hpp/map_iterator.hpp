@@ -22,21 +22,32 @@ class MapIterator
 		typedef typename ft::conditional< isConst, typename map_traits<map>::const_pointer, typename map_traits<map>::pointer >::type		pointer;
 
 	public:
-		MapIterator( void ) : _it(NULL), _out(false), _offset(0) {};
-		MapIterator( BST_pointer root) : _it(root), _out(false), _offset(0) { };
+		MapIterator( void ) : _it(NULL), _dummy_end(NULL), _out(false), _offset(0) {};
+		MapIterator( BST_pointer root, BST_pointer end, bool flag) : _it(root), _dummy_end(end), _out(flag), _offset(0) { 
+			if (flag)
+			{
+				BST_pointer tmp = _it;
+				
+				_it = _dummy_end;
+				_dummy_end = tmp;
+				_out = true;
+				_offset = 1;
+			}
+		};
 		virtual ~MapIterator( void ) {};
-		MapIterator( MapIterator const & src) : _it(NULL), _out(false), _offset(0) {*this = src;};
+		MapIterator( MapIterator const & src) : _it(NULL), _dummy_end(NULL), _out(false), _offset(0) {*this = src;};
 		MapIterator & operator=( MapIterator const & src ) {
 			if (this != &src)
 			{
 				_it = src._it;
+				_dummy_end = src._dummy_end;
 				_out = src._out;
 				_offset = src._offset;
 			}
 			return *this;
 		};
 
-		operator MapIterator< const map, true>() const { return MapIterator< const map, true>(_it); };
+		operator MapIterator< const map, true>() const { return MapIterator< const map, true>(_it, _dummy_end, _out); };
 	
 		friend bool	operator==(MapIterator const & lhs, MapIterator const & rhs){
 			return (lhs.base() == rhs.base() ? true : false);
@@ -52,10 +63,15 @@ class MapIterator
 		MapIterator& 	operator++( void ) {
 			if (_out)
 			{
-				_it += 1;
-				this->_offset += 1;
-				if (_offset == 0)
-					_out = false;
+				if (this->_offset == -1)
+				{
+					BST_pointer tmp = _it;
+						
+					_it = _dummy_end;
+					_dummy_end = tmp;
+					this->_out = false;
+					this->_offset = 0;
+				}
 			}
 			else
 			{
@@ -83,8 +99,11 @@ class MapIterator
 						this->_it = tmp_it;
 					else
 					{
-						this->_it += 1;
-						this->_offset += 1;
+						BST_pointer tmp = _it;
+						_it = _dummy_end;
+						_dummy_end = tmp;
+
+						this->_offset = 1;
 						this->_out = true;
 					}
 				}
@@ -92,15 +111,20 @@ class MapIterator
 			return (*this); 
 		};
 		MapIterator		operator++( int ) { 
-			MapIterator tmp(_it); operator++(); return tmp; 
+			MapIterator tmp(_it, _dummy_end, _out); operator++(); return tmp; 
 		};
 		MapIterator&	operator--( void ) { 
 			if (_out)
 			{
-				_it -= 1;
-				this->_offset -= 1;
-				if (_offset == 0)
-					_out = false;
+				if (this->_offset == 1)
+				{
+					BST_pointer tmp = _it;
+						
+					_it = _dummy_end;
+					_dummy_end = tmp;
+					this->_out = false;
+					this->_offset = 0;
+				}
 			}
 			else
 			{
@@ -128,8 +152,11 @@ class MapIterator
 						this->_it = tmp_it;
 					else
 					{
-						this->_it -= 1;
-						this->_offset -= 1;
+						BST_pointer tmp = _it;
+						_it = _dummy_end;
+						_dummy_end = tmp;
+
+						this->_offset = -1;
 						this->_out = true;
 					}
 				}
@@ -138,13 +165,14 @@ class MapIterator
 		};
 
 		MapIterator		operator--( int ) { 
-			MapIterator tmp(_it); operator--(); return tmp;
+			MapIterator tmp(_it, _dummy_end, _out); operator--(); return tmp;
 		};
 
 
 
 	private:
 		BST_pointer _it;
+		BST_pointer	_dummy_end;
 		key_compare comp;
 		bool		_out;
 		int			_offset;
