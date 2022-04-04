@@ -20,11 +20,10 @@ class stack{
 		~stack( void ) {}
 		stack(stack const & cpy) { *this = cpy; }
 		stack & operator=(stack const &rhs) { 
-			if (*this == rhs)
-				return *this;
-			else
+			if (*this != rhs)
 				this->_u = rhs._u;
-			}
+			return *this;
+		}
 	
 		bool				empty( void ) const { return _u.empty(); }
 		size_type			size( void ) const { return _u.size(); }

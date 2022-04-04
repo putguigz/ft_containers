@@ -98,6 +98,8 @@ class vector{
 		}
 
 		iterator erase (iterator first, iterator last){
+			if (first == last)
+				return first;
 			size_type offset = 0;
 			for(; first != last; first++)
 			{
