@@ -143,6 +143,7 @@ class reverse_iterator{
 		reverse_iterator	operator--( int ) { reverse_iterator tmp = *this; _it++; return tmp; };
 		reverse_iterator & 	operator-= (difference_type n) { _it += n ; return (*this);};
 		pointer				operator->( void ) { return (&(operator*())); };
+		pointer				operator->( void ) const { return (&(operator*())); };
 		reference 			operator[] (difference_type n) const {return (_it[-n - 1]); };
 
 	public:

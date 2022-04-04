@@ -38,7 +38,7 @@ struct BST
 		int	right;
 	};
 
-	balance_factor depth;	
+	balance_factor depth;
 
 	BST( pair_type new_pair ) : elem(new_pair), left(NULL), right(NULL), parent(NULL), depth() {}
 	BST( BST<pair_type, key_compare> const & src ) : elem(src.elem), left(NULL), right(NULL), parent(NULL), depth(src.depth) {
@@ -221,26 +221,6 @@ struct BST
 	}
 
 	pointer find_by_key( key_type const & key )
-	{
-		if (cmp(key, this->elem.first))
-		{
-			if (left)
-				return (left->find_by_key(key));
-			else
-				return NULL;
-		}
-		else
-		{
-			if (key == this->elem.first)
-				return this;
-			else if (right)
-				return (right->find_by_key(key));
-			else
-				return NULL;
-		}
-	}
-
-	pointer find_equal(key_type const & key)
 	{
 		if (cmp(key, this->elem.first))
 		{
