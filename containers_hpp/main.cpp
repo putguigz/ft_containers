@@ -75,11 +75,12 @@ int main(void)
 	first.insert(PREFIX::make_pair(8, 0));
 
 	PREFIX::map<int, int>::const_reverse_iterator it(first.rbegin());
-	PREFIX::map<int, int>::const_reverse_iterator it_end(first.rend());
-	
-	it++;
-	it++;
-	std::cout << "it->first " << it->first << std::endl;
+	PREFIX::map<int, int>::const_reverse_iterator it2(first.rend());
+
+	for (; it != it2; it++)
+		std::cout << "it->first " << it->first << std::endl;
+
+
 
 
 	// print2D(first.getBST());

@@ -45,7 +45,12 @@ class MapIterator
 			return *this;
 		};
 
-		operator MapIterator< const map, true>() const { return MapIterator< const map, true>(_it, _dummy_end, _offset); };
+		operator MapIterator< const map, true>() const {
+			if (_offset)
+				return MapIterator< const map, true>(_dummy_end, _it, _offset);
+			else
+				return MapIterator< const map, true>(_it, _dummy_end, _offset);
+		};
 	
 		friend bool	operator==(MapIterator const & lhs, MapIterator const & rhs){
 			return (lhs.base() == rhs.base() ? true : false);
@@ -159,7 +164,6 @@ class MapIterator
 					}
 				}
 			}
-			std::cout << "SECOND in map_ite, it->first " << _it->elem.first << std::endl;
 			return (*this);
 		};
 

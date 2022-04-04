@@ -119,8 +119,7 @@ class reverse_iterator{
 		explicit reverse_iterator(Iterator it) : _it(it) {};
 		
 		template <typename Snd_Ite>
-		reverse_iterator( reverse_iterator<Snd_Ite> const & cpy)
-		{
+		reverse_iterator( reverse_iterator<Snd_Ite> const & cpy){
 			*this = cpy;
 		}
 
