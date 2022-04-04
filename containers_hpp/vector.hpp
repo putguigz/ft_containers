@@ -62,7 +62,7 @@ class vector{
 		iterator insert(iterator position, const value_type& val)
 		{
 			if (_size + 1 > _capacity)
-				_realloc_memorize_position(_size + 1, position);
+				_realloc_memorize_position((_size + 1) * 2, position);
 			insert(position, 1, val);
 			return (position);
 		}
@@ -70,7 +70,12 @@ class vector{
 		void insert(iterator position, size_type n, const value_type& val)
 		{
 			if (_size + n > _capacity)
-				_realloc_memorize_position(_size + n, position);
+			{
+				if (n > _size)
+					_realloc_memorize_position(_size + n, position);
+				else
+					_realloc_memorize_position(_size * 2, position);
+			}
 			for (iterator it = end() - 1; it >= position; it--)
 			{
 				_allocker.construct(&(*(it + n)), *it);
@@ -87,7 +92,7 @@ class vector{
 			for (; first != last; first++)
 			{
 				if (_size + 1 > _capacity)
-					_realloc_memorize_position(_size + 1, position);
+					_realloc_memorize_position((_size + 1) * 2, position);
 				insert(position, 1, *first);
 				position++;
 			}
@@ -133,7 +138,7 @@ class vector{
 					  	_allocker.construct(&_vector[i], *first);
 					else
 					{
-						_realloc(i + 1);
+						_realloc((i + 1) * 2);
 						_allocker.construct(&_vector[i], *first);
 					}
 					_size++;
@@ -151,7 +156,7 @@ class vector{
 		void assign(size_type n, const value_type& val){
 			if (n > _capacity)
 			{
-				_realloc(n);
+				_realloc(n * 2);
 				for (size_type i = 0; i != n; i++)
 					_allocker.construct(&_vector[i], val);
 			}
@@ -169,7 +174,7 @@ class vector{
 		void			push_back( const value_type & val) { 
 			if (_size + 1 > _capacity)
 			{
-				_realloc(_size + 1);
+				_realloc((_size + 1) * 2);
 				_allocker.construct(&_vector[_size], val);
 			}
 			else
@@ -191,12 +196,12 @@ class vector{
 			if (n <= _capacity)
 				return;
 			else
-				_realloc(n);
+				_realloc(n * 2);
 		};
 	
 		void resize (size_type n, value_type val = value_type()){
 			if (n > _capacity)
-				_realloc(n);
+				_realloc(n * 2);
 			if ( n < _size)
 			{
 				for (size_type i = n; i != _size; i++)
