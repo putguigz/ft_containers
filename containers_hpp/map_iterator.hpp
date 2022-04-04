@@ -154,11 +154,12 @@ class MapIterator
 						_it = _dummy_end;
 						_dummy_end = tmp;
 
-						this->_offset = -1;
 						this->_out = true;
+						this->_offset = -1;
 					}
 				}
 			}
+			std::cout << "SECOND in map_ite, it->first " << _it->elem.first << std::endl;
 			return (*this);
 		};
 

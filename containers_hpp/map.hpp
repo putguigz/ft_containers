@@ -275,7 +275,7 @@ class map
 
 		const_iterator end( void ) const {
 			if (_bst)
-				return (const_iterator (_bst->find_end(), _dummy_end, 1));
+				return (const_iterator(_bst->find_end(), _dummy_end, 1));
 			else
 				return (const_iterator(_dummy_end, _dummy_end, 1));
 		}
@@ -401,20 +401,18 @@ class map
 			return (ft::make_pair(lower_bound(k), upper_bound(k)));
 		}
 
-		reverse_iterator rbegin( void ) { 
-			std::cout << "\033[32m" << "GOING HERE" << "\033[0m" << std::endl;
-			return reverse_iterator(iterator(_bst->find_end(), _dummy_end, 1)); 
+		reverse_iterator rbegin( void ) {
+			return reverse_iterator(end()); 
 		};
 		reverse_iterator rend( void ) {
-			 return reverse_iterator(iterator(_bst->find_start(), _dummy_end, 0)); 
+			return reverse_iterator(begin()); 
 		};
 		
 		const_reverse_iterator rbegin( void ) const { 
-			std::cout << "\033[32m" << "GOING HERE" << "\033[0m" << std::endl;
-			return const_reverse_iterator(const_iterator(_bst->find_end(), _dummy_end, 1)); 
+			return const_reverse_iterator(end()); 
 		};
 		const_reverse_iterator rend( void ) const { 
-			return const_reverse_iterator(const_iterator(_bst->find_start(), _dummy_end, 0)); 
+			return const_reverse_iterator(begin()); 
 		};
 
 		mapped_type& operator[] (const key_type& k)
