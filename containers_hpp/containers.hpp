@@ -4,6 +4,7 @@
 # include <iostream>
 # include <memory>
 # include <stdexcept>
+# include <algorithm>
 
 //DEBUG//
 # define RED "\033[38;5;124m"

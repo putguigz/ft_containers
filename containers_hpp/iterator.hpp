@@ -1,7 +1,6 @@
 #ifndef __ITERATOR_HPP__
 # define __ITERATOR_HPP__
 
-# include "vector.hpp"
 # include "traits.hpp"
 
 namespace ft{
@@ -30,7 +29,7 @@ class bidir_iterator
 			return *this;
 		};
 
-	public:		
+	public:	
 		friend bool	operator==(bidir_iterator const & lhs, bidir_iterator const & rhs){
 			return (lhs.base() == rhs.base() ? true : false);
 		}
@@ -120,8 +119,7 @@ class reverse_iterator{
 		explicit reverse_iterator(Iterator it) : _it(it) {};
 		
 		template <typename Snd_Ite>
-		reverse_iterator( reverse_iterator<Snd_Ite> const & cpy)
-		{
+		reverse_iterator( reverse_iterator<Snd_Ite> const & cpy){
 			*this = cpy;
 		}
 
@@ -134,16 +132,20 @@ class reverse_iterator{
 		}
 
 		//MEMBER:
-		reference			operator*( void ) const { return (*(_it - 1)); };
+		reference			operator*( void ) const { 
+			Iterator tmp = _it;
+			return (*(--tmp));
+		};
 		reverse_iterator	operator+(difference_type n) const { return reverse_iterator(_it - n); };
 		reverse_iterator &	operator++( void ) { _it--; return (*this); };
-		reverse_iterator	operator++( int ) { reverse_iterator tmp = *this; _it--; return tmp; };
+		reverse_iterator	operator++( int ) { reverse_iterator tmp(*this); _it--; return tmp; };
 		reverse_iterator & 	operator+= (difference_type n) { _it -= n ; return (*this);};
 		reverse_iterator	operator-(difference_type n) const { return reverse_iterator(_it + n); };
 		reverse_iterator &	operator--( void ) { _it++; return (*this); };
-		reverse_iterator	operator--( int ) { reverse_iterator tmp = *this; _it++; return tmp; };
+		reverse_iterator	operator--( int ) { reverse_iterator tmp(*this); _it++; return tmp; };
 		reverse_iterator & 	operator-= (difference_type n) { _it += n ; return (*this);};
 		pointer				operator->( void ) { return (&(operator*())); };
+		pointer				operator->( void ) const { return (&(operator*())); };
 		reference 			operator[] (difference_type n) const {return (_it[-n - 1]); };
 
 	public:

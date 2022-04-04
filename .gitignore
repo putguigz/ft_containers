@@ -1,5 +1,7 @@
+a.out*
 *.swp
 objs
 .vscode
 containerz
 containers_hpp/containers_test/
+containers_hpp/42_Containator
