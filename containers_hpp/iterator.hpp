@@ -133,14 +133,17 @@ class reverse_iterator{
 		}
 
 		//MEMBER:
-		reference			operator*( void ) const { return (*(_it - 1)); };
+		reference			operator*( void ) const { 
+			Iterator tmp = _it;
+			return (*(--tmp));
+		};
 		reverse_iterator	operator+(difference_type n) const { return reverse_iterator(_it - n); };
 		reverse_iterator &	operator++( void ) { _it--; return (*this); };
-		reverse_iterator	operator++( int ) { reverse_iterator tmp = *this; _it--; return tmp; };
+		reverse_iterator	operator++( int ) { reverse_iterator tmp(*this); _it--; return tmp; };
 		reverse_iterator & 	operator+= (difference_type n) { _it -= n ; return (*this);};
 		reverse_iterator	operator-(difference_type n) const { return reverse_iterator(_it + n); };
 		reverse_iterator &	operator--( void ) { _it++; return (*this); };
-		reverse_iterator	operator--( int ) { reverse_iterator tmp = *this; _it++; return tmp; };
+		reverse_iterator	operator--( int ) { reverse_iterator tmp(*this); _it++; return tmp; };
 		reverse_iterator & 	operator-= (difference_type n) { _it += n ; return (*this);};
 		pointer				operator->( void ) { return (&(operator*())); };
 		pointer				operator->( void ) const { return (&(operator*())); };

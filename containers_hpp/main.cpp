@@ -73,41 +73,32 @@ int main(void)
 	first.insert(PREFIX::make_pair(43, 0));
 	first.insert(PREFIX::make_pair(7, 0));
 	first.insert(PREFIX::make_pair(8, 0));
-	print2D(first.getBST());
-	std::cout << "first.size() IS :" << first.size()  << std::endl;
-	first.erase(30);
-	first.erase(10);
-	first.erase(16);
-	first.erase(40);
-	first.erase(15);
-	first.erase(35);
-	first.erase(43);
-	first.erase(8);
-	first.erase(28);
-	first.erase(17);
-	first.erase(18);
-	first.erase(20);
-	first.erase(7);
-	first[1000] = 0;
-	first[1000] = 50;
-	first[1000] = 50;
-	first[100000] = 0;
-	std::cout << "first.size() IS :" << first.size()  << std::endl;
 
-	// first.erase(40);
-	// first.erase(43);
-	// first.erase(10);
-	// first.erase(8);
-	// first.erase(15);
-	// first.erase(16);
-	// first.erase(28);
-	// first.erase(20);
-	// first.erase(18);
-	// first.erase(42);
-	// first.erase(35);
+	PREFIX::map<int, int>::reverse_iterator it(first.rbegin());
+	PREFIX::map<int, int>::reverse_iterator it_end(first.rend());
+	
+	for (; it != it_end; it++)
+		std::cout << "it->first " << it->first << std::endl;
+
+
+	// print2D(first.getBST());
+	// std::cout << "first.size() IS :" << first.size()  << std::endl;
 	// first.erase(30);
+	// first.erase(10);
+	// first.erase(16);
+	// first.erase(40);
+	// first.erase(15);
+	// first.erase(35);
+	// first.erase(43);
+	// first.erase(8);
+	// first.erase(28);
 	// first.erase(17);
-	// first.erase(42);
+	// first.erase(18);
+	// first.erase(20);
 	// first.erase(7);
-	// first.erase(42);
+	// first[1000] = 0;
+	// first[1000] = 50;
+	// first[1000] = 50;
+	// first[100000] = 0;
+	// std::cout << "first.size() IS :" << first.size()  << std::endl;
 }

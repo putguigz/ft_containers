@@ -142,13 +142,13 @@ class map
 			if (ret.second)
 			{
 				convert.second = true;
-				convert.first = iterator(ret.first, _dummy_end, false);
+				convert.first = iterator(ret.first, _dummy_end, 0);
 				_size++;
 			}
 			else
 			{
 				convert.second = false;
-				convert.first = iterator(ret.first, _dummy_end, false);
+				convert.first = iterator(ret.first, _dummy_end, 0);
 			}
 			return (convert);
 		}
@@ -253,31 +253,31 @@ class map
 	public:
 		iterator begin( void ) {
 			if (_bst)
-				return (iterator(_bst->find_start(), _dummy_end, false));
+				return (iterator(_bst->find_start(), _dummy_end, 0));
 			else
-				return (iterator(_dummy_end, _dummy_end, true));
+				return (iterator(_dummy_end, _dummy_end, 1));
 		}
 
 		const_iterator begin() const {
 			if (_bst)
-				return (const_iterator(_bst->find_start(), _dummy_end, false));
+				return (const_iterator(_bst->find_start(), _dummy_end, 0));
 			else
-				return (const_iterator(_dummy_end, _dummy_end, true));
+				return (const_iterator(_dummy_end, _dummy_end, 1));
 		};
 
 
 		iterator end( void ){
 			if (_bst)
-				return (iterator(_bst->find_end(), _dummy_end, true));
+				return (iterator(_bst->find_end(), _dummy_end, 1));
 			else
-				return (iterator(_dummy_end, _dummy_end, true));
+				return (iterator(_dummy_end, _dummy_end, 1));
 		}
 
 		const_iterator end( void ) const {
 			if (_bst)
-				return (const_iterator (_bst->find_end(), _dummy_end, true));
+				return (const_iterator (_bst->find_end(), _dummy_end, 1));
 			else
-				return (const_iterator(_dummy_end, _dummy_end, true));
+				return (const_iterator(_dummy_end, _dummy_end, 1));
 		}
 
 		iterator find (const key_type& k){
@@ -285,12 +285,12 @@ class map
 			{
 				BST_pointer tmp = _bst->find_by_key(k);
 				if (tmp)
-					return (iterator(tmp, _dummy_end, false));
+					return (iterator(tmp, _dummy_end, 0));
 				else
 					return (end());
 			}
 			else
-				return (iterator(_dummy_end, _dummy_end, true));	
+				return (iterator(_dummy_end, _dummy_end, 1));	
 		}
 
 		const_iterator find (const key_type& k) const{
@@ -298,12 +298,12 @@ class map
 			{
 				BST_pointer tmp = _bst->find_by_key(k);
 				if (tmp)
-					return (const_iterator(tmp, _dummy_end, false));
+					return (const_iterator(tmp, _dummy_end, 0));
 				else
 					return (end());
 			}
 			else
-				return (const_iterator(_dummy_end, _dummy_end, true));
+				return (const_iterator(_dummy_end, _dummy_end, 1));
 		}
 
 		size_type	count( const key_type& k) const{
@@ -333,7 +333,7 @@ class map
 				return (it);
 			}
 			else
-				return (iterator(_dummy_end, _dummy_end, true));
+				return (iterator(_dummy_end, _dummy_end, 1));
 		}
 
 		const_iterator lower_bound (const key_type& k) const
@@ -350,7 +350,7 @@ class map
 				return (it);
 			}
 			else
-				return (const_iterator(_dummy_end, _dummy_end, true));
+				return (const_iterator(_dummy_end, _dummy_end, 1));
 		}
 	
 		iterator upper_bound (const key_type& k){
@@ -370,7 +370,7 @@ class map
 				return (it);
 			}
 			else
-				return (iterator(_dummy_end, _dummy_end, true));
+				return (iterator(_dummy_end, _dummy_end, 1));
 		}
 
 		const_iterator upper_bound (const key_type& k) const{
@@ -390,7 +390,7 @@ class map
 				return (it);
 			}
 			else
-				return (const_iterator(_dummy_end, _dummy_end, true));
+				return (const_iterator(_dummy_end, _dummy_end, 1));
 		}
 
 		ft::pair<iterator,iterator>             equal_range (const key_type& k){
@@ -401,11 +401,21 @@ class map
 			return (ft::make_pair(lower_bound(k), upper_bound(k)));
 		}
 
-		reverse_iterator rbegin( void ) { return reverse_iterator(end()); };
-		reverse_iterator rend( void ) { return reverse_iterator(begin()); };
+		reverse_iterator rbegin( void ) { 
+			std::cout << "\033[32m" << "GOING HERE" << "\033[0m" << std::endl;
+			return reverse_iterator(iterator(_bst->find_end(), _dummy_end, 1)); 
+		};
+		reverse_iterator rend( void ) {
+			 return reverse_iterator(iterator(_bst->find_start(), _dummy_end, 0)); 
+		};
 		
-		const_reverse_iterator rbegin( void ) const { return const_reverse_iterator(end()); };
-		const_reverse_iterator rend( void ) const { return const_reverse_iterator(begin()); };
+		const_reverse_iterator rbegin( void ) const { 
+			std::cout << "\033[32m" << "GOING HERE" << "\033[0m" << std::endl;
+			return const_reverse_iterator(const_iterator(_bst->find_end(), _dummy_end, 1)); 
+		};
+		const_reverse_iterator rend( void ) const { 
+			return const_reverse_iterator(const_iterator(_bst->find_start(), _dummy_end, 0)); 
+		};
 
 		mapped_type& operator[] (const key_type& k)
 		{

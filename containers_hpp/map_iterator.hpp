@@ -23,15 +23,13 @@ class MapIterator
 
 	public:
 		MapIterator( void ) : _it(NULL), _dummy_end(NULL), _out(false), _offset(0) {};
-		MapIterator( BST_pointer root, BST_pointer end, bool flag) : _it(root), _dummy_end(end), _out(flag), _offset(0) { 
+		MapIterator( BST_pointer root, BST_pointer end, int flag) : _it(root), _dummy_end(end), _out(flag), _offset(flag) { 
 			if (flag)
 			{
 				BST_pointer tmp = _it;
 				
 				_it = _dummy_end;
 				_dummy_end = tmp;
-				_out = true;
-				_offset = 1;
 			}
 		};
 		virtual ~MapIterator( void ) {};
@@ -47,7 +45,7 @@ class MapIterator
 			return *this;
 		};
 
-		operator MapIterator< const map, true>() const { return MapIterator< const map, true>(_it, _dummy_end, _out); };
+		operator MapIterator< const map, true>() const { return MapIterator< const map, true>(_it, _dummy_end, _offset); };
 	
 		friend bool	operator==(MapIterator const & lhs, MapIterator const & rhs){
 			return (lhs.base() == rhs.base() ? true : false);
@@ -65,10 +63,10 @@ class MapIterator
 			{
 				if (this->_offset == -1)
 				{
-					BST_pointer tmp = _it;
-						
+					BST_pointer tmp = _it;	
 					_it = _dummy_end;
 					_dummy_end = tmp;
+
 					this->_out = false;
 					this->_offset = 0;
 				}
@@ -111,7 +109,7 @@ class MapIterator
 			return (*this); 
 		};
 		MapIterator		operator++( int ) { 
-			MapIterator tmp(_it, _dummy_end, _out); operator++(); return tmp; 
+			MapIterator tmp(_it, _dummy_end, _offset); operator++(); return tmp; 
 		};
 		MapIterator&	operator--( void ) { 
 			if (_out)
@@ -119,9 +117,9 @@ class MapIterator
 				if (this->_offset == 1)
 				{
 					BST_pointer tmp = _it;
-						
 					_it = _dummy_end;
 					_dummy_end = tmp;
+
 					this->_out = false;
 					this->_offset = 0;
 				}
@@ -165,10 +163,8 @@ class MapIterator
 		};
 
 		MapIterator		operator--( int ) { 
-			MapIterator tmp(_it, _dummy_end, _out); operator--(); return tmp;
+			MapIterator tmp(_it, _dummy_end, _offset); operator--(); return tmp;
 		};
-
-
 
 	private:
 		BST_pointer _it;
