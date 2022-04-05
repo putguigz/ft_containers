@@ -2,12 +2,23 @@
 #include <functional>
 #include <iostream>
 #include <string>
-#include "map.hpp"
-#include <map>
+
+# define STD 0
+
+#if STD //CREATE A REAL STL EXAMPLE
+	#include <map>
+	#include <stack>
+	#include <vector>
+	namespace ft = std;
+#else
+	#include "map.hpp"
+	#include "stack.hpp"
+	#include "vector.hpp"
+#endif
 
 # define ERR_NO_NUM -1
 # define ERR_NO_MEM -2
-# define PREFIX ft
+
 
 int myRandom (int size) {
     int i, n;
@@ -48,34 +59,34 @@ int myRandom (int size) {
 
 int main(void)
 {	
-	PREFIX::map<int, int> first;
+	ft::map<int, int> first;
 
 
  	// srand (time (NULL));
     // int i = myRandom (10);
     // while (i >= 0) {
     //     i = myRandom (-1);
-	// 	first.insert(PREFIX::make_pair(i, 0));
+	// 	first.insert(ft::make_pair(i, 0));
     // }
 
 
-	first.insert(PREFIX::make_pair(30, 0));
-	first.insert(PREFIX::make_pair(15, 0));
-	first.insert(PREFIX::make_pair(17, 0));
-	first.insert(PREFIX::make_pair(10, 0));
-	first.insert(PREFIX::make_pair(18, 0));
-	first.insert(PREFIX::make_pair(16, 0));
-	first.insert(PREFIX::make_pair(35, 0));
-	first.insert(PREFIX::make_pair(42, 0));
-	first.insert(PREFIX::make_pair(40, 0));
-	first.insert(PREFIX::make_pair(28, 0));
-	first.insert(PREFIX::make_pair(20, 0));
-	first.insert(PREFIX::make_pair(43, 0));
-	first.insert(PREFIX::make_pair(7, 0));
-	first.insert(PREFIX::make_pair(8, 0));
+	first.insert(ft::make_pair(30, 0));
+	first.insert(ft::make_pair(15, 0));
+	first.insert(ft::make_pair(17, 0));
+	first.insert(ft::make_pair(10, 0));
+	first.insert(ft::make_pair(18, 0));
+	first.insert(ft::make_pair(16, 0));
+	first.insert(ft::make_pair(35, 0));
+	first.insert(ft::make_pair(42, 0));
+	first.insert(ft::make_pair(40, 0));
+	first.insert(ft::make_pair(28, 0));
+	first.insert(ft::make_pair(20, 0));
+	first.insert(ft::make_pair(43, 0));
+	first.insert(ft::make_pair(7, 0));
+	first.insert(ft::make_pair(8, 0));
 
-	PREFIX::map<int, int>::const_reverse_iterator it(first.rbegin());
-	PREFIX::map<int, int>::const_reverse_iterator it2(first.rend());
+	ft::map<int, int>::const_reverse_iterator it(first.rbegin());
+	ft::map<int, int>::const_reverse_iterator it2(first.rend());
 
 	for (; it != it2; it++)
 		std::cout << "it->first " << it->first << std::endl;
