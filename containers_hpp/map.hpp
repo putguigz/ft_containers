@@ -434,11 +434,15 @@ class map
 		void			swap (map& x) { 
 			size_type 		tmp_size = _size;
 			BST_pointer 	tmp_bst = _bst;
+			BST_pointer		tmp_dummy = _dummy_end;
 
 			_size = x._size;
 			_bst = x._bst;
+			_dummy_end = x._dummy_end;
+
 			x._size = tmp_size;
 			x._bst = tmp_bst;
+			x._dummy_end = tmp_dummy;
 		};
 		value_compare 	value_comp() const { return value_compare(_compare); };
 };
