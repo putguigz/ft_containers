@@ -15,9 +15,6 @@ template < class Key,
 			>
 class map
 {
-	friend class MapIterator<map<Key, T, Compare, Alloc>, false>;
-	friend class MapIterator<const map<Key, T, Compare, Alloc>, true>;
-
 	public:
 		typedef Key                                             						key_type;
 		typedef T                                               						mapped_type;
@@ -34,10 +31,8 @@ class map
 		typedef typename ft::MapIterator< const map<Key, T, Compare, Alloc>, true >		const_iterator;
 		typedef typename ft::reverse_iterator<iterator>									reverse_iterator;
 		typedef typename ft::reverse_iterator<const_iterator>							const_reverse_iterator;
-	
-	private:
-		typedef typename std::allocator< BST< value_type, key_compare > >	BST_allocator_type;
-		typedef typename BST_allocator_type::pointer						BST_pointer;
+		typedef typename std::allocator< BST< value_type, key_compare > >				BST_allocator_type;
+		typedef typename BST_allocator_type::pointer									BST_pointer;
 	
 	private:
 		class value_compare
