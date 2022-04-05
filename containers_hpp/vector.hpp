@@ -2,9 +2,9 @@
 # define __VECTOR_HPP__
 
 # include "containers.hpp"
-# include "iterator.hpp"
-# include "traits.hpp"
-# include "utils.hpp"
+# include "iterator/iterator.hpp"
+# include "utils/traits.hpp"
+# include "utils/utils.hpp"
 
 namespace ft{
 

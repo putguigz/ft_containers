@@ -2,9 +2,9 @@
 # define __MAP_HPP__
 
 # include "containers.hpp"
-# include "utils.hpp"
-# include "bst.hpp"
-# include "map_iterator.hpp"
+# include "utils/utils.hpp"
+# include "bst/bst.hpp"
+# include "iterators/map_iterator.hpp"
 
 namespace ft{
 

@@ -2,9 +2,8 @@
 # define __BST_HPP__
 
 # include "containers.hpp"
-# include "traits.hpp"
-# include "tree_printer.hpp"
-# include "utils.hpp"
+# include "../utils/traits.hpp"
+# include "../utils/utils.hpp"
 # include "bst_utils.hpp"
 # include "bst_erase.hpp"
 

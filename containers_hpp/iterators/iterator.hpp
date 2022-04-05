@@ -1,7 +1,7 @@
 #ifndef __ITERATOR_HPP__
 # define __ITERATOR_HPP__
 
-# include "traits.hpp"
+# include "../utils/traits.hpp"
 
 namespace ft{
 
