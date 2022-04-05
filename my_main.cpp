@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 
-# define STD 0
-
 #if STD //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>

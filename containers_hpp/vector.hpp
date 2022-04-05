@@ -26,7 +26,7 @@ class vector{
 		typedef typename ft::reverse_iterator< const_iterator >					const_reverse_iterator;
 	
 	public:
-        //CONSTRUCTOR
+
         explicit vector( const allocator_type& alloc = allocator_type() ) : _allocker(alloc), _size(0), _capacity(0)
 		{
 			_vector = _allocker.allocate(_capacity);
@@ -53,12 +53,8 @@ class vector{
 			*this = x;
 		}
 
-		//DESTRUCTOR
-        ~vector( void ){
-			_destroy_vector();
-		};
+        ~vector( void ) { _destroy_vector(); };
 
-        //PUBLIC FCT
 		iterator insert(iterator position, const value_type& val)
 		{
 			if (_size + 1 > _capacity)
@@ -171,7 +167,7 @@ class vector{
 			_size = n;
 		}
 
-		void			push_back( const value_type & val) { 
+		void	push_back( const value_type & val) { 
 			if (_size + 1 > _capacity)
 			{
 				_realloc((_size + 1) * 2);
@@ -182,14 +178,14 @@ class vector{
 			_size++;
 		};
 
-		void			pop_back( void ) {
+		void	pop_back( void ) {
 			if (_size == 0)
 				return;
 			_allocker.destroy(&_vector[_size - 1]);
 			_size--;
 		};
 
-		void			reserve(size_type n)
+		void	reserve(size_type n)
 		{
 			if (n > max_size())
 				throw std::length_error("vector::reserve");
@@ -199,7 +195,7 @@ class vector{
 				_realloc(n * 2);
 		};
 	
-		void resize (size_type n, value_type val = value_type()){
+		void	resize(size_type n, value_type val = value_type()){
 			if (n > _capacity)
 				_realloc(n * 2);
 			if ( n < _size)
@@ -217,14 +213,14 @@ class vector{
 				return ;
 		};
 
-		void clear( void )
+		void	clear( void )
 		{
 			for (size_type i = 0; i != _size; i++)
 				_allocker.destroy(&_vector[i]);
 			_size = 0;
 		};
 
-		void swap (vector& x)
+		void	swap( vector& x )
 		{
 			pointer		tmp_vector = _vector;
 			size_type	tmp_size = _size;
@@ -252,7 +248,6 @@ class vector{
 		const_reverse_iterator rend( void ) const { return const_reverse_iterator(begin()); };
 
 	private:
-
 		void _destroy_vector( void ){
 			for (size_type i = 0; i != _size; i++)
 				_allocker.destroy(&_vector[i]);

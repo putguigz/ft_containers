@@ -2,8 +2,6 @@
 #include <string>
 #include <deque>
 
-# define STD 0
-
 #if STD //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
@@ -36,15 +34,15 @@ public:
 	MutantStack(const MutantStack<T>& src) { *this = src; }
 	MutantStack<T>& operator=(const MutantStack<T>& rhs) 
 	{
-		this->_u = rhs._u;
+		this->c = rhs.c;
 		return *this;
 	}
 	~MutantStack() {}
 
 	typedef typename ft::stack<T>::container_type::iterator iterator;
 
-	iterator begin() { return this->_u.begin(); }
-	iterator end() { return this->_u.end(); }
+	iterator begin() { return this->c.begin(); }
+	iterator end() { return this->c.end(); }
 };
 
 int main(int argc, char** argv) {

@@ -16,17 +16,17 @@ struct iterator_traits{
 
 template <class map>
 struct map_traits{
-		typedef typename map::key_type			key_type;
-		typedef typename map::mapped_type		mapped_type;
-		typedef typename map::value_type		value_type;
-		typedef typename map::key_compare		key_compare;
-		typedef typename map::allocator_type	allocator_type;
-		typedef typename map::size_type			size_type;
-		typedef typename map::reference			reference;
-		typedef typename map::const_reference	const_reference;
-		typedef typename map::pointer			pointer;
-		typedef typename map::const_pointer		const_pointer;
-		typedef typename map::difference_type	difference_type;
+		typedef typename map::key_type				key_type;
+		typedef typename map::mapped_type			mapped_type;
+		typedef typename map::value_type			value_type;
+		typedef typename map::key_compare			key_compare;
+		typedef typename map::allocator_type		allocator_type;
+		typedef typename map::size_type				size_type;
+		typedef typename map::reference				reference;
+		typedef typename map::const_reference		const_reference;
+		typedef typename map::pointer				pointer;
+		typedef typename map::const_pointer			const_pointer;
+		typedef typename map::difference_type		difference_type;
 		typedef typename map::BST_allocator_type	BST_allocator_type;
 		typedef typename map::BST_pointer			BST_pointer;
 };
