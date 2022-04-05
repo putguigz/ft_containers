@@ -39,10 +39,11 @@ class map
 	private:
 		class value_compare
 		{
+			friend class map;
 			protected:
 				Compare comp;
-			public:
 				value_compare (Compare c) : comp(c) {}
+			public:
 				typedef bool result_type;
 				typedef value_type first_argument_type;
 				typedef value_type second_argument_type;
