@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-# define STD 0
+#include "utils/tree_printer.hpp"
 
 #if STD //CREATE A REAL STL EXAMPLE
 	#include <map>
@@ -62,39 +62,40 @@ int main(void)
 	ft::map<int, int> first;
 
 
- 	// srand (time (NULL));
-    // int i = myRandom (10);
-    // while (i >= 0) {
-    //     i = myRandom (-1);
-	// 	first.insert(ft::make_pair(i, 0));
-    // }
+ 	srand (time (NULL));
+    int i = myRandom (25);
+    while (i >= 0) {
+        i = myRandom (-1);
+		first.insert(ft::make_pair(i, 0));
+    }
 
 
-	first.insert(ft::make_pair(30, 0));
-	first.insert(ft::make_pair(15, 0));
-	first.insert(ft::make_pair(17, 0));
-	first.insert(ft::make_pair(10, 0));
-	first.insert(ft::make_pair(18, 0));
-	first.insert(ft::make_pair(16, 0));
-	first.insert(ft::make_pair(35, 0));
-	first.insert(ft::make_pair(42, 0));
-	first.insert(ft::make_pair(40, 0));
-	first.insert(ft::make_pair(28, 0));
-	first.insert(ft::make_pair(20, 0));
-	first.insert(ft::make_pair(43, 0));
-	first.insert(ft::make_pair(7, 0));
-	first.insert(ft::make_pair(8, 0));
+	// first.insert(ft::make_pair(30, 0));
+	// first.insert(ft::make_pair(15, 0));
+	// first.insert(ft::make_pair(17, 0));
+	// first.insert(ft::make_pair(10, 0));
+	// first.insert(ft::make_pair(18, 0));
+	// first.insert(ft::make_pair(16, 0));
+	// first.insert(ft::make_pair(35, 0));
+	// first.insert(ft::make_pair(42, 0));
+	// first.insert(ft::make_pair(40, 0));
+	// first.insert(ft::make_pair(28, 0));
+	// first.insert(ft::make_pair(20, 0));
+	// first.insert(ft::make_pair(43, 0));
+	// first.insert(ft::make_pair(7, 0));
+	// first.insert(ft::make_pair(8, 0));
 
-	ft::map<int, int>::const_reverse_iterator it(first.rbegin());
-	ft::map<int, int>::const_reverse_iterator it2(first.rend());
+	// ft::map<int, int>::const_reverse_iterator it(first.rbegin());
+	// ft::map<int, int>::const_reverse_iterator it2(first.rend());
 
-	for (; it != it2; it++)
-		std::cout << "it->first " << it->first << std::endl;
-
-
+	// for (; it != it2; it++)
+	// 	std::cout << "it->first " << it->first << std::endl;
 
 
-	// print2D(first.getBST());
+
+#if !STD
+	print2D(first.getBST());
+#endif
 	// std::cout << "first.size() IS :" << first.size()  << std::endl;
 	// first.erase(30);
 	// first.erase(10);

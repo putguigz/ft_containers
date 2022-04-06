@@ -16,33 +16,32 @@ template < class Key,
 class map
 {
 	public:
-		typedef Key                                             key_type;
-		typedef T                                               mapped_type;
-		typedef ft::pair< const Key, T >                        value_type;
-		typedef Compare                                         key_compare;
-		typedef Alloc                                           allocator_type;
-		typedef typename allocator_type::size_type				size_type;
-		typedef typename allocator_type::reference              reference;
-		typedef typename allocator_type::const_reference        const_reference;
-		typedef typename allocator_type::pointer                pointer;
-		typedef typename allocator_type::const_pointer          const_pointer;
-		typedef typename allocator_type::difference_type		difference_type;
-
-		typedef typename std::allocator< BST< value_type, key_compare > >	BST_allocator_type;
-		typedef typename BST_allocator_type::pointer						BST_pointer;
-		typedef typename ft::MapIterator< map<Key, T, Compare, Alloc>, false  >				iterator;
-		typedef typename ft::MapIterator< const map<Key, T, Compare, Alloc>, true >			const_iterator;
-		typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
-		typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+		typedef Key                                             						key_type;
+		typedef T                                               						mapped_type;
+		typedef ft::pair< const Key, T >                        						value_type;
+		typedef Compare                                         						key_compare;
+		typedef Alloc                                           						allocator_type;
+		typedef typename allocator_type::size_type										size_type;
+		typedef typename allocator_type::reference              						reference;
+		typedef typename allocator_type::const_reference        						const_reference;
+		typedef typename allocator_type::pointer                						pointer;
+		typedef typename allocator_type::const_pointer          						const_pointer;
+		typedef typename allocator_type::difference_type								difference_type;
+		typedef typename ft::MapIterator< map<Key, T, Compare, Alloc>, false  >			iterator;
+		typedef typename ft::MapIterator< const map<Key, T, Compare, Alloc>, true >		const_iterator;
+		typedef typename ft::reverse_iterator<iterator>									reverse_iterator;
+		typedef typename ft::reverse_iterator<const_iterator>							const_reverse_iterator;
+		typedef typename std::allocator< BST< value_type, key_compare > >				BST_allocator_type;
+		typedef typename BST_allocator_type::pointer									BST_pointer;
 	
 	private:
-
 		class value_compare
 		{
+			friend class map;
 			protected:
 				Compare comp;
-			public:
 				value_compare (Compare c) : comp(c) {}
+			public:
 				typedef bool result_type;
 				typedef value_type first_argument_type;
 				typedef value_type second_argument_type;
@@ -59,10 +58,6 @@ class map
 		BST_allocator_type					_bst_allocker;
 		BST_pointer							_dummy_end;
 
-	//DELETE ME
-	public:
-		BST_pointer getBST( void ) const {return _bst;};
-
 	private:
 		void	init_dummy( void )
 		{
@@ -73,6 +68,10 @@ class map
 		{
 			_bst_allocker.deallocate(_dummy_end, 1);
 		}
+
+	//KEEP ME TO PROVE THAT BINARY TREE TO CORRECTEUR
+	public:
+		BST_pointer getBST( void ) const {return _bst;};
 
 	public:
 		explicit map (const key_compare& comp = key_compare(),
@@ -430,11 +429,15 @@ class map
 		void			swap (map& x) { 
 			size_type 		tmp_size = _size;
 			BST_pointer 	tmp_bst = _bst;
+			BST_pointer		tmp_dummy = _dummy_end;
 
 			_size = x._size;
 			_bst = x._bst;
+			_dummy_end = x._dummy_end;
+
 			x._size = tmp_size;
 			x._bst = tmp_bst;
+			x._dummy_end = tmp_dummy;
 		};
 		value_compare 	value_comp() const { return value_compare(_compare); };
 };
