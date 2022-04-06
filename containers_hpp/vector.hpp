@@ -12,28 +12,25 @@ template < typename T, typename A = std::allocator<T> >
 class vector{
     
     public:
-        typedef T 																value_type;
-        typedef A																allocator_type;
-		typedef typename A::size_type											size_type;
-		typedef	typename A::difference_type										difference_type;
-        typedef typename A::pointer            									pointer;
-        typedef typename A::const_pointer      									const_pointer;
-        typedef typename A::reference											reference;
-        typedef typename A::const_reference    									const_reference;
+        typedef T 																	value_type;
+        typedef A																	allocator_type;
+		typedef typename A::size_type												size_type;
+		typedef	typename A::difference_type											difference_type;
+        typedef typename A::pointer            										pointer;
+        typedef typename A::const_pointer      										const_pointer;
+        typedef typename A::reference												reference;
+        typedef typename A::const_reference    										const_reference;
 		typedef typename ft::RandomAccessIterator< ft::vector<T, A>, false >		iterator;
 		typedef	typename ft::RandomAccessIterator< const ft::vector<T, A>, true >	const_iterator;
-		typedef typename ft::reverse_iterator< iterator >						reverse_iterator;
-		typedef typename ft::reverse_iterator< const_iterator >					const_reverse_iterator;
+		typedef typename ft::reverse_iterator< iterator >							reverse_iterator;
+		typedef typename ft::reverse_iterator< const_iterator >						const_reverse_iterator;
 	
 	public:
 
-        explicit vector( const allocator_type& alloc = allocator_type() ) : _allocker(alloc), _size(0), _capacity(0)
-		{
-			_vector = _allocker.allocate(_capacity);
-		};
+        explicit vector( const allocator_type& alloc = allocator_type() ) : _allocker(alloc), _size(0), _capacity(0), _vector(NULL) {};
 
 		explicit vector (size_type n, const value_type& val = value_type(), 
-				const allocator_type& alloc = allocator_type()) : _allocker(alloc), _size(n), _capacity(n)		
+				const allocator_type& alloc = allocator_type()) : _allocker(alloc), _size(n), _capacity(n)
 		{
 			_vector = _allocker.allocate(_capacity);
 			for (size_type i = 0; i != _size; i++)
@@ -42,14 +39,12 @@ class vector{
 
 		template <class InputIterator>
         vector (InputIterator first, InputIterator last,
-                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type* = 0) : _allocker(alloc), _size(0), _capacity(0)
+                 const allocator_type& alloc = allocator_type(), typename enable_if< !is_integral<InputIterator>::value >::type* = 0) : _allocker(alloc), _size(0), _capacity(0), _vector(NULL)
 		{
-			_vector = _allocker.allocate(_capacity);
 			assign(first, last);
 		}
 
-		vector (const vector & x) : _allocker(x._allocker), _size(0), _capacity(0){
-			_vector = _allocker.allocate(_capacity);
+		vector (const vector & x) : _allocker(x._allocker), _size(0), _capacity(0), _vector(NULL){
 			*this = x;
 		}
 
@@ -58,7 +53,7 @@ class vector{
 		iterator insert(iterator position, const value_type& val)
 		{
 			if (_size + 1 > _capacity)
-				_realloc_memorize_position((_size + 1) * 2, position);
+				_realloc_memorize_position(std::max(_size + 1, _size * 2), position);
 			insert(position, 1, val);
 			return (position);
 		}
@@ -66,12 +61,7 @@ class vector{
 		void insert(iterator position, size_type n, const value_type& val)
 		{
 			if (_size + n > _capacity)
-			{
-				if (n > _size)
-					_realloc_memorize_position(_size + n, position);
-				else
-					_realloc_memorize_position(_size * 2, position);
-			}
+				_realloc_memorize_position(std::max(_size + n, _capacity * 2), position);
 			for (iterator it = end() - 1; it >= position; it--)
 			{
 				_allocker.construct(&(*(it + n)), *it);
@@ -88,7 +78,7 @@ class vector{
 			for (; first != last; first++)
 			{
 				if (_size + 1 > _capacity)
-					_realloc_memorize_position((_size + 1) * 2, position);
+					_realloc_memorize_position(std::max(_size + 1, _size * 2), position);
 				insert(position, 1, *first);
 				position++;
 			}
@@ -120,33 +110,15 @@ class vector{
 		template <class InputIterator>
   		void assign(InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0){
 			size_type	i = 0, oldsize = _size;
-
-			for (; first != last; first++)
-		  	{
-				if (i < _size)
-				{
-				  	_allocker.destroy(&_vector[i]);
-				  	_allocker.construct(&_vector[i], *first);
-				}
-				else
-				{
-					if (i < _capacity)
-					  	_allocker.construct(&_vector[i], *first);
-					else
-					{
-						_realloc((i + 1) * 2);
-						_allocker.construct(&_vector[i], *first);
-					}
-					_size++;
-				}
+	
+			for(; first != last; first++)
+			{
+				push_back(*first);
 				i++;
 			}
 			_size = i;
-			if (_size < oldsize)
-			{
-				for (i = _size; i != oldsize; i++)
+			for (i = 0; i != oldsize; i++)
 					_allocker.destroy(&_vector[i]);
-			}
 		}
 
 		void assign(size_type n, const value_type& val){
@@ -170,7 +142,7 @@ class vector{
 		void	push_back( const value_type & val) { 
 			if (_size + 1 > _capacity)
 			{
-				_realloc((_size + 1) * 2);
+				_realloc(std::max(_size + 1, _capacity * 2));
 				_allocker.construct(&_vector[_size], val);
 			}
 			else
@@ -192,12 +164,12 @@ class vector{
 			if (n <= _capacity)
 				return;
 			else
-				_realloc(n * 2);
+				_realloc(n);
 		};
 	
 		void	resize(size_type n, value_type val = value_type()){
 			if (n > _capacity)
-				_realloc(n * 2);
+				_realloc(std::max(n, _size * 2));
 			if ( n < _size)
 			{
 				for (size_type i = n; i != _size; i++)
@@ -249,11 +221,14 @@ class vector{
 
 	private:
 		void _destroy_vector( void ){
-			for (size_type i = 0; i != _size; i++)
-				_allocker.destroy(&_vector[i]);
-			_allocker.deallocate(_vector, _capacity);
-			_capacity = 0;
-			_size = 0;
+			if (_vector)
+			{
+				for (size_type i = 0; i != _size; i++)
+					_allocker.destroy(&_vector[i]);
+				_allocker.deallocate(_vector, _capacity);
+				_capacity = 0;
+				_size = 0;
+			}
 		};
 
 		void _realloc(size_type new_capacity)
