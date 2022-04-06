@@ -210,9 +210,12 @@ class vector{
 
 		void	clear( void )
 		{
-			for (size_type i = 0; i != _size; i++)
-				_allocker.destroy(&_vector[i]);
-			_size = 0;
+			if (_vector)
+			{
+				for (size_type i = 0; i != _size; i++)
+					_allocker.destroy(&_vector[i]);
+				_size = 0;
+			}
 		};
 
 		void	swap( vector& x )
@@ -251,6 +254,7 @@ class vector{
 				_allocker.deallocate(_vector, _capacity);
 				_capacity = 0;
 				_size = 0;
+				_vector = NULL;
 			}
 		};
 
