@@ -93,8 +93,9 @@ int main(void)
 
 
 
-
+#if !STD
 	print2D(first.getBST());
+#endif
 	// std::cout << "first.size() IS :" << first.size()  << std::endl;
 	// first.erase(30);
 	// first.erase(10);
