@@ -78,7 +78,7 @@ class vector{
 			for (; first != last; first++)
 			{
 				if (_size + 1 > _capacity)
-					_realloc_memorize_position(std::max(_size + 1, _size * 2), position);
+					_realloc_memorize_position(_size + 1, position);
 				insert(position, 1, *first);
 				position++;
 			}
@@ -110,21 +110,39 @@ class vector{
 		template <class InputIterator>
   		void assign(InputIterator first, InputIterator last, typename enable_if< !is_integral<InputIterator>::value >::type* = 0){
 			size_type	i = 0, oldsize = _size;
-	
-			for(; first != last; first++)
-			{
-				push_back(*first);
+
+			for (; first != last; first++)
+		  	{
+				if (i < _size)
+				{
+				  	_allocker.destroy(&_vector[i]);
+				  	_allocker.construct(&_vector[i], *first);
+				}
+				else
+				{
+					if (i < _capacity)
+					  	_allocker.construct(&_vector[i], *first);
+					else
+					{
+						_realloc((i + 1) * 2);
+						_allocker.construct(&_vector[i], *first);
+					}
+					_size++;
+				}
 				i++;
 			}
 			_size = i;
-			for (i = 0; i != oldsize; i++)
+			if (_size < oldsize)
+			{
+				for (i = _size; i != oldsize; i++)
 					_allocker.destroy(&_vector[i]);
+			}
 		}
 
 		void assign(size_type n, const value_type& val){
 			if (n > _capacity)
 			{
-				_realloc(n * 2);
+				_realloc(n);
 				for (size_type i = 0; i != n; i++)
 					_allocker.construct(&_vector[i], val);
 			}
@@ -169,7 +187,12 @@ class vector{
 	
 		void	resize(size_type n, value_type val = value_type()){
 			if (n > _capacity)
-				_realloc(std::max(n, _size * 2));
+			{
+				if (n > _capacity * 2)
+					_realloc(n);
+				else
+					_realloc(_capacity * 2);
+			}
 			if ( n < _size)
 			{
 				for (size_type i = n; i != _size; i++)
