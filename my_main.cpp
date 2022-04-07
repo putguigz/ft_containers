@@ -382,23 +382,57 @@ using namespace ft;
 			iterator it = v1.begin() + j;
 			v1.erase(it);
 		}
+		std::cout << "SIZE OF MAP = " << m1.size() << std::endl;;
 #if !STD //CREATE A REAL STL EXAMPLE
 		print2D(m1.getBST());
 #endif
 		m1.erase(m1.find(26));
 		m1.erase(42);
 		m1.erase(m1.begin(), m1.find(5));
+		std::cout << "SIZE OF MAP = " << m1.size() << std::endl;;
 #if !STD //CREATE A REAL STL EXAMPLE
 		print2D(m1.getBST());
 #endif
 		std::cout << "number of 49 im map = " << m1.count(49) << std::endl;
-		std::cout << m1.get_allocator() << std::endl;
-		std::cout << m1.max_size() << std::endl;
+		std::allocator<int> allocker = m1.get_allocator();
+		std::cout << DEV << "SIZE_MAX = " << m1.max_size() << RESET << std::endl;
 		map<int, int>::iterator it;
 
 		it = m1.begin();
+		--(++it);
+		(it++)--;
 		for(; it != m1.end(); it++)
-			std::cout << it->first << std::endl;
+		{
+			std::cout << it->first << " " << FIRE << it->second << RESET << std::endl;
+			it->second += 1;
+		}
+		std::cout << std::endl;
+		
+		map<int, int>::reverse_iterator ti;
+		ti = m1.rbegin();
+		for(; ti != m1.rend(); ti++)
+			std::cout << ti->first << " " << GREEN <<  ti->second << RESET << std::endl;
+		std::cout << "SIZE OF MAP = " << m1.size() << std::endl;;
+		
+		std::cout << std::endl;
+		
+		map<int, int> m2;
+		m2[43] = 52;
+		m2[42] = 53;
+		m2[42] = 56;
+		
+		m1.swap(m2);
+		std::cout << RED << "M1 IS " << RESET << std::endl;
+		for (it = m1.begin(); it != m1.end(); it++)
+			std::cout << it->first << " " << FIRE << it->second << RESET << std::endl;
+		
+		std::cout << std::endl;
+
+		std::cout << RED << "M2 IS " << RESET << std::endl;
+		for (it = m2.begin(); it != m2.end(); it++)
+			std::cout << it->first << " " << FIRE << it->second << RESET << std::endl;
+
+		std::cout << "CLEARING OUT MAP" << std::endl;
 		m1.clear();
 	}
 }
