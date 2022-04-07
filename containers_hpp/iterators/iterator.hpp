@@ -30,16 +30,10 @@ class bidir_iterator
 		};
 
 	public:	
-		friend bool	operator==(bidir_iterator const & lhs, bidir_iterator const & rhs){
-			return (lhs.base() == rhs.base() ? true : false);
-		}
 
-		friend bool	operator!=(bidir_iterator const & lhs, bidir_iterator const & rhs){
-			return (!(lhs == rhs));
-		}
 		pointer			base( void ) const { return _it;};
-		// bool 			operator==(bidir_iterator const & src) const { return (_it == src._it ? true : false); };
-		// bool 			operator!=(bidir_iterator const & src) const { return (!(*this == src)); };
+		friend bool		operator==(bidir_iterator const & lhs, bidir_iterator const & rhs){ return (lhs.base() == rhs.base() ? true : false); }
+		friend bool		operator!=(bidir_iterator const & lhs, bidir_iterator const & rhs){ return (!(lhs == rhs)); }
 		reference 		operator*( void ) { return (*_it); };
 		pointer			operator->( void ) { return (_it); };
 		bidir_iterator& operator++( void ) { _it++; return (*this); };
