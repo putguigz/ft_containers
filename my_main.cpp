@@ -2,6 +2,7 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <iomanip>
 
 #include "utils/tree_printer.hpp"
 
@@ -9,11 +10,12 @@
 	#include <map>
 	#include <stack>
 	#include <vector>
-	namespace ft = std;
+using namespace std;
 #else
 	#include "map.hpp"
 	#include "stack.hpp"
 	#include "vector.hpp"
+using namespace ft;
 #endif
 
 # define ERR_NO_NUM -1
@@ -25,8 +27,6 @@ int myRandom (int size) {
     static int numNums = 0;
     static int *numArr = NULL;
 
-    // Initialize with a specific size.
-
     if (size >= 0) {
         if (numArr != NULL)
             free (numArr);
@@ -36,15 +36,8 @@ int myRandom (int size) {
             numArr[i] = i;
         numNums = size;
     }
-
-    // Error if no numbers left in pool.
-
     if (numNums == 0)
        return ERR_NO_NUM;
-
-    // Get random number from pool and remove it (rnd in this
-    //   case returns a number between 0 and numNums-1 inclusive).
-
     n = rand() % numNums;
     i = numArr[n];
     numArr[n] = numArr[numNums-1];
@@ -57,62 +50,32 @@ int myRandom (int size) {
     return i;
 }
 
+template <typename T>
+int printVector( vector<T> const & vec)
+{
+	std::cout << "<--------  VECTOR PRINT   ---------->"
+	std::cout << "SIZE : [" << vec.size() << "]" << std::endl;
+	
+	if (vec.size() > 0)
+	{
+		std::cout << setw(10) << "CONTENT : ["
+		vector<T>::iterator it = vector.begin();
+		for (; it != vector.end(); it++)
+			std::cout << 
+	}
+	std::cout << "<--------  END OF PRINT   ---------->"
+}
+
 int main(void)
-{	
-	ft::map<int, int> first;
+{
+	{
+		std::cout << "%*************************************************************%" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "*                      VECTOR_CONSTRUCTORS                    *" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "%*************************************************************%" << std::endl;
 
-
- 	srand (time (NULL));
-    int i = myRandom (25);
-    while (i >= 0) {
-        i = myRandom (-1);
-		first.insert(ft::make_pair(i, 0));
-    }
-
-
-	// first.insert(ft::make_pair(30, 0));
-	// first.insert(ft::make_pair(15, 0));
-	// first.insert(ft::make_pair(17, 0));
-	// first.insert(ft::make_pair(10, 0));
-	// first.insert(ft::make_pair(18, 0));
-	// first.insert(ft::make_pair(16, 0));
-	// first.insert(ft::make_pair(35, 0));
-	// first.insert(ft::make_pair(42, 0));
-	// first.insert(ft::make_pair(40, 0));
-	// first.insert(ft::make_pair(28, 0));
-	// first.insert(ft::make_pair(20, 0));
-	// first.insert(ft::make_pair(43, 0));
-	// first.insert(ft::make_pair(7, 0));
-	// first.insert(ft::make_pair(8, 0));
-
-	// ft::map<int, int>::const_reverse_iterator it(first.rbegin());
-	// ft::map<int, int>::const_reverse_iterator it2(first.rend());
-
-	// for (; it != it2; it++)
-	// 	std::cout << "it->first " << it->first << std::endl;
-
-
-
-#if !STD
-	print2D(first.getBST());
-#endif
-	// std::cout << "first.size() IS :" << first.size()  << std::endl;
-	// first.erase(30);
-	// first.erase(10);
-	// first.erase(16);
-	// first.erase(40);
-	// first.erase(15);
-	// first.erase(35);
-	// first.erase(43);
-	// first.erase(8);
-	// first.erase(28);
-	// first.erase(17);
-	// first.erase(18);
-	// first.erase(20);
-	// first.erase(7);
-	// first[1000] = 0;
-	// first[1000] = 50;
-	// first[1000] = 50;
-	// first[100000] = 0;
-	// std::cout << "first.size() IS :" << first.size()  << std::endl;
+		vector<int> vi;
+		vector<int> second(4, 100);
+	}	
 }
