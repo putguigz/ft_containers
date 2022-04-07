@@ -30,35 +30,6 @@ using namespace ft;
 # define ERR_NO_NUM -1
 # define ERR_NO_MEM -2
 
-
-int myRandom (int size) {
-    int i, n;
-    static int numNums = 0;
-    static int *numArr = NULL;
-
-    if (size >= 0) {
-        if (numArr != NULL)
-            free (numArr);
-        if ((numArr = (int *)malloc (sizeof(int) * size)) == NULL)
-            return ERR_NO_MEM;
-        for (i = 0; i  < size; i++)
-            numArr[i] = i;
-        numNums = size;
-    }
-    if (numNums == 0)
-       return ERR_NO_NUM;
-    n = rand() % numNums;
-    i = numArr[n];
-    numArr[n] = numArr[numNums-1];
-    numNums--;
-    if (numNums == 0) {
-        free (numArr);
-        numArr = 0;
-    }
-
-    return i;
-}
-
 template <typename T>
 void printVector( vector<T> const & vec, std::string name = std::string())
 {
@@ -80,6 +51,14 @@ void printVector( vector<T> const & vec, std::string name = std::string())
 
 int main(void)
 {
+#if STD //CREATE A REAL STL EXAMPLE
+	std::cout << RED << "STD" << RESET << std::endl;
+using namespace std;
+#else
+	std::cout << BLUE << "FT" << RESET << std::endl;
+using namespace ft;
+#endif
+
 	typedef vector<int>::iterator 			iterator;
 	typedef vector<int>::reverse_iterator	reverse_iterator;
 
@@ -346,6 +325,80 @@ int main(void)
 			std::cout << YELLOW << "LET'S POP" << RESET << std::endl;
 			s1.pop();
 		}
+		std::cout << std::endl;
 		std::cout << "IsEmpty ? " << (s1.empty()? "True": "False") << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+
+
+		std::cout << "RELATIONAL OPERATOR TESTS"<< std::endl;
+
+		s1.push("Guigz");
+		s1.push("Nico");
+		s1.push("Nas");
+
+
+		stack<std::string> s2;
+		s2.push("Guigz");
+		s2.push("Nico");
+		s2.push("Nas");
+
+		std::cout << ((s1 == s2)? "s1 is equal to s2": "s1 is not equal to s2") << std::endl;
+		std::cout << ((s1 != s2)? "s1 is not equal to s2": "s1 is equal to s2") << std::endl;
+		std::cout << ((s1 < s2)? "s1 is inf to s2": "s1 is not inf to s2") << std::endl;
+		std::cout << ((s1 > s2)? "s1 is sup to s2": "s1 is not sup to s2") << std::endl;
+		std::cout << ((s1 <= s2)? "s1 is inf or equal to s2": "s1 is not inf or equal to s2") << std::endl;
+		std::cout << ((s1 >= s2)? "s1 is sup or equal to s2": "s1 is not sup or equal to s2") << std::endl;
+
+		std::cout << YELLOW << "LET'S POP in S2" << RESET << std::endl;
+		s2.pop();
+		std::cout << ((s1 == s2)? "s1 is equal to s2": "s1 is not equal to s2") << std::endl;
+		std::cout << ((s1 != s2)? "s1 is not equal to s2": "s1 is equal to s2") << std::endl;
+		std::cout << ((s1 < s2)? "s1 is inf to s2": "s1 is not inf to s2") << std::endl;
+		std::cout << ((s1 > s2)? "s1 is sup to s2": "s1 is not sup to s2") << std::endl;
+		std::cout << ((s1 <= s2)? "s1 is inf or equal to s2": "s1 is not inf or equal to s2") << std::endl;
+		std::cout << ((s1 >= s2)? "s1 is sup or equal to s2": "s1 is not sup or equal to s2") << std::endl;
+	}
+
+	{
+		std::cout << "%*************************************************************%" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "*                            MAP                              *" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "%*************************************************************%" << std::endl << std::endl;
+	
+		vector<int>			v1;
+		map<int, int>		m1;
+		std::cout << "isEmpty?" << (m1.empty()?"True":"False") << std::endl;
+		for (int i = 0; i != 50; i++)
+			v1.push_back(i + 1);
+		std::cout << "isEmpty?" << (m1.empty()?"True":"False") << std::endl;
+
+		srand( time( NULL ));
+		for (int i  = 50; i != 0; i--)
+		{
+			int j = rand() % i;
+			m1.insert(make_pair(v1[j], 42));
+			iterator it = v1.begin() + j;
+			v1.erase(it);
+		}
+#if !STD //CREATE A REAL STL EXAMPLE
+		print2D(m1.getBST());
+#endif
+		m1.erase(m1.find(26));
+		m1.erase(42);
+		m1.erase(m1.begin(), m1.find(5));
+#if !STD //CREATE A REAL STL EXAMPLE
+		print2D(m1.getBST());
+#endif
+		std::cout << "number of 49 im map = " << m1.count(49) << std::endl;
+		std::cout << m1.get_allocator() << std::endl;
+		std::cout << m1.max_size() << std::endl;
+		map<int, int>::iterator it;
+
+		it = m1.begin();
+		for(; it != m1.end(); it++)
+			std::cout << it->first << std::endl;
+		m1.clear();
 	}
 }

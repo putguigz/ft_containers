@@ -18,27 +18,36 @@ SRCS= main_42.cpp
 
 SRCS2= my_main.cpp
 
-OBJS= $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
-
-OBJS2= $(addprefix $(OBJS_DIR)/, $(SRCS2:.cpp=.o))
-
 OBJS_DIR= objs
 
-$(OBJS_DIR)/%.o: %.cpp
-	@mkdir -p $(OBJS_DIR)
-	@$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c -o $@ $<
 
 all: $(NAME) $(NAME2)
 
-$(NAME): $(OBJS)
-	@echo "Cooking up executables 🍪..."
-	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(FT_NAME)
-	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(STD_NAME) -D STD=1
+$(OBJS_DIR)/main_42_ft.o: main_42.cpp
+	@mkdir -p $(OBJS_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c -o $@ $< -D STD=0
 
-$(NAME2): $(OBJS2)
+$(OBJS_DIR)/main_42_std.o: main_42.cpp
+	@mkdir -p $(OBJS_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c -o $@ $< -D STD=1
+
+$(OBJS_DIR)/my_main_std.o: my_main.cpp
+	@mkdir -p $(OBJS_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c -o $@ $< -D STD=1
+
+$(OBJS_DIR)/my_main_ft.o: my_main.cpp
+	@mkdir -p $(OBJS_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDES) -c -o $@ $< -D STD=0
+
+$(NAME): $(OBJS_DIR)/main_42_std.o $(OBJS_DIR)/main_42_ft.o
 	@echo "Cooking up executables 🍪..."
-	@$(CXX) $(CXXFLAGS) $(OBJS2) -o $(FT_NAME2)
-	@$(CXX) $(CXXFLAGS) $(OBJS2) -o $(STD_NAME2) -D STD=1
+	$(CXX) $(CXXFLAGS) $(OBJS_DIR)/main_42_ft.o -o $(FT_NAME) 
+	$(CXX) $(CXXFLAGS) $(OBJS_DIR)/main_42_std.o -o $(STD_NAME)
+
+$(NAME2): $(OBJS_DIR)/my_main_std.o $(OBJS_DIR)/my_main_ft.o
+	@echo "Cooking up executables 🍪..."
+	$(CXX) $(CXXFLAGS) $(OBJS_DIR)/my_main_ft.o -o $(FT_NAME2)
+	$(CXX) $(CXXFLAGS) $(OBJS_DIR)/my_main_std.o -o $(STD_NAME2)
 
 clean:
 	@rm -rf $(OBJS_DIR)

@@ -2,7 +2,7 @@
 # define __TREE_PRINTER_HPP__
 
 # include "../containers.hpp"
-# define COUNT 10
+# define COUNT2 10
 
 template<class pointer>
 void print2DUtil(pointer root, int space)
@@ -12,15 +12,15 @@ void print2DUtil(pointer root, int space)
         return;
  
     // Increase distance between levels
-    space += COUNT;
+    space += COUNT2;
  
     // Process right child first
     print2DUtil(root->right, space);
  
     // Print current node after space
-    // count
+    // count2
     std::cout<<std::endl;
-    for (int i = COUNT; i < space; i++)
+    for (int i = COUNT2; i < space; i++)
         std::cout<<" ";
     std::cout<< root->elem.first << ", ";
 	std::cout << RED << root->depth.balance << RESET <<", ";
@@ -38,7 +38,7 @@ template <class pointer>
 void print2D(pointer root)
 {
 	std::cout << "\n<========================>\n";
-    // Pass initial space count as 0
+    // Pass initial space count2 as 0
     print2DUtil(root, 0);
 	std::cout << "\n<========================>\n";
 }
