@@ -5,3 +5,5 @@ objs
 containerz
 containers_hpp/containers_test/
 containers_hpp/42_Containator
+*_42
+*_my
