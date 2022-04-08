@@ -148,11 +148,14 @@ class vector{
 			}
 			else
 			{
-				for (size_type i = 0; i != n; i++)
+				size_type i = 0;
+				for (; i != n; i++)
 				{
 					_allocker.destroy(&_vector[i]);
 					_allocker.construct(&_vector[i], val);
 				}
+				while (i < _size)
+					_allocker.destroy(&_vector[i++]);
 			}
 			_size = n;
 		}
