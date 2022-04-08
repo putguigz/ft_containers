@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ $1 = "clean" ]; then
+	rm -rf ft_42 std_42 ft_my std_my diffs
+	exit
+fi
+
 echo "Hello World, let's compare our 2 programs"
 echo ""
 
@@ -44,5 +49,7 @@ diff <(./ft_my) <(./std_my) > diffs/diff2
 echo "end of diff"
 echo ""
 
-rm  "Makefile'.bckup'"
+if [ $uname_res = "Darwin" ]; then
+	rm  "Makefile'.bckup'"
+fi
 make clean
