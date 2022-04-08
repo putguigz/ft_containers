@@ -366,13 +366,33 @@ using namespace ft;
 		std::cout << "*                            MAP                              *" << std::endl;
 		std::cout << "*                                                             *" << std::endl;
 		std::cout << "%*************************************************************%" << std::endl << std::endl;
-	
+		std::cout << std::endl;
+		std::cout << std::endl;
+		std::cout << "%*************************************************************%" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "*                   CREATION-DESTRUCTION                      *" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "%*************************************************************%" << std::endl << std::endl;
+		
 		vector<int>			v1;
+		vector< pair<int, int> >			v2;
 		map<int, int>		m1;
 		std::cout << "isEmpty?" << (m1.empty()?"True":"False") << std::endl;
 		for (int i = 0; i != 50; i++)
 			v1.push_back(i + 1);
+		for (int i = 50; i != 60; i++)
+			v2.push_back(make_pair(i, 42));
 		std::cout << "isEmpty?" << (m1.empty()?"True":"False") << std::endl;
+		std::cout << std::endl;
+
+		std::cout << "%*************************************************************%" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "*                      INSERTION-ERASURE                      *" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "%*************************************************************%" << std::endl << std::endl;
+
+		std::cout << std::endl;
+		std::cout << "DIFFERENT TYPES OF INSERT>";
 
 		srand( time( NULL ));
 		for (int i  = 50; i != 0; i--)
@@ -382,13 +402,17 @@ using namespace ft;
 			iterator it = v1.begin() + j;
 			v1.erase(it);
 		}
+		m1.insert(v2.begin(), v2.end());
 		std::cout << "SIZE OF MAP = " << m1.size() << std::endl;;
 #if !STD //CREATE A REAL STL EXAMPLE
 		print2D(m1.getBST());
 #endif
+		std::cout << std::endl;
+		std::cout << "DIFFERENT TYPES OF ERASE>";
 		m1.erase(m1.find(26));
 		m1.erase(42);
 		m1.erase(m1.begin(), m1.find(5));
+
 		std::cout << "SIZE OF MAP = " << m1.size() << std::endl;;
 #if !STD //CREATE A REAL STL EXAMPLE
 		print2D(m1.getBST());
@@ -431,7 +455,38 @@ using namespace ft;
 		for (it = m2.begin(); it != m2.end(); it++)
 			std::cout << it->first << " " << FIRE << it->second << RESET << std::endl;
 
+		std::cout << "%*************************************************************%" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "*                    RELATIONAL OPERATORS                     *" << std::endl;
+		std::cout << "*                                                             *" << std::endl;
+		std::cout << "%*************************************************************%" << std::endl << std::endl;
+
+		m1 = m2;
+
+		std::cout << ((m1 == m2)? "m1 is equal to m2": "m1 is not equal to m2") << std::endl;
+		std::cout << ((m1 != m2)? "m1 is not equal to m2": "m1 is equal to m2") << std::endl;
+		std::cout << ((m1 < m2)? "m1 is inf to m2": "m1 is not inf to m2") << std::endl;
+		std::cout << ((m1 > m2)? "m1 is sup to m2": "m1 is not sup to m2") << std::endl;
+		std::cout << ((m1 <= m2)? "m1 is inf or equal to m2": "m1 is not inf or equal to m2") << std::endl;
+		std::cout << ((m1 >= m2)? "m1 is sup or equal to m2": "m1 is not sup or equal to m2") << std::endl;
+		
+		std::cout << std::endl;
+		m1.insert(make_pair(1000, 0));
+		std::cout << ((m1 == m2)? "m1 is equal to m2": "m1 is not equal to m2") << std::endl;
+		std::cout << ((m1 != m2)? "m1 is not equal to m2": "m1 is equal to m2") << std::endl;
+		std::cout << ((m1 < m2)? "m1 is inf to m2": "m1 is not inf to m2") << std::endl;
+		std::cout << ((m1 > m2)? "m1 is sup to m2": "m1 is not sup to m2") << std::endl;
+		std::cout << ((m1 <= m2)? "m1 is inf or equal to m2": "m1 is not inf or equal to m2") << std::endl;
+		std::cout << ((m1 >= m2)? "m1 is sup or equal to m2": "m1 is not sup or equal to m2") << std::endl;
+		std::cout << std::endl;
+		std::cout << std::endl;
+		for (it = m1.lower_bound(42); it != m1.upper_bound(1000); it++)
+			std::cout << it->first << " " << it->second << std::endl;
+
+
 		std::cout << "CLEARING OUT MAP" << std::endl;
 		m1.clear();
+	
 	}
+
 }

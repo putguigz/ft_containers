@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $1 = "clean" ]; then
+if [ "$1" = "clean" ]; then
 	rm -rf ft_42 std_42 ft_my std_my diffs
 	exit
 fi
