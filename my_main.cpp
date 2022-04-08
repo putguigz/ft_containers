@@ -394,7 +394,6 @@ using namespace ft;
 		print2D(m1.getBST());
 #endif
 		std::cout << "number of 49 im map = " << m1.count(49) << std::endl;
-		std::allocator<int> allocker = m1.get_allocator();
 		std::cout << DEV << "SIZE_MAX = " << m1.max_size() << RESET << std::endl;
 		map<int, int>::iterator it;
 
